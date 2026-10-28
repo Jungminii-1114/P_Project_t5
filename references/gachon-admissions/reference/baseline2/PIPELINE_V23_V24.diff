@@ -1,0 +1,603 @@
+--- pipeline_v23.py
++++ pipeline_v24.py
+@@ -1,4 +1,4 @@
+-# 자동 생성 — 직접 수정 금지. source: build_notebook.py
++# 자동 생성 — 직접 수정 금지. source: build_pipeline_v24.py
+ 
+ import os
+ from pathlib import Path
+@@ -41,7 +41,6 @@
+ print("VOYAGE_API_KEY:", "설정됨 ✅" if VOYAGE_API_KEY else
+       "없음 ⚠️  → 🔑(Secrets)에 VOYAGEAI_API_KEY 추가 권장 (없으면 OpenAI 임베딩으로 대체 실행)")
+ 
+-import hashlib
+ import glob
+ import os
+ import shutil
+@@ -55,54 +54,8 @@
+     "04_2027학년도_정시_모집요강.pdf",
+     "05_2027학년도_수시_면접고사_일정.pdf",
+ ]
+-PARSER_VERSIONS = {
+-    ".hwp": "hwp-elements-pyhwp-v1",
+-    ".pdf": "pymupdf-text-pdfplumber-v1",
+-}
+ DATA_DIR = Path(os.environ.get("GACHON_DATA_DIR", "/content/dataset"))
+ 
+-
+-def required_files(directory: Path):
+-    """필수 원본 5개만 고정 순서로 반환하고 누락 시 파싱 전에 알린다."""
+-    directory = Path(directory)
+-    missing = [name for name in REQUIRED if not (directory / name).is_file()]
+-    if missing:
+-        raise FileNotFoundError("필수 문서가 없습니다: " + ", ".join(missing))
+-    return [directory / name for name in REQUIRED]
+-
+-
+-def _sha256_file(path: Path) -> str:
+-    digest = hashlib.sha256()
+-    with path.open("rb") as source:
+-        for block in iter(lambda: source.read(1024 * 1024), b""):
+-            digest.update(block)
+-    return digest.hexdigest()
+-
+-
+-def build_document_manifest(directory: Path):
+-    """필수 원본별 SHA-256, 크기, 파서 구현 버전을 기록한다."""
+-    manifest = {}
+-    for path in required_files(directory):
+-        suffix = path.suffix.lower()
+-        if suffix not in PARSER_VERSIONS:
+-            raise ValueError(f"지원하지 않는 문서 확장자: {path.name}")
+-        manifest[path.name] = {
+-            "sha256": _sha256_file(path),
+-            "size_bytes": path.stat().st_size,
+-            "parser_version": PARSER_VERSIONS[suffix],
+-        }
+-    return manifest
+-
+-
+-def parse_required_files(directory: Path, parse_hwp, parse_pdf):
+-    """필수 원본 5개만 해당 파서로 전달한다. 다른 PDF/HWP는 무시한다."""
+-    parsed = []
+-    for path in required_files(directory):
+-        if path.suffix.lower() == ".hwp":
+-            parsed.extend(parse_hwp(path))
+-        elif path.suffix.lower() == ".pdf":
+-            parsed.extend(parse_pdf(path))
+-    return parsed
+ 
+ 
+ def _all_present(directory: Path) -> bool:
+@@ -203,353 +156,53 @@
+ DATA_DIR = prepare_dataset()
+ for _name in REQUIRED:
+     print(f"  - {_name} ({(DATA_DIR / _name).stat().st_size:,} bytes)")
+-manifest = build_document_manifest(DATA_DIR)
+-print("문서 manifest (filename → sha256, size_bytes, parser_version):")
+-for _name, _entry in manifest.items():
+-    print(f"  - {_name}: {_entry}")
+-
+-import json
++
++from dataclasses import replace
++from functools import partial
++from pathlib import Path
++
++import docparse
+ import re
+-from pathlib import Path
+-
+-import pdfplumber
+-
+-try:
+-    import pymupdf
+-except ImportError:  # 구버전 호환
+-    import fitz as pymupdf
+-
++from docparse.context import doc_title as _docparse_title
++from docparse.table import is_value as _docparse_is_value
+ from langchain_core.documents import Document
+-from langchain_hwp_hwpx import HwpHwpxLoader
+-
+-# HWP 셀 텍스트에 섞여 들어오는 구조 마커 제거
+-_MARKER = re.compile(
+-    r"\[(?:rowspan=\d+,\s*colspan=\d+|colspan=\d+,\s*rowspan=\d+|merged:[^\]]+)\]"
++
++DOCPARSE_PROFILE = os.environ.get("DOCPARSE_PROFILE", "gachon_2027")
++DOCPARSE_INDEX_RENDER = os.environ.get("DOCPARSE_INDEX_RENDER", "header_records")
++DOCPARSE_LLM_RENDER = os.environ.get("DOCPARSE_LLM_RENDER", "header_records")
++if DOCPARSE_INDEX_RENDER not in {"baseline1", "header_records"}:
++    raise ValueError("DOCPARSE_INDEX_RENDER must be baseline1 or header_records")
++if DOCPARSE_LLM_RENDER not in {"baseline1", "html_full", "header_records"}:
++    raise ValueError("DOCPARSE_LLM_RENDER must be baseline1, html_full, or header_records")
++
++docparse_config = replace(
++    docparse.load_profile(DOCPARSE_PROFILE),
++    index_render=DOCPARSE_INDEX_RENDER,
++    llm_render=DOCPARSE_LLM_RENDER,
+ )
+-
+-
+-def normalize(text: str) -> str:
+-    """중복 공백/탭 제거, 'YYYY . MM . DD .' → 'YYYY.MM.DD.'"""
+-    out = []
+-    for line in text.split("\n"):
+-        line = re.sub(r"[ \t]+", " ", line).strip()
+-        line = re.sub(r"(?<=\d)\s*\.\s*(?=\d)", ".", line)
+-        if line:
+-            out.append(line)
+-    return "\n".join(out)
+-
+-
+-def render_hwp_table(cells_json: str) -> str:
+-    """HWP 표 cells(JSON)를 markdown 표로 복원한다 (병합 셀 전개)."""
+-    cells = json.loads(cells_json)
+-    nrows = max(c["row"] + max(c.get("rowspan", 1), 1) for c in cells)
+-    ncols = max(c["col"] + max(c.get("colspan", 1), 1) for c in cells)
+-    grid = [["" for _ in range(ncols)] for _ in range(nrows)]
+-
+-    for c in cells:
+-        text = _MARKER.sub(" ", c.get("text") or "")
+-        text = " ".join(text.split()).replace("|", "/")
+-        if text == "[IMAGE]":
+-            text = ""
+-        rowspan, colspan = max(c.get("rowspan", 1), 1), max(c.get("colspan", 1), 1)
+-        span = rowspan * colspan
+-        for r in range(c["row"], min(c["row"] + rowspan, nrows)):
+-            for col in range(c["col"], min(c["col"] + colspan, ncols)):
+-                # 넓게 병합된 셀은 좌상단에만 값을 두어 같은 문장이 반복되지 않게 한다
+-                if span == 1 or len(text) <= 40 or (r, col) == (c["row"], c["col"]):
+-                    grid[r][col] = text
+-
+-    lines, prev = [], None
+-    for row in grid:
+-        if row == prev or not any(row):
+-            continue
+-        prev = row
+-        lines.append("| " + " | ".join(row) + " |")
+-    if not lines:
+-        return ""
+-    return lines[0] + "\n|" + "---|" * ncols + "\n" + "\n".join(lines[1:])
+-
+-
+-def rows_to_markdown(rows) -> str:
+-    """pdfplumber 표(2차원 리스트)를 markdown 표로 변환한다 (빈 행/열 제거)."""
+-    if not rows:
+-        return ""
+-    ncols = max(len(r) for r in rows)
+-    rows = [[(c or "").replace("\n", " ").strip() for c in r] + [""] * (ncols - len(r)) for r in rows]
+-    keep = [j for j in range(ncols) if any(r[j] for r in rows)]
+-    rows = [[r[j] for j in keep] for r in rows]
+-    rows = [r for r in rows if any(r)]
+-    if len(rows) < 2:
+-        return ""
+-    body = "\n".join("| " + " | ".join(c.replace("|", "/") for c in r) + " |" for r in rows[1:])
+-    return "| " + " | ".join(rows[0]) + " |\n|" + "---|" * len(keep) + "\n" + body
+-
+-
+-def parse_hwp(path: Path):
+-    elements = HwpHwpxLoader(str(path), mode="elements", distribution_backend="pyhwp").load()
+-    docs = []
+-    for e in elements:
+-        kind = e.metadata.get("element_type")
+-        if kind == "body" and e.page_content.strip():
+-            docs.append(Document(page_content=e.page_content.strip(),
+-                                 metadata={"source": path.name, "page": 1, "kind": "text"}))
+-        elif kind == "table":
+-            table_md = render_hwp_table(e.metadata.get("cells", "[]"))
+-            if table_md:
+-                docs.append(Document(page_content=table_md,
+-                                     metadata={"source": path.name,
+-                                               "page": int(e.metadata.get("element_index", 0)) + 1,
+-                                               "kind": "table"}))
+-    return docs
+-
+-
+-def parse_pdf(path: Path):
+-    docs = []
+-    with pymupdf.open(str(path)) as doc:
+-        for i, page in enumerate(doc, start=1):
+-            text = normalize(page.get_text("text"))
+-            if text:
+-                docs.append(Document(page_content=text,
+-                                     metadata={"source": path.name, "page": i, "kind": "text"}))
+-    with pdfplumber.open(str(path)) as pdf:
+-        for i, page in enumerate(pdf.pages, start=1):
+-            for table in page.extract_tables():
+-                table_md = normalize(rows_to_markdown(table))
+-                if len(table_md) > 60:
+-                    docs.append(Document(page_content=table_md,
+-                                         metadata={"source": path.name, "page": i, "kind": "table"}))
+-    return docs
+-
+-
+-raw_docs = parse_required_files(DATA_DIR, parse_hwp, parse_pdf)
++doc_title = partial(_docparse_title, config=docparse_config)
++is_value = partial(_docparse_is_value, config=docparse_config)
++DOCPARSE_SETTINGS = {
++    "profile": DOCPARSE_PROFILE,
++    "index_render": DOCPARSE_INDEX_RENDER,
++    "llm_render": DOCPARSE_LLM_RENDER,
++    "table_full_max_chars": docparse_config.table_full_max_chars,
++}
++manifest = docparse.build_document_manifest([DATA_DIR], docparse_config)
++parser_result = docparse.run_all([DATA_DIR], docparse_config)
++raw_docs = parser_result["raw_docs"]
++chunks = parser_result["chunks"]
++chunks_ctx = parser_result["contextual_chunks"]
++tables = parser_result.get("tables", {})
+ 
+ print(f"파싱 단위: {len(raw_docs)}개")
+ for name in sorted({d.metadata['source'] for d in raw_docs}):
+     part = [d for d in raw_docs if d.metadata["source"] == name]
+     print(f"  - {name}: {len(part)}개 / {sum(len(d.page_content) for d in part):,}자")
+-
+-from langchain_text_splitters import RecursiveCharacterTextSplitter
+-
+-splitter = RecursiveCharacterTextSplitter(
+-    chunk_size=800,
+-    chunk_overlap=100,
+-    separators=["\n\n", "\n", ". ", "다. ", " ", ""],
+-)
+-
+-
+-def _hard_split(text: str, limit: int):
+-    """공백 기준으로 limit 이하로 강제 분할."""
+-    out, cur = [], ""
+-    for word in text.split(" "):
+-        if len(cur) + len(word) + 1 > limit and cur:
+-            out.append(cur)
+-            cur = ""
+-        cur += (" " if cur else "") + word
+-    if cur:
+-        out.append(cur)
+-    return out
+-
+-
+-def split_table_markdown(table_md: str, max_chars: int = 1400):
+-    """표 markdown을 헤더 반복 단위로 분할."""
+-    lines = table_md.splitlines()
+-    header, body = lines[:2], lines[2:]
+-    parts, cur, size = [], [], 0
+-    for line in body:
+-        for piece in (_hard_split(line, max_chars) if len(line) > max_chars else [line]):
+-            if size + len(piece) > max_chars and cur:
+-                parts.append("\n".join(header + cur))
+-                cur, size = [], 0
+-            cur.append(piece)
+-            size += len(piece)
+-    if cur:
+-        parts.append("\n".join(header + cur))
+-    return parts
+-
+-
+-chunks = []
+-for d in raw_docs:
+-    prefix = f"[{d.metadata['source']} p.{d.metadata['page']}]\n"
+-    if d.metadata["kind"] == "table":
+-        pieces = split_table_markdown(d.page_content)
+-    else:
+-        pieces = [c.page_content for c in splitter.split_documents([d])]
+-    for i, piece in enumerate(pieces):
+-        chunks.append(Document(page_content=prefix + piece,
+-                               metadata={**d.metadata, "part": i, "chunk_id": len(chunks)}))
+-
+ lengths = [len(c.page_content) for c in chunks]
+ print(f"청크 {len(chunks):,}개 | 평균 {sum(lengths) / len(lengths):.0f}자 | 최대 {max(lengths):,}자")
+-
+-DOC_TITLES = {
+-    "01": "2027학년도 재외국민 모집요강",
+-    "02": "2027학년도 지역의사선발전형 안내",
+-    "03": "2027학년도 수시 모집요강",
+-    "04": "2027학년도 정시 모집요강",
+-    "05": "2027학년도 수시 면접고사 일정",
+-}
+-NUMERIC = re.compile(r"^[\d,./~%()~\-–\s]+$")
+-SYMBOLS = {"O", "■", "□", "△", "○", "●", "X", "▲", "★", "◉"}
+-GENERIC_COLS = {"비고", "계열", "연번", "번호", "구분"}
+-
+-
+-def doc_title(source: str) -> str:
+-    return DOC_TITLES.get(source[:2], source)
+-
+-
+-def dedup_cells(cells):
+-    """값이 나오기 전 반복 라벨만 줄이고, 값·후속 셀·빈 셀은 보존한다."""
+-    out = []
+-    label_side = True
+-    for c in cells:
+-        if is_value(c):
+-            out.append(c)
+-            label_side = False
+-        elif not c or not label_side or not out or c != out[-1]:
+-            out.append(c)
+-    return out
+-
+-
+-def is_value(c: str) -> bool:
+-    return bool(c) and (bool(NUMERIC.match(c)) or c in SYMBOLS)
+-
+-
+-def expand_header(header_rows, width: int):
+-    """다단 헤더: 행 내부의 빈칸(가로 병합)을 왼쪽 값으로 채운 뒤 열마다 위→아래로 결합."""
+-    rows = []
+-    for r in header_rows:
+-        r = list(r) + [""] * (width - len(r))
+-        last_nonempty = max((j for j, v in enumerate(r) if v), default=-1)
+-        for j in range(last_nonempty):
+-            if not r[j] and j > 0 and r[j - 1]:
+-                r[j] = r[j - 1]
+-        rows.append(r)
+-    cols = []
+-    for j in range(width):
+-        parts = []
+-        for r in rows:
+-            v = r[j]
+-            if v and (not parts or parts[-1] != v):
+-                parts.append(v)
+-        cols.append(" ".join(parts))
+-    return cols
+-
+-
+-def parse_table(text: str):
+-    """markdown 표 → (표제, 모드, 열 이름, 데이터 행). wide=열이 많은 표/일정표, roster=목록형 표."""
+-    rows = []
+-    for line in text.splitlines():
+-        line = line.strip()
+-        if not line.startswith("|"):
+-            continue
+-        cells = [c.strip() for c in line.strip("|").split("|")]
+-        if all(set(c) <= set("-: ") for c in cells):
+-            continue
+-        rows.append(cells)
+-    if not rows:
+-        return "", "roster", [], []
+-    start = None
+-    for i, r in enumerate(rows):
+-        if any(any(k in c for k in ("학과", "학부", "전공", "의예과", "지역")) for c in r):
+-            start = i
+-            break
+-    if start is None or start == 0:
+-        start = 1 if len(rows) > 1 else 0
+-    header_rows = rows[:start]
+-    data = [r for r in rows[start:] if r and not r[0].startswith("※")]
+-    width = max([len(r) for r in rows] + [1])
+-    sched = any(re.search(r"\d+월|\d+일|시간|일시|오전|오후", c) for r in header_rows for c in r)
+-    mode = "wide" if (width >= 7 or sched) else "roster"
+-    if mode == "wide":
+-        cols = expand_header(header_rows, width)
+-    else:
+-        base = header_rows[-1] if header_rows else []
+-        cols = dedup_cells([c for c in base if c]) or [c for c in base if c]
+-    if sched:
+-        caption = "면접/전형 일정"
+-    else:
+-        first = [c for c in (header_rows[0] if header_rows else []) if c and c not in GENERIC_COLS]
+-        caption = first[0][:30] if first else ""
+-    return caption, mode, cols, data
+-
+-
+-def row_summary(cols, data, mode, max_rows=30, max_chars=2600) -> str:
+-    """표 → '- 라벨: 열=값, …' 행 요약."""
+-    H = len(cols)
+-    if H == 0:
+-        return ""
+-    lines, used = [], 0
+-    for r in data:
+-        if not r:
+-            continue
+-        if mode == "wide":
+-            label = next((c for c in r if any(k in c for k in ("학과", "학부", "전공", "지역"))), "")
+-            pairs = []
+-            for j, v in enumerate(r):
+-                if not v or v == label or v in GENERIC_COLS:
+-                    continue
+-                col = cols[j] if j < len(cols) else ""
+-                if col and col != v and col != "모집단위":
+-                    pairs.append(f"{col}={v}")
+-            if not label or not pairs:
+-                continue
+-        else:
+-            ded = dedup_cells(r)
+-            # PDF 표에서 가장자리 빈 셀이 헤더 너비를 초과하게 만들 수 있다.
+-            # 빈 셀을 먼저 줄이고, 남는 초과 폭은 값 앞의 라벨 셀만 합친다.
+-            while len(ded) > H and ded and not ded[0]:
+-                ded = ded[1:]
+-            while len(ded) > H and ded and not ded[-1]:
+-                ded = ded[:-1]
+-            first_value = next((j for j, v in enumerate(ded) if is_value(v)), len(ded))
+-            while len(ded) > H and first_value > 1:
+-                ded = [f"{ded[0]} {ded[1]}".strip()] + ded[2:]
+-                first_value -= 1
+-            if len(ded) > H:
+-                continue
+-            if len(ded) < H:
+-                ded = [""] * (H - len(ded)) + ded
+-            vals = [(j, v) for j, v in enumerate(ded) if v]
+-            if len(vals) < 2:
+-                continue
+-            first_val = next((j for j, v in vals if is_value(v)), H)
+-            label = " ".join(v for j, v in vals if j < first_val and v not in GENERIC_COLS)
+-            if not label or is_value(label):
+-                continue
+-            pairs = [f"{cols[j]}={v}" for j, v in vals if j >= first_val and cols[j]]
+-            if not pairs:
+-                continue
+-        line = f"- {label}: " + ", ".join(pairs[:6])
+-        if used + len(line) > max_chars or len(lines) >= max_rows:
+-            break
+-        lines.append(line)
+-        used += len(line)
+-    return "\n".join(lines)
+-
+-
+-def build_contextual_chunks(chunks):
+-    """색인용 텍스트 = 문맥 헤더 + (표 행 요약) + 원문. 원문은 metadata['raw']에 보관."""
+-    out, with_summary = [], 0
+-    for c in chunks:
+-        src, page, kind = c.metadata["source"], c.metadata["page"], c.metadata["kind"]
+-        title = doc_title(src)
+-        raw = c.page_content
+-        header = f"[문서] {title} | p.{page} | {'표' if kind == 'table' else '본문'}"
+-        summary = ""
+-        if kind == "table":
+-            caption, mode, cols, data = parse_table(raw)
+-            if caption:
+-                header += f" | 표제: {caption}"
+-            summary = row_summary(cols, data, mode)
+-            with_summary += bool(summary)
+-        body = header + (("\n[표 행 요약]\n" + summary) if summary else "") + "\n[원문]\n" + raw
+-        out.append(Document(page_content=body, metadata={**c.metadata, "raw": raw, "title": title}))
+-    n_table = sum(c.metadata["kind"] == "table" for c in chunks)
+-    print(f"색인용 청크 {len(out)}개 | 표 청크 {n_table}개 중 행 요약 {with_summary}개")
+-    return out
+-
+-
+-chunks_ctx = build_contextual_chunks(chunks)
++print(f"색인용 청크 {len(chunks_ctx):,}개 | 표 전체 HTML {len(tables):,}개")
++
+ 
+ import time
+ from collections import defaultdict
+@@ -567,6 +220,84 @@
+     EMBED_MODEL = "text-embedding-3-small"
+     embeddings = OpenAIEmbeddings(model=EMBED_MODEL)
+ 
++CACHE_DIR = Path(__file__).resolve().parent / "runs" / "cache"
++CACHE_DIR.mkdir(parents=True, exist_ok=True)
++try:
++    from langchain_classic.embeddings import CacheBackedEmbeddings
++    from langchain_classic.storage import LocalFileStore
++
++    embeddings = CacheBackedEmbeddings.from_bytes_store(
++        embeddings,
++        LocalFileStore(str(CACHE_DIR)),
++        namespace=EMBED_MODEL,
++        key_encoder="sha256",
++        query_embedding_cache=True,
++    )
++except (ImportError, AttributeError, TypeError):
++    import hashlib
++    import json
++    import tempfile
++
++    class _DiskCachedEmbeddings:
++        """Embedding cache keyed by model name and SHA-256 of the input text."""
++
++        def __init__(self, underlying, model_name, directory):
++            self.underlying = underlying
++            self.model_name = model_name
++            self.directory = Path(directory) / hashlib.sha256(model_name.encode("utf-8")).hexdigest()
++            self.directory.mkdir(parents=True, exist_ok=True)
++
++        def _path(self, text, purpose):
++            digest = hashlib.sha256(text.encode("utf-8")).hexdigest()
++            directory = self.directory / purpose
++            directory.mkdir(parents=True, exist_ok=True)
++            return directory / f"{digest}.json"
++
++        def _read(self, text, purpose):
++            path = self._path(text, purpose)
++            if not path.is_file():
++                return None
++            try:
++                return json.loads(path.read_text(encoding="utf-8"))
++            except (OSError, ValueError):
++                return None
++
++        def _write(self, text, vector, purpose):
++            path = self._path(text, purpose)
++            with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=path.parent,
++                                             delete=False, suffix=".tmp") as handle:
++                json.dump(vector, handle)
++                temp_path = Path(handle.name)
++            temp_path.replace(path)
++
++        def embed_documents(self, texts):
++            vectors = [None] * len(texts)
++            missing = {}
++            for index, text in enumerate(texts):
++                vector = self._read(text, "documents")
++                if vector is not None:
++                    vectors[index] = vector
++                else:
++                    missing.setdefault(self._path(text, "documents"), (text, []))[1].append(index)
++            if missing:
++                entries = list(missing.values())
++                fresh = self.underlying.embed_documents([text for text, _ in entries])
++                for (text, indices), vector in zip(entries, fresh):
++                    self._write(text, vector, "documents")
++                    for index in indices:
++                        vectors[index] = vector
++            return vectors
++
++        def embed_query(self, text):
++            cached = self._read(text, "queries")
++            if cached is not None:
++                return cached
++            vector = self.underlying.embed_query(text)
++            self._write(text, vector, "queries")
++            return vector
++
++    embeddings = _DiskCachedEmbeddings(embeddings, EMBED_MODEL, CACHE_DIR)
++
+ kiwi = Kiwi()
+ ALLOWED_TAGS = {"NNG", "NNP", "NNB", "VV", "VA", "XR", "SL", "SN"}
+ 
+@@ -575,9 +306,15 @@
+     return [t.form for t in kiwi.tokenize(text) if t.tag in ALLOWED_TAGS]
+ 
+ 
++def _scalar_chroma_docs(documents):
++    return [Document(page_content=d.page_content, metadata={
++        key: value for key, value in d.metadata.items()
++        if isinstance(value, (str, int, float, bool))
++    }) for d in documents]
++
+ t0 = time.perf_counter()
+ vectordb = Chroma.from_documents(
+-    documents=chunks_ctx,
++    documents=_scalar_chroma_docs(chunks_ctx),
+     embedding=embeddings,
+     collection_name=f"gachon_chunks_{int(time.time())}",
+     collection_metadata={"hnsw:space": "cosine"},
+@@ -604,7 +341,7 @@
+                               metadata={"source": src, "page": page}))
+ 
+ page_db = Chroma.from_documents(
+-    documents=page_docs,
++    documents=_scalar_chroma_docs(page_docs),
+     embedding=embeddings,
+     collection_name=f"gachon_pages_{int(time.time())}",
+     collection_metadata={"hnsw:space": "cosine"},
+@@ -1254,8 +991,27 @@
+ 
+ 
+ def _context(docs) -> str:
+-    return "\n\n".join(f"[근거 {i}] {d.metadata['source']} p.{d.metadata['page']}\n{d.metadata['raw']}"
+-                       for i, d in enumerate(docs, 1))
++    if DOCPARSE_LLM_RENDER != "html_full" or not tables:
++        return "\n\n".join(f"[근거 {i}] {d.metadata['source']} p.{d.metadata['page']}\n{d.metadata['raw']}"
++                            for i, d in enumerate(docs, 1))
++    if not any(d.metadata.get("kind") == "table" and d.metadata.get("table_id") in tables
++               for d in docs):
++        return "\n\n".join(f"[근거 {i}] {d.metadata['source']} p.{d.metadata['page']}\n{d.metadata['raw']}"
++                            for i, d in enumerate(docs, 1))
++    parts, seen_tables = [], set()
++    for d in docs:
++        metadata = d.metadata
++        table_id = metadata.get("table_id")
++        if metadata.get("kind") == "table" and isinstance(table_id, str) and table_id in tables:
++            if table_id in seen_tables:
++                continue
++            seen_tables.add(table_id)
++            raw = tables[table_id]
++        else:
++            raw = metadata["raw"]
++        index = len(parts) + 1
++        parts.append(f"[근거 {index}] {metadata['source']} p.{metadata['page']}\n{raw}")
++    return "\n\n".join(parts)
+ 
+ 
+ def ask(question: str, return_meta: bool = False):

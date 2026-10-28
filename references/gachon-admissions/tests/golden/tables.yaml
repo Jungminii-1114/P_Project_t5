@@ -1,0 +1,282 @@
+{
+  "schema_version": 1,
+  "coordinate_convention": {
+    "pdf": "Rows and columns are zero-based within the PyMuPDF find_tables() table at table_ordinal; PDF table_ordinal is zero-based within that page.",
+    "manual_visual_region": "For fixtures marked not_separately_detected, visual_coordinate is zero-based within the source_region_bbox crop and is not a native find_tables() coordinate.",
+    "hwp": "Rows and columns are zero-based in the HwpHwpxLoader cells JSON; locator.value is the element_index. HWP table_ordinal is zero-based among loader table elements.",
+    "header_rows": "Logical header-row count, not a count of title, blank, or note rows preceding the table header. header_row_indices records the source-grid row positions.",
+    "stub_cols": "Number of leftmost source-grid columns used as row labels. Merged repetitions are represented once in row_label.",
+    "samples": "Each sample is a source-derived (row_label, header_path, value) triple. Nested matrices and repeated regional panel headings are annotated per table. PDF symbols in the eligibility matrix are transcribed from the rendered glyphs."
+  },
+  "tables": [
+    {
+      "id": "hwp-roster-multi-stub",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "locator": {"type": "element_index", "value": 2},
+      "table_ordinal": 1,
+      "ordinal_basis": "HwpHwpxLoader table-element order, zero-based",
+      "type": "HWP merged headers and numeric roster",
+      "reason": "Source HWP cells carry merged spans for the two row-label fields and a merged category label down multiple entries.",
+      "source_dimensions": {"rows": 71, "cols": 6},
+      "expected": {
+        "header_rows": 1,
+        "header_row_indices": [4],
+        "stub_cols": 4,
+        "samples": [
+          {"coordinate": [5, 4], "row_label": ["인문", "경영학과"], "header_path": ["최대모집 가능인원"], "value": "15"},
+          {"coordinate": [5, 5], "row_label": ["인문", "경영학과"], "header_path": ["모집인원"], "value": "16"},
+          {"coordinate": [6, 4], "row_label": ["인문", "회계세무학과"], "header_path": ["최대모집 가능인원"], "value": "5"},
+          {"coordinate": [7, 4], "row_label": ["인문", "관광경영학과"], "header_path": ["최대모집 가능인원"], "value": "4"},
+          {"coordinate": [8, 4], "row_label": ["인문", "의료산업경영학과"], "header_path": ["최대모집 가능인원"], "value": "4"}
+        ]
+      },
+      "structure_notes": "The loader table has title row 0, an informational note in row 2, and blank spacer rows before the actual header at row 4."
+    },
+    {
+      "id": "hwp-schedule-notes",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "locator": {"type": "element_index", "value": 3},
+      "table_ordinal": 2,
+      "ordinal_basis": "HwpHwpxLoader table-element order, zero-based",
+      "type": "HWP schedule with vertically merged category and note columns",
+      "reason": "The source cell JSON preserves a multirow category, date, place, and two physical note cells under the same visible header.",
+      "source_dimensions": {"rows": 17, "cols": 5},
+      "expected": {
+        "header_rows": 1,
+        "header_row_indices": [3],
+        "stub_cols": 1,
+        "samples": [
+          {"coordinate": [4, 1], "row_label": ["원서접수 및 서류접수"], "header_path": ["일시"], "value": "2026. 07. 06(월) 10:00 ~   ʔĀ             10(금) 16:00 까지"},
+          {"coordinate": [4, 2], "row_label": ["원서접수 및 서류접수"], "header_path": ["장소"], "value": "본 대학 입학처 홈페이지"},
+          {"coordinate": [4, 3], "row_label": ["원서접수 및 서류접수"], "header_path": ["비고"], "value": "▶"},
+          {"coordinate": [5, 3], "row_label": ["원서접수 및 서류접수"], "header_path": ["비고"], "value": "▶"},
+          {"coordinate": [6, 3], "row_label": ["원서접수 및 서류접수"], "header_path": ["비고"], "value": "▶"}
+        ]
+      },
+      "structure_notes": "Rows 0–2 are the table title and spacers. Visible 비고 spans two physical source columns: a marker column and a note-text column."
+    },
+    {
+      "id": "02-region-eligibility-symbols",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 4,
+      "table_ordinal": 1,
+      "ordinal_basis": "pymupdf.Page.find_tables().tables, zero-based on file page 4",
+      "type": "eligibility matrix with check and cross symbols",
+      "reason": "This unrelated table exercises symbol values and a three-column path of study-location conditions.",
+      "source_dimensions": {"rows": 6, "cols": 3},
+      "expected": {
+        "header_rows": 1,
+        "header_row_indices": [0],
+        "stub_cols": 1,
+        "samples": [
+          {"coordinate": [1, 1], "row_label": ["동일 진료권 내 이수"], "header_path": ["진료권 선발 지원"], "value": "가능 ✓"},
+          {"coordinate": [1, 2], "row_label": ["동일 진료권 내 이수"], "header_path": ["광역권 선발 지원"], "value": "가능 ✓"},
+          {"coordinate": [3, 1], "row_label": ["동일 도(道) 내 다른 진료권으로 전학"], "header_path": ["진료권 선발 지원"], "value": "불가능 ✕"},
+          {"coordinate": [4, 2], "row_label": ["동일 광역권 내 다른 시·도(市道)로 전학"], "header_path": ["광역권 선발 지원"], "value": "가능 ✓"},
+          {"coordinate": [5, 2], "row_label": ["다른 광역권으로 전학"], "header_path": ["광역권 선발 지원"], "value": "불가능 ✕"}
+        ]
+      },
+      "structure_notes": "The first two row labels carry smaller explanatory sublines in the PDF; the sampled row_label uses the primary visible label."
+    },
+    {
+      "id": "02-regional-allocation-panels",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 6,
+      "table_ordinal": 0,
+      "ordinal_basis": "pymupdf.Page.find_tables().tables, zero-based on file page 6",
+      "type": "large regional allocation matrix with repeated panel headers",
+      "reason": "An unrelated high-density table exercises merged geographic row labels and region-specific university subheaders.",
+      "source_dimensions": {"rows": 65, "cols": 10},
+      "expected": {
+        "header_rows": 2,
+        "header_row_indices": [0, 1],
+        "stub_cols": 3,
+        "samples": [
+          {"coordinate": [4, 3], "row_label": ["❶ 대전, 충남", "대전·세종·충남·충북", "천안권"], "header_path": ["대학별 지역의사선발전형 정원 배분", "건양대"], "value": "1"},
+          {"coordinate": [4, 4], "row_label": ["❶ 대전, 충남", "대전·세종·충남·충북", "천안권"], "header_path": ["대학별 지역의사선발전형 정원 배분", "단국대"], "value": "3"},
+          {"coordinate": [4, 9], "row_label": ["❶ 대전, 충남", "대전·세종·충남·충북", "천안권"], "header_path": ["학생수", "전체"], "value": "15"},
+          {"coordinate": [5, 6], "row_label": ["❶ 대전, 충남", "대전·세종·충남·충북", "공주권"], "header_path": ["대학별 지역의사선발전형 정원 배분", "을지대"], "value": "1"},
+          {"coordinate": [8, 9], "row_label": ["❶ 대전, 충남", "대전·세종·충남·충북", "홍성권"], "header_path": ["학생수", "전체"], "value": "9"}
+        ]
+      },
+      "structure_notes": "Rows 2–3 are the first region panel's local university/capacity headings, and similar heading rows repeat for later region panels. They are not global header rows; the samples use each panel's visible local heading."
+    },
+    {
+      "id": "03-admission-unit-count-matrix",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 33,
+      "table_ordinal": 0,
+      "ordinal_basis": "pymupdf.Page.find_tables().tables, zero-based on file page 33",
+      "type": "unrelated multilevel admission-by-unit matrix",
+      "reason": "This table supplies an unrelated multiheader case with a merged category stub and values across several admission types.",
+      "source_dimensions": {"rows": 38, "cols": 17},
+      "expected": {
+        "header_rows": 2,
+        "header_row_indices": [0, 1],
+        "stub_cols": 2,
+        "samples": [
+          {"coordinate": [2, 3], "row_label": ["자연", "전자공학과"], "header_path": ["논술 위주", "논술"], "value": "73"},
+          {"coordinate": [2, 4], "row_label": ["자연", "전자공학과"], "header_path": ["학생부위주(교과)", "학생부우수자"], "value": "22"},
+          {"coordinate": [12, 5], "row_label": ["자연", "간호학과"], "header_path": ["학생부위주(교과)", "지역균형"], "value": "13"},
+          {"coordinate": [18, 9], "row_label": ["자연", "의예과"], "header_path": ["학생부위주(종합)", "가천의약학"], "value": "16"},
+          {"coordinate": [27, 16], "row_label": ["예·체능", "회화전공"], "header_path": ["실기 위주", "실기우수자"], "value": "30"}
+        ]
+      },
+      "structure_notes": "Source page 33 includes an explanatory footnote below the matrix; sampled values come from the grid above it."
+    },
+    {
+      "id": "03-grade-conversion-inset",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 85,
+      "table_ordinal": 0,
+      "ordinal_basis": "pymupdf.Page.find_tables().tables, zero-based on file page 85",
+      "type": "grade-interval lookup embedded inside a larger table cell",
+      "reason": "This is the drive20 #17 grade-interval source. The rendered page shows letter-grade and score bands in a nested lookup matrix.",
+      "source_dimensions": {"rows": 5, "cols": 4},
+      "expected": {
+        "header_rows": 1,
+        "header_row_indices": [0],
+        "stub_cols": 1,
+        "samples": [
+          {"source_coordinates": {"outer_cell": [1, 2], "embedded_row": "변환등급", "embedded_column": "1등급"}, "row_label": ["인문계열", "변환등급"], "header_path": ["석차등급", "1등급"], "value": "A"},
+          {"source_coordinates": {"outer_cell": [1, 2], "embedded_row": "변환등급", "embedded_column": "3등급"}, "row_label": ["인문계열", "변환등급"], "header_path": ["석차등급", "3등급"], "value": "B"},
+          {"source_coordinates": {"outer_cell": [1, 2], "embedded_row": "변환등급", "embedded_column": "5등급"}, "row_label": ["인문계열", "변환등급"], "header_path": ["석차등급", "5등급"], "value": "C"},
+          {"source_coordinates": {"outer_cell": [1, 2], "embedded_row": "변환등급", "embedded_column": "8등급"}, "row_label": ["인문계열", "변환등급"], "header_path": ["석차등급", "8등급"], "value": "E"},
+          {"source_coordinates": {"outer_cell": [1, 2], "embedded_row": "배점", "embedded_column": "3등급"}, "row_label": ["인문계열", "배점"], "header_path": ["석차등급", "3등급"], "value": "99.5"},
+          {"source_coordinates": {"outer_cell": [1, 2], "embedded_row": "배점", "embedded_column": "8등급"}, "row_label": ["인문계열", "배점"], "header_path": ["석차등급", "8등급"], "value": "70"}
+        ]
+      },
+      "structure_notes": "find_tables() reports only the enclosing 5×4 table; the grade lookup is printed inside outer source cell [1, 2]. Its visual row and column spans are genuine source information, but separate cell coordinates are not exposed by the outer table result."
+    },
+    {
+      "id": "03-regional-balance-career-grid",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 85,
+      "table_ordinal": null,
+      "ordinal_basis": "manual visual region; no separate pymupdf.Page.find_tables() result",
+      "extraction_status": "not_separately_detected",
+      "source_region_bbox": [290.0, 575.0, 540.0, 635.0],
+      "source_region_bbox_units": "PDF points",
+      "type": "nested career-choice grade-interval lookup",
+      "reason": "The lower regional-balance section prints a three-row score-conversion grid for career-choice scores.",
+      "source_dimensions": {"rows": 3, "cols": 4},
+      "dimension_basis": "visible ruled grid in the source-region crop",
+      "expected": {
+        "header_rows": 1,
+        "header_row_indices": [0],
+        "stub_cols": 1,
+        "samples": [
+          {"visual_coordinate": [1, 1], "row_label": ["변환등급"], "header_path": ["70점 이상"], "value": "A"},
+          {"visual_coordinate": [1, 2], "row_label": ["변환등급"], "header_path": ["70점 미만 ~ 50점 이상"], "value": "B"},
+          {"visual_coordinate": [1, 3], "row_label": ["변환등급"], "header_path": ["50점 미만"], "value": "E"},
+          {"visual_coordinate": [2, 1], "row_label": ["배점"], "header_path": ["70점 이상"], "value": "100"},
+          {"visual_coordinate": [2, 2], "row_label": ["배점"], "header_path": ["70점 미만 ~ 50점 이상"], "value": "99.5"},
+          {"visual_coordinate": [2, 3], "row_label": ["배점"], "header_path": ["50점 미만"], "value": "70"}
+        ]
+      },
+      "structure_notes": "The top-left cell labels the measure as 원점수; each of the other three columns is a score interval. This entry covers only the career-choice grid inside the lower regional-balance section; the neighboring general-choice grid is a separate visual region."
+    },
+    {
+      "id": "04-school-violence-multilevel",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 35,
+      "table_ordinal": 0,
+      "ordinal_basis": "pymupdf.Page.find_tables().tables, zero-based on file page 35",
+      "type": "multilevel headers with stage-specific merged assessment cells",
+      "reason": "This is the holdout10 #6 source table, with school-violence levels grouped under a merged heading and some admission routes split by stage.",
+      "source_dimensions": {"rows": 12, "cols": 13},
+      "expected": {
+        "header_rows": 2,
+        "header_row_indices": [0, 1],
+        "stub_cols": 3,
+        "samples": [
+          {"coordinate": [2, 8], "row_label": ["논술위주(논술)"], "header_path": ["학교폭력조치사항", "6호"], "value": "–20"},
+          {"coordinate": [4, 6], "row_label": ["학생부교과(지역균형, 특성화고교)", "1단계"], "header_path": ["학교폭력조치사항", "4호"], "value": "–10"},
+          {"coordinate": [5, 3], "row_label": ["학생부교과(지역균형, 특성화고교)", "2단계"], "header_path": ["학교폭력조치사항"], "value": "정성평가"},
+          {"coordinate": [7, 3], "row_label": ["학생부종합(특성화고졸재직자)"], "header_path": ["학교폭력조치사항"], "value": "정성평가"},
+          {"coordinate": [10, 3], "row_label": ["실기위주", "단계전형", "2단계"], "header_path": ["학교폭력조치사항"], "value": "정성평가"},
+          {"coordinate": [11, 10], "row_label": ["수능위주"], "header_path": ["학교폭력조치사항", "8호"], "value": "–100"}
+        ]
+      },
+      "structure_notes": "The footer printed on this rendered page is 61, while this is file page 35. Row-label hierarchy uses up to three left columns, with blank or vertically merged cells preserved in the source table."
+    },
+    {
+      "id": "04-scholarship-merged-rows",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 40,
+      "table_ordinal": 0,
+      "ordinal_basis": "pymupdf.Page.find_tables().tables, zero-based on file page 40",
+      "type": "unrelated scholarship table with hierarchical header and vertical row merges",
+      "reason": "This unrelated case exercises a grouped academic-credit header and repeated scholarship labels spanning several eligibility rows.",
+      "source_dimensions": {"rows": 16, "cols": 6},
+      "expected": {
+        "header_rows": 2,
+        "header_row_indices": [0, 1],
+        "stub_cols": 1,
+        "samples": [
+          {"coordinate": [2, 2], "row_label": ["가천장학금"], "header_path": ["지급내역"], "value": "수업연한 동안 등록금 전액 및 월 30만 원 지원"},
+          {"coordinate": [2, 3], "row_label": ["가천장학금"], "header_path": ["입학 후 학점사항", "취득"], "value": "12학점 이상"},
+          {"coordinate": [2, 4], "row_label": ["가천장학금"], "header_path": ["입학 후 학점사항", "성적"], "value": "3.5 이상"},
+          {"coordinate": [5, 3], "row_label": ["학과수석장학금"], "header_path": ["입학 후 학점사항", "취득"], "value": "–"},
+          {"coordinate": [8, 2], "row_label": ["한의과대학 장학금"], "header_path": ["지급내역"], "value": "수업연한 동안 등록금 전액"},
+          {"coordinate": [9, 2], "row_label": ["한의과대학 장학금"], "header_path": ["지급내역"], "value": "2년간 등록금 전액"}
+        ]
+      },
+      "structure_notes": "The source shows merged values in the credit and scholarship-name columns; repeated values in the sample are separate source rows."
+    },
+    {
+      "id": "05-interview-date-session",
+      "source": "05_2027학년도_수시_면접고사_일정.pdf",
+      "page": 2,
+      "table_ordinal": 0,
+      "ordinal_basis": "pymupdf.Page.find_tables().tables, zero-based on file page 2",
+      "type": "interview schedule with dates split into morning and afternoon",
+      "reason": "This is one of the drive20 #19 source pages and exercises date parent headers, 오전/오후 subheaders, and ★ markers.",
+      "source_dimensions": {"rows": 46, "cols": 9},
+      "expected": {
+        "header_rows": 2,
+        "header_row_indices": [0, 1],
+        "stub_cols": 1,
+        "samples": [
+          {"coordinate": [2, 1], "row_label": ["경영학과"], "header_path": ["10월 31일(토)", "오전"], "value": "★"},
+          {"coordinate": [2, 2], "row_label": ["경영학과"], "header_path": ["10월 31일(토)", "오후"], "value": "★"},
+          {"coordinate": [3, 5], "row_label": ["회계세무학과"], "header_path": ["11월 07일(토)", "오전"], "value": "★"},
+          {"coordinate": [7, 6], "row_label": ["미디어커뮤니케이션학과"], "header_path": ["11월 07일(토)", "오후"], "value": "★"},
+          {"coordinate": [8, 7], "row_label": ["경제학과"], "header_path": ["11월 08일(일)", "오전"], "value": "★"},
+          {"coordinate": [9, 3], "row_label": ["응용통계학과"], "header_path": ["11월 01일(일)", "오전"], "value": "★"}
+        ]
+      },
+      "structure_notes": "Empty printed cells denote no scheduled slot; the selected samples focus on visible marker values."
+    },
+    {
+      "id": "05-interview-category-date-session",
+      "source": "05_2027학년도_수시_면접고사_일정.pdf",
+      "page": 3,
+      "table_ordinal": 0,
+      "ordinal_basis": "pymupdf.Page.find_tables().tables, zero-based on file page 3",
+      "type": "nested interview category, date, and session headers",
+      "reason": "This is the second drive20 #19 schedule source page and adds a three-tier category/date/session path.",
+      "source_dimensions": {"rows": 41, "cols": 13},
+      "expected": {
+        "header_rows": 3,
+        "header_row_indices": [0, 1, 2],
+        "stub_cols": 1,
+        "samples": [
+          {"coordinate": [3, 1], "row_label": ["경영학과"], "header_path": ["기회균형", "10/03(토)", "오전"], "value": "★"},
+          {"coordinate": [3, 6], "row_label": ["경영학과"], "header_path": ["농어촌(종합)", "10/03(토)", "오후"], "value": "★"},
+          {"coordinate": [4, 2], "row_label": ["회계세무학과"], "header_path": ["기회균형", "10/03(토)", "오후"], "value": "★"},
+          {"coordinate": [6, 11], "row_label": ["의료산업경영학과"], "header_path": ["특성화고교", "10/04(일)", "오전"], "value": "★"},
+          {"coordinate": [18, 11], "row_label": ["건축학부"], "header_path": ["특성화고교", "10/04(일)", "오전"], "value": "★"}
+        ]
+      },
+      "structure_notes": "The top header groups repeat date columns for three admission categories; day/session labels are source headers, not row-derived labels."
+    }
+  ],
+  "unavailable_types": [
+    {
+      "type": "borderless PDF table",
+      "status": "not confirmed",
+      "evidence": "The selected pages all show visible table rules or cell boundaries in their rendered source images. No selected page is represented as a verified borderless table."
+    }
+  ]
+}

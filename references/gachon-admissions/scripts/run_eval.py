@@ -8,6 +8,7 @@ import importlib.metadata
 import importlib.util
 import json
 import os
+import re
 import sys
 import threading
 import time
@@ -30,6 +31,7 @@ DATASET_FILES = {
     "holdout10": "testset_holdout.json",
     "drive20": "testset_drive20.json",
 }
+VARIANT_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
 
 
 class Verdict(BaseModel):
@@ -516,9 +518,26 @@ def summarize_results(rows: Iterable[dict[str, Any]]) -> dict[str, dict[str, Any
     return summaries
 
 
+def build_run_summary(
+    version: str,
+    repeat: int,
+    rows: Iterable[dict[str, Any]],
+    run_environment: dict[str, Any],
+) -> dict[str, Any]:
+    summary = {
+        "pipeline": version,
+        "repeat": repeat,
+        "sets": summarize_results(rows),
+    }
+    if version == "v24":
+        summary["variant"] = run_environment["variant"]
+        summary["docparse"] = run_environment["docparse"]
+    return summary
+
+
 def load_pipeline(version: str) -> ModuleType:
-    if version not in {"v22", "v23"}:
-        raise ValueError("--version은 v22 또는 v23이어야 합니다.")
+    if version not in {"v22", "v23", "v24"}:
+        raise ValueError("--version은 v22, v23 또는 v24이어야 합니다.")
     path = ROOT / f"pipeline_{version}.py"
     if not path.is_file():
         raise FileNotFoundError(f"{path.name}이 없습니다. 먼저 빌더로 파이프라인을 생성하세요.")
@@ -617,25 +636,61 @@ def _package_versions() -> dict[str, str | None]:
     return result
 
 
-def environment_record(pipeline: ModuleType | Any, version: str, repeat: int) -> dict[str, Any]:
-    return {
+def environment_record(
+    pipeline: ModuleType | Any,
+    version: str,
+    repeat: int,
+    variant: str | None = None,
+) -> dict[str, Any]:
+    packages = _package_versions()
+    if version == "v24":
+        try:
+            packages["langchain-classic"] = importlib.metadata.version("langchain-classic")
+        except importlib.metadata.PackageNotFoundError:
+            packages["langchain-classic"] = None
+    record = {
         "pipeline": version,
         "repeat": repeat,
         "python": sys.version,
-        "packages": _package_versions(),
+        "packages": packages,
         "document_manifest": _derive_manifest(pipeline),
         "model": getattr(pipeline, "LLM_MODEL", os.environ.get("LLM_MODEL", "gpt-6-luna")),
         "embedding_model": getattr(pipeline, "EMBED_MODEL", None),
     }
+    if variant is not None:
+        record["variant"] = variant
+    if version == "v24":
+        settings = getattr(pipeline, "DOCPARSE_SETTINGS", {})
+        if not isinstance(settings, dict):
+            settings = {}
+
+        def docparse_setting(key: str, attribute: str, env_name: str, default: str) -> Any:
+            value = settings.get(key, getattr(pipeline, attribute, None))
+            return value if value is not None else os.environ.get(env_name, default)
+
+        record["docparse"] = {
+            "profile": docparse_setting("profile", "DOCPARSE_PROFILE", "DOCPARSE_PROFILE", "gachon_2027"),
+            "index_render": docparse_setting(
+                "index_render", "DOCPARSE_INDEX_RENDER", "DOCPARSE_INDEX_RENDER", "baseline1"
+            ),
+            "llm_render": docparse_setting(
+                "llm_render", "DOCPARSE_LLM_RENDER", "DOCPARSE_LLM_RENDER", "baseline1"
+            ),
+            "table_full_max_chars": settings.get("table_full_max_chars"),
+        }
+        if variant is None:
+            record["variant"] = "default"
+    return record
 
 
 def _write_json(path: Path, value: Any) -> None:
     path.write_text(json.dumps(_jsonable(value), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def _new_run_dir(runs_dir: Path, version: str) -> Path:
+def _new_run_dir(runs_dir: Path, version: str, variant: str | None = None) -> Path:
     stamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-    path = runs_dir / f"{stamp}_{version}"
+    suffix = f"{stamp}_{version}" + (f"_{variant}" if variant else "")
+    path = runs_dir / suffix
     path.mkdir(parents=True, exist_ok=False)
     return path
 
@@ -648,6 +703,7 @@ def run_once(
     runs_dir: str | Path | None = None,
     eval_dir: str | Path | None = None,
     sample_path: str | Path | None = None,
+    variant: str | None = None,
 ) -> Path:
     """Import a fresh pipeline/index and execute one evaluation pass."""
     _load_dotenv()
@@ -661,8 +717,10 @@ def run_once(
     output_dir = Path(runs_dir) if runs_dir else ROOT / "runs"
     if not output_dir.is_absolute():
         output_dir = ROOT / output_dir
-    run_dir = _new_run_dir(output_dir, version)
-    _write_json(run_dir / "env.json", environment_record(pipeline, version, repeat))
+    variant = variant or ("default" if version == "v24" else None)
+    run_dir = _new_run_dir(output_dir, version, variant)
+    run_environment = environment_record(pipeline, version, repeat, variant)
+    _write_json(run_dir / "env.json", run_environment)
 
     all_rows: list[dict[str, Any]] = []
     results_path = run_dir / "results.jsonl"
@@ -685,18 +743,15 @@ def run_once(
             )
             all_rows.extend(rows)
 
-    summary = {
-        "pipeline": version,
-        "repeat": repeat,
-        "sets": summarize_results(all_rows),
-    }
+    summary = build_run_summary(version, repeat, all_rows, run_environment)
     _write_json(run_dir / "summary.json", summary)
     return run_dir
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="로컬 파이프라인 평가를 실행하고 문항별 결과를 저장합니다.")
-    parser.add_argument("--version", required=True, choices=("v22", "v23"))
+    parser.add_argument("--version", required=True, choices=("v22", "v23", "v24"))
+    parser.add_argument("--variant", help="실험 변형 이름 (v24 예: V0, V1, V2, V3, V4)")
     parser.add_argument("--sets", default="sample3,hard20,holdout10,drive20")
     parser.add_argument("--repeat", type=int, default=1)
     parser.add_argument("--sample-path", help="공식 sample.json 경로 (기본: data/sample.json 또는 환경변수 경로)")
@@ -711,6 +766,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         parser.error(f"알 수 없는 세트: {', '.join(unknown)}")
     if args.repeat < 1:
         parser.error("--repeat은 1 이상이어야 합니다.")
+    if args.variant and not VARIANT_PATTERN.fullmatch(args.variant):
+        parser.error("--variant은 영문자·숫자로 시작하고, 영문자·숫자·점·밑줄·하이픈만 64자까지 쓸 수 있습니다.")
     return args
 
 
@@ -725,6 +782,7 @@ def main(argv: list[str] | None = None) -> int:
             runs_dir=args.runs_dir,
             eval_dir=args.eval_dir,
             sample_path=args.sample_path,
+            variant=args.variant,
         )
         print(f"평가 결과 저장: {run_dir}")
         summary = json.loads((run_dir / "summary.json").read_text(encoding="utf-8"))

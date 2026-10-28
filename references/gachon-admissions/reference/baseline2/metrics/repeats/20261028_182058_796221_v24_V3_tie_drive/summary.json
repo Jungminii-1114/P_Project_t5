@@ -1,0 +1,24 @@
+{
+  "pipeline": "v24",
+  "repeat": 1,
+  "sets": {
+    "drive20": {
+      "correct": 11,
+      "total": 20,
+      "accuracy": 0.55,
+      "mean_sec": 7.010297,
+      "max_sec": 12.508766,
+      "over_5s": 14,
+      "over_10s": 2,
+      "over_19s": 0,
+      "time_score": 3.341203
+    }
+  },
+  "variant": "V3_tie_drive",
+  "docparse": {
+    "profile": "gachon_2027",
+    "index_render": "header_records",
+    "llm_render": "header_records",
+    "table_full_max_chars": 12000
+  }
+}

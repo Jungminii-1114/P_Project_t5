@@ -654,3 +654,30 @@ baseline-1은 v23(tag `v23`, commit `64ac263`)의 동작을 보존하는 기준�
 API 키 없이 원본 §1~4의 스냅샷(요소 382개, 문맥 청크 513개)을 생성했고 반복 실행·동결 CLI의 JSONL/manifest가 바이트 단위로 일치했다. 범용판 프로필도 513개 전체가 일치했다. 중립 설정·임의 PDF·독립 폴더 복사 실행을 검증했으며 기존 32개와 신규 9개를 합친 테스트 41개가 통과했다. 새 reference의 비밀값과 평가셋 전체 문장 유출 검사는 0건이다.
 
 전체 파이프라인·설정·평가·실험 이력·알려진 한계, 파서 출력 계약, 하드코딩 전수 조사와 프로필 비교를 문서화했다. 기존 run의 summary/env만 복사했고 새 API 평가를 하지 않았다. 문서 및 산출물 색인은 [reference/README.md](reference/README.md), 검증은 [VALIDATION.md](reference/baseline1/VALIDATION.md), 후속 B1~B8은 [BACKLOG.md](BACKLOG.md)에 정리했다. 표 개선·F2 수정·VLM 비교·범용판 RAG 평가는 후속 작업으로 남긴다.
+
+---
+
+# 세션 7 — baseline-2 표 IR·렌더러 비교 (2026-10-28, Asia/Seoul)
+
+파서를 `src/docparse/` 패키지로 설치하고 셀·병합·헤더 경로 IR, baseline1/HTML 전체/헤더 레코드 렌더러,
+v24 연결과 임베딩 디스크 캐시를 추가했다. baseline1 출력 382요소·513청크 동일성을 유지했고,
+동결 reference·legacy·원본 빌더·v23·제출 노트북과 프롬프트·모델·시간 상수는 보존했다.
+
+표 209개 중 불확실 판별은 118개(56.5%)다. 원문 골든은 11표·60셀로 보완했으며 엄격 결과는
+표 2/11, 셀 삼중항 11/60으로 실패했다. 사용자 검토는 대기다. 키 제거·소켓 차단 환경에서
+파싱·BM25와 최종 68개 테스트가 통과했지만 골든 수용 실패를 테스트 통과와 구별한다.
+
+사용자 API 승인 후 V0~V4를 각각 53문항 평가해 총 정답 수 40/38/38/40/37을 얻었다.
+V3와 V0의 동률 재평가에서 sample3 ×3은 모두 3/3, drive20은 각각 11/20과 8/20이었다.
+계획서의 2문항 변동 기준을 넘은 V3를 v24 기본값으로 선정했고, 선정 후 새 sample3 ×3도 모두 3/3이었다.
+패키지 ParserConfig 기본은 baseline1/baseline1을 유지한다.
+
+holdout10 #6은 고정 gold와 원문이 충돌하며 점수를 수정하지 않았다. V4의 1,411.35초 응답과 연결 오류도
+제외하지 않았다. 페이지 색인의 LLM raw 결합은 사용자가 기존 범위 유지를 선택해 한계로 남겼다.
+상세 수치·문항 비교·검증 실패는 [EVAL](reference/baseline2/EVAL.md), [VALIDATION](reference/baseline2/VALIDATION.md),
+실무 이식과 VLM 어댑터 설계는 [HANDOFF](reference/baseline2/HANDOFF.md)에 있다. B1 실험을 완료 처리하고 B2는 실무로 이관했다.
+
+마무리에서 동일 설정 V0의 drive20 변동(11/20 → 8/20)이 V3의 재평가 우세 폭과 같음을 반영해
+실행 기본값을 baseline1/baseline1로 복귀했다. 렌더러 우열은 미확인이다. 새 API 실행 없이
+16개 실행 원본을 `eval/runs_v24/`에 보존하고, 팀 저장소 JS의 `references/gachon-admissions/`를
+갱신하는 게시 브랜치를 준비한다. push는 작업계획서에 따라 사용자 승인 후 수행한다.

@@ -1,0 +1,21 @@
+{
+  "pytest": {
+    "tests": 68,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 77.784
+  },
+  "pytest_command": "python -m pytest -q --junitxml=runs/baseline2/pytest_final.xml",
+  "network_disabled": true,
+  "credentials_removed": [
+    "OPENAI_API_KEY",
+    "VOYAGEAI_API_KEY",
+    "VOYAGE_API_KEY"
+  ],
+  "pytest_xml_sha256": "e71102257505d955b8cbadb90a63532d55454fb86ac136c49e1c2c4f3e1acd34",
+  "golden_acceptance_passed": false,
+  "all_variant_responses_under_19s": false,
+  "selected_variant": "V3",
+  "selected_sample_passed": true
+}

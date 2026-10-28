@@ -1,0 +1,18 @@
+{
+  "frozen_scope_unchanged": true,
+  "secret_matches": [],
+  "full_sentence_leaks": [],
+  "inherited_full_sentence_matches": [
+    {
+      "file": "REPORT_중간평가_진행상황.md",
+      "dataset": "testset_hard.json",
+      "item": 14,
+      "field": "q",
+      "current_count": 1,
+      "baseline_count": 1
+    }
+  ],
+  "passed": true,
+  "note": "The literal reference/ diff includes the required new baseline2 documentation; frozen baseline1 is checked separately.",
+  "scanned_file_count": 100
+}

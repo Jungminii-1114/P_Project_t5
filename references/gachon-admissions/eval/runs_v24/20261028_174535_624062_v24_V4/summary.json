@@ -1,0 +1,57 @@
+{
+  "pipeline": "v24",
+  "repeat": 1,
+  "sets": {
+    "sample3": {
+      "correct": 3,
+      "total": 3,
+      "accuracy": 1.0,
+      "mean_sec": 3.261797,
+      "max_sec": 4.174064,
+      "over_5s": 0,
+      "over_10s": 0,
+      "over_19s": 0,
+      "time_score": 1.2
+    },
+    "hard20": {
+      "correct": 18,
+      "total": 20,
+      "accuracy": 0.9,
+      "mean_sec": 4.612456,
+      "max_sec": 9.938567,
+      "over_5s": 7,
+      "over_10s": 0,
+      "over_19s": 0,
+      "time_score": 6.097404
+    },
+    "holdout10": {
+      "correct": 8,
+      "total": 10,
+      "accuracy": 0.8,
+      "mean_sec": 4.658494,
+      "max_sec": 7.986275,
+      "over_5s": 4,
+      "over_10s": 0,
+      "over_19s": 0,
+      "time_score": 2.911517
+    },
+    "drive20": {
+      "correct": 8,
+      "total": 20,
+      "accuracy": 0.4,
+      "mean_sec": 77.6432,
+      "max_sec": 1411.353055,
+      "over_5s": 16,
+      "over_10s": 6,
+      "over_19s": 1,
+      "time_score": 2.318943
+    }
+  },
+  "variant": "V4",
+  "docparse": {
+    "profile": "gachon_2027",
+    "index_render": "header_records",
+    "llm_render": "html_full",
+    "table_full_max_chars": 12000
+  }
+}

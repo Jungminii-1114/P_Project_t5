@@ -1,4 +1,12 @@
-# baseline-1 레퍼런스 색인
+# 베이스라인 레퍼런스 색인
+
+baseline-2의 설치 가능한 파서와 표 IR 실험은 [IR](baseline2/IR.md),
+[렌더러](baseline2/RENDERERS.md), [골든](baseline2/GOLDEN.md),
+[1단계 진단](baseline2/STAGE1.md), [RAG 결과](baseline2/EVAL.md),
+[최종 검증](baseline2/VALIDATION.md), [실무 인계](baseline2/HANDOFF.md)에 정리했다.
+실무 이식은 `src/docparse/`에서 시작하고, 아래 baseline-1 범용판은 동일성 비교용으로 보존한다.
+
+## baseline-1 동결 자료
 
 baseline-1은 v23(tag `v23`, commit `64ac263b19143fcbb9ea981f1c3b169dd0c056c1`)의 동작을 동결한 참조점이다. 원본 빌더·생성 파이프라인·제출 노트북을 유지하면서 복사본으로 파서와 문서를 분리했다. 실무 이식에는 **범용판 `docparse_generic`**을 사용한다.
 

@@ -1,0 +1,24 @@
+{
+  "attempts": [
+    {
+      "attempt": 1,
+      "status": "failed_before_questions",
+      "error": "NameError: doc_title",
+      "embedding_cache_files_after_attempt": 506,
+      "evaluation_questions_started": 0
+    },
+    {
+      "attempt": 2,
+      "status": "failed_before_questions",
+      "error": "NameError: re",
+      "evaluation_questions_started": 0
+    },
+    {
+      "attempt": 3,
+      "status": "evaluation_started",
+      "run": "runs/20261028_171336_786587_v24_V0"
+    }
+  ],
+  "fix": "Bind profile-aware doc_title/is_value and import re in parser replacement cell. Add static checks for all unresolved global names.",
+  "page_index_proposal": "User declined the additional page-index line change; preserve raw coupling."
+}

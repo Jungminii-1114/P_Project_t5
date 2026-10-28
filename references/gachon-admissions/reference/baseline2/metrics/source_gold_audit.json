@@ -1,0 +1,18 @@
+{
+  "set": "holdout10",
+  "id": 6,
+  "source": "04_2027학년도_정시_모집요강.pdf",
+  "file_page": 35,
+  "printed_page": 61,
+  "source_png": "runs/baseline2/golden/source_pngs/04_p035.png",
+  "source_column": "6호",
+  "source_cell_value": "–20",
+  "fixed_gold_value": "-100",
+  "review": "Confirmed by direct visual inspection of rendered original PDF and source-derived golden cell.",
+  "scoring_unchanged": true,
+  "additional_review": {
+    "drive20_17": "All fixed gold components source-supported; prior golden fixture sampled a different upper inset, coverage gap identified.",
+    "drive20_19": "All fixed gold components source-supported; sampled schedule rows differ from evaluated programs.",
+    "scratch_audit": "runs/baseline2/source_review_extra.md"
+  }
+}

@@ -77,4 +77,43 @@ uv run python scripts/compare_eval.py --v22 runs/20261028_122601_013520_v22 --v2
 
 `heuristic_score`는 규칙 기반 검사 점수입니다. 정답 가능성을 추정하는 값으로 해석하지 않습니다. 시간 점수는 정답 문항에만 적용하며 5초까지 0.4점, 이후 초당 0.08점 감점, 10초부터 0점입니다. 원 질문이 유실된 orig20은 평가하지 않습니다.
 
-`runs/`, `.venv/`, `.env`, `data/`는 Git에서 제외됩니다. 대표 v23 실행의 상세 결과는 `eval/runs_v23_results.jsonl`, 집계·비교는 `eval/results_v23.json`에 보존합니다. 사용 완료 계획서는 `prompts/legacy/v23_작업계획서.md`에 둡니다.
+`runs/`, `.venv/`, `.env`, `data/`는 Git에서 제외됩니다. 대표 v23 실행의 상세 결과는 `eval/runs_v23_results.jsonl`, 집계·비교는 `eval/results_v23.json`에 보존합니다. v24의 기본 비교·동률 재평가·선정 후 확인 16개 실행은 `eval/runs_v24/`에 보존하며 해시 대조표는 `MANIFEST.md`에 있습니다. 사용 완료 계획서는 `prompts/legacy/`에 둡니다.
+
+## baseline-2 / v24
+
+V3는 계획서 규칙에 따라 선정됐으나, 동일 설정 V0의 변동 폭과 재평가 우세 폭이 모두 3문항이므로
+렌더러 우열은 확인되지 않았다. v24와 파서 패키지의 최종 기본값은 `baseline1/baseline1`이다.
+아래 명령은 V0 재현용이며, V3는 두 렌더러 환경변수를 모두 `header_records`로 지정한다.
+
+v23 빌더와 제출 노트북은 동결 상태다. 파서는 설치 패키지 `src/docparse/`를 사용한다.
+최종 실행에는 저장소의 `pipeline_v24.py`를 사용한다. 이번 기본값 복귀는 이 파일의 두 줄에만
+적용했으며, 기존 `build_pipeline_v24.py`는 선정 당시 V3 기본값을 생성하므로 다시 실행하면
+복귀한 기본값을 덮어쓴다. 아래 재현 절차에서는 파이프라인을 재생성하지 않는다.
+
+```powershell
+uv sync
+uv run python -m docparse data/dataset --profile gachon_2027 --extract-table-ir --out runs/baseline2/ir
+uv run python -m scripts.diagnose_tables
+uv run python -m scripts.check_table_golden --strict
+uv run python -m scripts.diagnose_bm25
+```
+
+위 파싱·진단은 API를 호출하지 않는다. 엄격 골든 검사는 현재 실패를 그대로 반환하며, 테스트 통과와
+골든 정확도는 별개다. `uv run python -m scripts.verify_stage1`은 키를 제거하고 소켓을 차단한 별도
+프로세스에서 전체 재현을 실행한다.
+
+v24 평가도 기존 러너로 실행한다. 이 명령은 임베딩·답변·채점 API를 사용한다.
+
+```powershell
+$env:DOCPARSE_PROFILE = 'gachon_2027'
+$env:DOCPARSE_INDEX_RENDER = 'baseline1'
+$env:DOCPARSE_LLM_RENDER = 'baseline1'
+uv run python scripts/run_eval.py --version v24 --variant V0 --sets sample3,hard20,holdout10,drive20
+```
+
+색인은 `baseline1/header_records`, LLM 근거는 `baseline1/html_full/header_records` 중 고른다.
+`--variant`와 유효 설정은 run 이름·env.json·summary.json에 남는다. 임베딩 캐시는 `runs/cache/`에 있다.
+기존 페이지 색인은 LLM raw를 사용하므로 형식 변경이 페이지 검색에도 영향을 주는 한계가 있다.
+
+결과·구조 한계는 [STAGE1](reference/baseline2/STAGE1.md), [EVAL](reference/baseline2/EVAL.md),
+이식 지침은 [HANDOFF](reference/baseline2/HANDOFF.md)를 참고한다.

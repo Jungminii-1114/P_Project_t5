@@ -1,0 +1,102 @@
+{
+  "audit": "baseline-1 frozen-scope and v23-to-v24 AST audit",
+  "result": "pass",
+  "baseline_1": {
+    "tag": "baseline-1",
+    "commit": "3fbba3fc45ea531bc76030631fae8055bacf8ec9",
+    "frozen_paths": [
+      "reference/baseline1/",
+      "legacy/",
+      "build_notebook.py",
+      "pipeline_v23.py",
+      "202235052_박진성.ipynb"
+    ],
+    "working_tree_changes": [],
+    "diff_from_baseline_commit": false
+  },
+  "pipeline_ast_comparison": {
+    "method": "Recursive function-definition collection; compare ast.dump(include_attributes=false)",
+    "pipeline_v23_function_count": 64,
+    "pipeline_v24_function_count": 47,
+    "shared_function_count": 46,
+    "changed_shared_function_count": 1,
+    "changed_shared_functions": [
+      "_context"
+    ],
+    "added_functions": [
+      "_scalar_chroma_docs"
+    ],
+    "removed_functions": [
+      "_hard_split",
+      "_sha256_file",
+      "build_contextual_chunks",
+      "build_document_manifest",
+      "dedup_cells",
+      "doc_title",
+      "expand_header",
+      "is_value",
+      "normalize",
+      "parse_hwp",
+      "parse_pdf",
+      "parse_required_files",
+      "parse_table",
+      "render_hwp_table",
+      "required_files",
+      "row_summary",
+      "rows_to_markdown",
+      "split_table_markdown"
+    ],
+    "interpretation": "The 47 v24 functions include one added helper; among the 46 shared functions, only _context changed. Removed functions are parser helpers replaced by docparse imports."
+  },
+  "protected_ast": {
+    "unchanged": true,
+    "identical_assignments_or_calls": [
+      "LLM_MODEL",
+      "llm (ChatOpenAI call)",
+      "DRAFT_PROMPT",
+      "REPAIR_PROMPT",
+      "HARD_LIMIT",
+      "REPAIR_START_LIMIT",
+      "MIN_STAGE_SECONDS"
+    ],
+    "unchanged_values": {
+      "LLM_MODEL_default": "gpt-6-luna",
+      "reasoning_effort": "low",
+      "max_completion_tokens": 2000,
+      "llm_timeout_seconds": 20,
+      "max_retries": 0,
+      "HARD_LIMIT_seconds": 18.0,
+      "REPAIR_START_LIMIT_seconds": 9.0,
+      "MIN_STAGE_SECONDS": 1.0,
+      "embedding_model_literals": [
+        "voyage-4-large",
+        "text-embedding-3-small"
+      ]
+    }
+  },
+  "page_index": {
+    "source_metadata_field": "raw",
+    "index_raw_change_applied": false,
+    "limitation_documented": true,
+    "documentation_paths": [
+      "reference/baseline2/STAGE1.md",
+      "reference/baseline2/RENDERERS.md",
+      "reference/baseline2/EVAL.md"
+    ],
+    "code_path": "pipeline_v24.py"
+  },
+  "sha256": {
+    "pipeline_v23.py": "c1e19af82a530641e20c27a66a955e6625fe9ecdc65f02243c60dc4537bb3254",
+    "pipeline_v24.py": "ca1be24c4ccf1fa7660c4fdf80bfe4b2d41594964b46eb983ce4c78c6fbac20e"
+  },
+  "verification_actions": {
+    "code_modified": false,
+    "api_called": false,
+    "tests_run": false
+  },
+  "selected_pipeline_default": {
+    "index_render": "header_records",
+    "llm_render": "header_records",
+    "note": "Only the two parser default literals changed after the AST audit; package defaults retained."
+  }
+}

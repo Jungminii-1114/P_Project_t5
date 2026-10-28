@@ -1,0 +1,15 @@
+--- pipeline_v24.py (current)
++++ pipeline_v24.py (proposed)
+@@ page index text, same length budget and ordering @@
+-        t = c.metadata["raw"].strip()[: max(0, 3200 - used)]
++        t = c.metadata.get("index_raw", c.metadata["raw"]).strip()[: max(0, 3200 - used)]
+
+Parser-side metadata addition (inside already authorized parser scope):
+- baseline index: index_raw = original baseline raw, before LLM renderer replacement
+- record index: index_raw = source prefix + complete header records
+
+V0 bytes remain identical via the fallback to raw.
+V0/V2 page index bytes become identical; V1/V3/V4 page index bytes become identical.
+No weights, ordering, routing, prompt, model, timeout, or verification rules change.
+
+Disposition: user declined this change; keep the original page-index implementation and document the coupling. Proposal was not applied.
