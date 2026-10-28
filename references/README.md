@@ -20,3 +20,17 @@ uv sync
 ```
 
 Then follow the reference index for local parsing and snapshot reproduction. Original documents and generated snapshot JSONL files are local inputs/outputs excluded by the project's `.gitignore`. The tracked manifests, metrics, source code, tests, and experiment history are preserved in the imported tree.
+
+## Gachon admissions — baseline-2
+
+Table IR and comparison of three renderers. Strict golden validation remains 2/11. Renderer superiority was not established; the final default is baseline1.
+
+The complete source snapshot is commit `5303b8f016a74ec6c63d6c6301ad2be242203477` (annotated tag `baseline-2`); stage-1 tag `v24` remains at `5fe787380bc78337ac2c5ac054d7d29fab8612d4`.
+
+- [Practical handoff and data contract lessons](gachon-admissions/reference/baseline2/HANDOFF.md)
+- [Evaluation and final default rationale](gachon-admissions/reference/baseline2/EVAL.md)
+- [Validation results and known failures](gachon-admissions/reference/baseline2/VALIDATION.md)
+- [Table and cell IR contract](gachon-admissions/reference/baseline2/IR.md)
+- [Renderer formats](gachon-admissions/reference/baseline2/RENDERERS.md)
+- [Source golden validation](gachon-admissions/reference/baseline2/GOLDEN.md)
+- [All 16 preserved runs and SHA-256 manifest](gachon-admissions/eval/runs_v24/MANIFEST.md)
