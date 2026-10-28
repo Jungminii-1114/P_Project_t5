@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-"""가천대 2027 입학 안내 Agentic RAG - 최종 제출용 노트북 빌더 (v22)."""
+"""가천대 2027 입학 안내 Agentic RAG - 노트북/로컬 모듈 공통 원본 (v23)."""
 import json
 import random
 import string
+import tomllib
 from pathlib import Path
 
 CELLS = []
@@ -13,6 +14,18 @@ def md(text):
 
 
 def code(text):
+    if "%pip install" in text:
+        root = Path(__file__).resolve().parent
+        locked = tomllib.loads((root / "uv.lock").read_text(encoding="utf-8"))
+        versions = {p["name"].lower().replace("_", "-"): p["version"] for p in locked["package"]}
+        project = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8"))
+        pins = []
+        for requirement in project["project"]["dependencies"]:
+            name = requirement.split(">", 1)[0].split("=", 1)[0].split("<", 1)[0]
+            base = name.split("[", 1)[0].lower().replace("_", "-")
+            pins.append(f'"{name}=={versions[base]}"')
+        text = "# uv.lock에 고정된 런타임 패키지 설치\n%pip install -q " + " ".join(pins)
+        text += '\n\nprint("✅ 패키지 설치 완료")'
     CELLS.append(("code", text.strip("\n")))
 
 
@@ -50,7 +63,7 @@ md(r"""
 
 code(r"""
 # 필요 패키지 설치 (최초 1회, 약 1~2분)
-%pip install -q -U langchain langchain-openai langchain-community "langchain-chroma>=0.1.2" "langchain-hwp-hwpx-loader[distribution]" rank_bm25 kiwipiepy pymupdf pdfplumber voyageai langchain-voyageai
+%pip install -q langchain langchain-openai langchain-community langchain-chroma "langchain-hwp-hwpx-loader[distribution]" rank_bm25 kiwipiepy pymupdf pdfplumber voyageai langchain-voyageai python-dotenv
 
 print("✅ 패키지 설치 완료")
 """)
@@ -58,15 +71,20 @@ print("✅ 패키지 설치 완료")
 md(r"""
 ### 0-2. API 키
 
-API 키는 **코드에 직접 기재하지 않고** Colab Secrets(왼쪽 🔑) 또는 런타임 환경변수에서 읽습니다.
+API 키는 **환경변수 → 선택적 `.env` → Colab Secrets(왼쪽 🔑)** 순서로 읽습니다. 환경변수가 `.env`보다 우선합니다.
 """)
 
 code(r'''
 import os
+from pathlib import Path
+
+from dotenv import load_dotenv
+
+load_dotenv(Path.cwd() / ".env", override=False)
 
 
 def load_api_key(name: str = "OPENAI_API_KEY"):
-    """Colab Secrets(🔑) 또는 환경변수에서 API 키를 읽는다."""
+    """환경변수(.env는 override=False로 로드) 또는 Colab Secrets에서 읽는다."""
     key = os.environ.get(name)
     if key:
         return key.strip()
@@ -108,6 +126,7 @@ md(r"""
 """)
 
 code(r'''
+import hashlib
 import glob
 import os
 import shutil
@@ -121,7 +140,54 @@ REQUIRED = [
     "04_2027학년도_정시_모집요강.pdf",
     "05_2027학년도_수시_면접고사_일정.pdf",
 ]
-DATA_DIR = Path("/content/dataset")
+PARSER_VERSIONS = {
+    ".hwp": "hwp-elements-pyhwp-v1",
+    ".pdf": "pymupdf-text-pdfplumber-v1",
+}
+DATA_DIR = Path(os.environ.get("GACHON_DATA_DIR", "/content/dataset"))
+
+
+def required_files(directory: Path):
+    """필수 원본 5개만 고정 순서로 반환하고 누락 시 파싱 전에 알린다."""
+    directory = Path(directory)
+    missing = [name for name in REQUIRED if not (directory / name).is_file()]
+    if missing:
+        raise FileNotFoundError("필수 문서가 없습니다: " + ", ".join(missing))
+    return [directory / name for name in REQUIRED]
+
+
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as source:
+        for block in iter(lambda: source.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def build_document_manifest(directory: Path):
+    """필수 원본별 SHA-256, 크기, 파서 구현 버전을 기록한다."""
+    manifest = {}
+    for path in required_files(directory):
+        suffix = path.suffix.lower()
+        if suffix not in PARSER_VERSIONS:
+            raise ValueError(f"지원하지 않는 문서 확장자: {path.name}")
+        manifest[path.name] = {
+            "sha256": _sha256_file(path),
+            "size_bytes": path.stat().st_size,
+            "parser_version": PARSER_VERSIONS[suffix],
+        }
+    return manifest
+
+
+def parse_required_files(directory: Path, parse_hwp, parse_pdf):
+    """필수 원본 5개만 해당 파서로 전달한다. 다른 PDF/HWP는 무시한다."""
+    parsed = []
+    for path in required_files(directory):
+        if path.suffix.lower() == ".hwp":
+            parsed.extend(parse_hwp(path))
+        elif path.suffix.lower() == ".pdf":
+            parsed.extend(parse_pdf(path))
+    return parsed
 
 
 def _all_present(directory: Path) -> bool:
@@ -164,8 +230,11 @@ def _bounded_find(root, filename: str, max_depth: int = 5):
 
 def prepare_dataset() -> Path:
     if _all_present(DATA_DIR):
-        print("✅ /content/dataset 의 문서 5개를 사용합니다.")
+        print(f"✅ {DATA_DIR} 의 문서 5개를 사용합니다.")
         return DATA_DIR
+
+    if os.environ.get("GACHON_DATA_DIR"):
+        raise FileNotFoundError(f"GACHON_DATA_DIR에서 필수 문서 5개를 찾지 못했습니다: {DATA_DIR}")
 
     for z in [Path("/content/dataset.zip")] + [Path(p) for p in glob.glob("/content/*/dataset.zip")]:
         if z.exists():
@@ -219,6 +288,10 @@ def prepare_dataset() -> Path:
 DATA_DIR = prepare_dataset()
 for _name in REQUIRED:
     print(f"  - {_name} ({(DATA_DIR / _name).stat().st_size:,} bytes)")
+manifest = build_document_manifest(DATA_DIR)
+print("문서 manifest (filename → sha256, size_bytes, parser_version):")
+for _name, _entry in manifest.items():
+    print(f"  - {_name}: {_entry}")
 ''')
 
 md(r"""
@@ -345,12 +418,7 @@ def parse_pdf(path: Path):
     return docs
 
 
-raw_docs = []
-for p in sorted(DATA_DIR.iterdir()):
-    if p.suffix.lower() == ".hwp":
-        raw_docs.extend(parse_hwp(p))
-    elif p.suffix.lower() == ".pdf":
-        raw_docs.extend(parse_pdf(p))
+raw_docs = parse_required_files(DATA_DIR, parse_hwp, parse_pdf)
 
 print(f"파싱 단위: {len(raw_docs)}개")
 for name in sorted({d.metadata['source'] for d in raw_docs}):
@@ -452,10 +520,14 @@ def doc_title(source: str) -> str:
 
 
 def dedup_cells(cells):
-    """병합 셀 때문에 연속으로 반복된 값을 하나로 줄인다."""
+    """값이 나오기 전 반복 라벨만 줄이고, 값·후속 셀·빈 셀은 보존한다."""
     out = []
+    label_side = True
     for c in cells:
-        if not out or c != out[-1]:
+        if is_value(c):
+            out.append(c)
+            label_side = False
+        elif not c or not label_side or not out or c != out[-1]:
             out.append(c)
     return out
 
@@ -545,12 +617,20 @@ def row_summary(cols, data, mode, max_rows=30, max_chars=2600) -> str:
                 continue
         else:
             ded = dedup_cells(r)
-            if len(ded) == H + 1 and len(ded) >= 3:
-                ded = [ded[0], f"{ded[1]} {ded[2]}".strip()] + ded[3:]
+            # PDF 표에서 가장자리 빈 셀이 헤더 너비를 초과하게 만들 수 있다.
+            # 빈 셀을 먼저 줄이고, 남는 초과 폭은 값 앞의 라벨 셀만 합친다.
+            while len(ded) > H and ded and not ded[0]:
+                ded = ded[1:]
+            while len(ded) > H and ded and not ded[-1]:
+                ded = ded[:-1]
+            first_value = next((j for j, v in enumerate(ded) if is_value(v)), len(ded))
+            while len(ded) > H and first_value > 1:
+                ded = [f"{ded[0]} {ded[1]}".strip()] + ded[2:]
+                first_value -= 1
+            if len(ded) > H:
+                continue
             if len(ded) < H:
                 ded = [""] * (H - len(ded)) + ded
-            if len(ded) > H:
-                ded = ded[-H:]
             vals = [(j, v) for j, v in enumerate(ded) if v]
             if len(vals) < 2:
                 continue
@@ -708,7 +788,7 @@ SYNONYMS = {
     "두 군데": "복수지원", "같이 넣": "복수지원", "중복 지원": "복수지원", "동시 지원": "복수지원",
     "여러 개 지원": "복수지원", "동시에": "복수지원",
     "일정표": "일정", "몇 쪽": "페이지", "몇쪽": "페이지",
-    "전화": "Tel 연락처",
+    "전화": "Tel 연락처", "홈페이지": "www 누리집",
     "새로 생": "신설", "새로 만": "신설", "신설된": "신설",
 }
 
@@ -803,7 +883,7 @@ md(r"""
 """)
 
 code(r'''
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, wait
 
 
 def rrf_fuse(result_lists, weights, rrf_k: int = 60):
@@ -855,7 +935,7 @@ def table_dept_boost(scores, docs, query, kw, tdoc, top_score):
         docs[c.page_content] = c
 
 
-def retrieve(query: str, top_n: int = 8, expand_top: int = 2, rrf_k: int = 60):
+def _retrieve_impl(query: str, top_n: int = 8, expand_top: int = 2, rrf_k: int = 60):
     route = route_query(query)
     kw = search_keywords(query)
     kw_route = (kw + ROUTE_SUFFIX[route]).strip()
@@ -925,11 +1005,38 @@ def retrieve(query: str, top_n: int = 8, expand_top: int = 2, rrf_k: int = 60):
     return out, route
 
 
-def retrieve_more(question: str, docs, extra_n: int = 4):
+def remaining(deadline):
+    return max(0.0, deadline - time.perf_counter())
+
+
+def deadline_result(future, deadline):
+    try:
+        left = remaining(deadline)
+        if left <= 0:
+            raise TimeoutError("request deadline exhausted")
+        return future.result(timeout=left)
+    except BaseException:
+        future.cancel()
+        raise
+
+
+def retrieve(query: str, top_n: int = 8, expand_top: int = 2, rrf_k: int = 60, deadline=None):
+    if deadline is None:  # index warm-up / direct interactive retrieval
+        deadline = time.perf_counter() + 18.0
+    if remaining(deadline) <= 0:
+        raise TimeoutError("search deadline exhausted")
+    return deadline_result(_search_pool.submit(_retrieve_impl, query, top_n, expand_top, rrf_k), deadline)
+
+
+def retrieve_more(question: str, docs, extra_n: int = 4, deadline=None):
     """추가 검색: 질문 대신 키워드 질의로 다시 찾아, 기존 근거에 없는 청크를 최대 extra_n개 덧붙인다."""
+    if deadline is None:
+        deadline = time.perf_counter() + 18.0
+    if remaining(deadline) < MIN_STAGE_SECONDS:
+        return docs, 0
     kw = search_keywords(question) or question
     seen = {d.page_content for d in docs}
-    extra, _ = retrieve(kw, top_n=extra_n + 2, expand_top=0)
+    extra, _ = retrieve(kw, top_n=extra_n + 2, expand_top=0, deadline=deadline)
     new = [d for d in extra if d.page_content not in seen][:extra_n]
     return docs + new, len(new)
 
@@ -963,14 +1070,29 @@ def sub_queries(q: str, max_n: int = 5):
     return subs[:max_n]
 
 
-def retrieve_multi(question: str, docs, per_sub: int = 3, cap: int = 20):
+def retrieve_multi(question: str, docs, per_sub: int = 3, cap: int = 20, deadline=None):
     """하위 질의별로 병렬 검색해, 기존 근거에 없는 청크를 질의당 per_sub개씩 덧붙인다."""
+    if deadline is None:
+        deadline = time.perf_counter() + 18.0
     subs = sub_queries(question)
     if not subs:
         return docs, 0
+    if remaining(deadline) < MIN_STAGE_SECONDS:
+        return docs, 0
     seen = {d.page_content for d in docs}
     new = []
-    for res, _ in _search_pool.map(lambda s: retrieve(s, top_n=per_sub + 2, expand_top=0), subs):
+    futures = [_search_pool.submit(_retrieve_impl, s, top_n=per_sub + 2, expand_top=0) for s in subs]
+    done, pending = wait(futures, timeout=remaining(deadline))
+    for fut in pending:
+        fut.cancel()
+    # Preserve query order among completed results, without waiting for stragglers.
+    for fut in futures:
+        if fut not in done:
+            continue
+        try:
+            res, _ = fut.result(timeout=0)
+        except Exception:
+            continue
         added = 0
         for d in res:
             if d.page_content in seen:
@@ -1023,10 +1145,12 @@ LLM 초안을 규칙으로 근거와 대조해 **교정이 필요한지** 판단
 
 | 검사 | 내용 |
 |---|---|
-| grounding | 답변의 숫자·날짜·학과/전형명·출처 페이지가 근거에 실제로 있는지 (가중 0.40/0.20/0.25/0.15) |
+| grounding | 숫자·날짜·개체의 존재와 같은 문장/행 안의 개체·값 연결, 전체 파일명·페이지 인용 일치 검사 |
 | 목록 충실성 | 목록을 묻는 질문에서 근거의 쉼표 항목이 답변에 빠졌는지 |
 | 조건문 | 답변을 뒷받침하는 청크의 `~경우/다만/반드시` 조건 문장이 반영됐는지 |
 | 주변 세부정보 | 답변에 쓴 날짜·숫자와 같은 표 행 / 같은 부정 문장(불가·제외)의 세부사항이 빠졌는지 |
+
+`heuristic_score`는 교정 판단에 참고하는 규칙 기반 점수이며, 정답 가능성을 나타내지 않습니다.
 """)
 
 code(r'''
@@ -1081,22 +1205,44 @@ def ground_answer(answer, docs):
     date_ok = sum(_norm(d) in evidence for d in dates) / len(dates) if dates else 1.0
     ent_ok = sum(_norm(e) in evidence for e in ents) / len(ents) if ents else 1.0
     cites = CITE_RE.findall(answer)
-    valid = sum(any(d.metadata["source"].startswith(f.strip()[:2]) and str(d.metadata["page"]) == p
+    valid = sum(any(_filename_norm(d.metadata["source"]) == _filename_norm(f) and str(d.metadata["page"]) == p
                     for d in docs) for f, p in cites)
     cite_ok = valid / len(cites) if cites else 0.0
+    # A value and an entity must occur in one evidence sentence/line/table row.
+    # Finding each independently elsewhere in a document does not establish the fact.
+    units = [_norm(unit) for d in docs
+             for unit in fact_units(d.metadata.get("raw", d.page_content))]
+    pairs = [(entity, value) for unit in fact_units(body)
+             for entity in ENT_RE.findall(unit)
+             for value in NUM_RE.findall(unit)]
+    unsupported = [(entity, value) for entity, value in pairs
+                   if not any(_norm(entity) in unit and
+                              _norm(value) in NUM_RE.findall(unit) for unit in units)]
+    pair_ok = 1.0 - len(unsupported) / len(pairs) if pairs else 1.0
     score = 0.40 * num_ok + 0.20 * date_ok + 0.25 * ent_ok + 0.15 * cite_ok
+    score *= 0.5 + 0.5 * pair_ok
     return {"score": round(score, 3), "num_ok": round(num_ok, 3), "date_ok": round(date_ok, 3),
             "ent_ok": round(ent_ok, 3), "cite_ok": round(cite_ok, 3),
+            "pair_ok": round(pair_ok, 3), "unsupported_pairs": unsupported,
             "not_found": bool(NOT_FOUND_RE.search(body))}
 
 
-def make_confidence(route, kw, docs, g):
+def _filename_norm(name):
+    return _norm(__import__("unicodedata").normalize("NFC", name)).casefold()
+
+
+def fact_units(text):
+    # Do not split at decimal/date dots or table cell delimiters.
+    return [unit.strip() for unit in re.split(r"\n|(?<=[.!?。])\s+(?=[^\d])|;", text) if unit.strip()]
+
+
+def make_heuristic_score(route, kw, docs, g):
     cov = lexical_coverage(kw, docs)
     route_bonus = {"table": 0.06, "page": 0.05, "schedule": 0.05}.get(route, 0.0)
-    conf = 0.50 * g["score"] + 0.35 * cov + 0.15 * (1.0 if g["cite_ok"] >= 0.99 else 0.5) + route_bonus
+    heuristic_score = 0.50 * g["score"] + 0.35 * cov + 0.15 * (1.0 if g["cite_ok"] >= 0.99 else 0.5) + route_bonus
     if g["not_found"]:
-        conf -= 0.25
-    return round(max(0.0, min(1.0, conf)), 3), round(cov, 3)
+        heuristic_score -= 0.25
+    return round(max(0.0, min(1.0, heuristic_score)), 3), round(cov, 3)
 
 
 def norm_dates(text):
@@ -1124,8 +1270,8 @@ def _noun_tokens(text):
 
 
 def focus_docs(answer, docs):
-    prefixes = {f.strip()[:2] for f, _ in CITE_RE.findall(answer)}
-    focus = [d for d in docs if d.metadata["source"][:2] in prefixes]
+    citations = {(_filename_norm(f), int(p)) for f, p in CITE_RE.findall(answer)}
+    focus = [d for d in docs if (_filename_norm(d.metadata["source"]), int(d.metadata["page"])) in citations]
     return (focus or docs)[:4]
 
 
@@ -1277,29 +1423,37 @@ Rules:
 - Keep the qualifiers attached to each fact you report: parenthetical notes, footnotes (※), scope conditions, units, and who is responsible or who decides.
 - If the question has several parts, answer every part in order and number them (①, ②, ③ …); if one part is truly not in the evidence, say only that part cannot be confirmed in the documents.
 - Never add facts or qualifiers that are not in the evidence.
-- NEVER say a rule or information is absent when any evidence passage mentions the question's key terms.
+- If only some parts are supported, answer those parts and mark only the unsupported parts exactly as "제공된 문서에서 확인할 수 없습니다".
 - If the question asks which page, give the page number exactly as listed in the table of contents.
 - Write in Korean, as long as needed to cover every part (usually 2-8 sentences), and end with (출처: 파일명 p.페이지)."""
 
 REPAIR_PROMPT = """You are a strict fact-checker. Rewrite the draft using ONLY the evidence.
 
-- The evidence DOES contain sentences relevant to the question. Search every passage, including the last one, before deciding something is missing.
+- Search every passage, including the last one, before deciding something is missing; never invent missing information.
 - Remove any number, date, or name not present in the evidence.
 - Add every key fact from the evidence that the question asks for but the draft omitted, including additional requirements in the same passage.
 - Copy list items exactly as written in the evidence, and keep parenthetical notes and scope conditions attached to each fact.
 - If a part of the question is truly not in the evidence, say only that part cannot be confirmed; do not invent it.
+- Answer the supported parts and mark only unsupported parts exactly as "제공된 문서에서 확인할 수 없습니다".
 - Keep it Korean, covering every part of the question, ending with (출처: 파일명 p.페이지)."""
 
 HARD_LIMIT = 18.0          # 평가 최대 대기 20초보다 여유를 둔 상한
 REPAIR_START_LIMIT = 9.0   # 이 시간 이후에는 교정·추가 검색을 시작하지 않음
+MIN_STAGE_SECONDS = 1.0    # 새 검색/교정을 시작할 최소 잔여 시간
 FALLBACK = "죄송합니다. 일시적인 오류로 답변을 생성하지 못했습니다. 다시 질문해 주세요."
 _pool = ThreadPoolExecutor(max_workers=4)
 
 
-def _call_llm(system: str, human: str, timeout: float) -> str:
+def _call_llm(system: str, human: str, deadline: float) -> str:
     """남은 시간 안에 끝나지 않으면 TimeoutError를 낸다."""
-    fut = _pool.submit(llm.invoke, [("system", system), ("human", human)])
-    return fut.result(timeout=max(1.0, timeout)).content.strip()
+    left = remaining(deadline)
+    if left <= 0:
+        raise TimeoutError("LLM deadline exhausted")
+    fut = _pool.submit(llm.invoke, [("system", system), ("human", human)], timeout=left)
+    answer = deadline_result(fut, deadline).content.strip()
+    if not answer:
+        raise ValueError("empty LLM response")
+    return answer
 
 
 def _context(docs) -> str:
@@ -1310,15 +1464,24 @@ def _context(docs) -> str:
 def ask(question: str, return_meta: bool = False):
     """질문 → (목차 도구 | 검색 → 초안 → 검증 → 추가 검색/교정) → 한국어 답변."""
     t0 = time.perf_counter()
+    deadline = t0 + HARD_LIMIT
     elapsed = lambda: time.perf_counter() - t0
     route, tdoc = route_query(question), target_doc(question)
-    meta = {"route": route, "action": "none", "extra_docs": 0}
+    meta = {"route": route, "action": "none", "extra_docs": 0, "sub_queries": 0,
+            "timings": {"search": 0.0, "draft": 0.0, "repair": 0.0}, "events": []}
 
-    def finish(answer, docs, g=None, conf=None, cov=None):
+    def finish(answer, docs, g=None, heuristic_score=None, cov=None):
         if not return_meta:
             return answer
-        return {**meta, "answer": answer, "sec": elapsed(), "ground": g, "conf": conf, "cov": cov,
-                "docs": [(d.metadata["source"][:2], d.metadata["page"]) for d in docs]}
+        return {**meta, "answer": answer, "sec": elapsed(), "ground": g,
+                "heuristic_score": heuristic_score, "cov": cov,
+                "docs": [(d.metadata["source"], d.metadata["page"]) for d in docs],
+                "evidence": [{"source": d.metadata["source"], "page": d.metadata["page"],
+                              "kind": d.metadata.get("kind", "text"),
+                              "chunk": d.metadata.get("raw", d.page_content)[:200]} for d in docs]}
+
+    def may_refine():
+        return elapsed() < REPAIR_START_LIMIT and remaining(deadline) >= MIN_STAGE_SECONDS
 
     # (1) 페이지 질문 → 목차 도구
     if route == "page" and tdoc:
@@ -1331,30 +1494,49 @@ def ask(question: str, return_meta: bool = False):
             return finish(answer, [hit["doc"]], ground_answer(answer, [hit["doc"]]), 0.99, 1.0)
 
     # (2) 검색 (복합 질문이면 하위 질의별 검색을 합침) → 초안
-    docs, route = retrieve(question)
-    docs, n_sub = retrieve_multi(question, docs)
-    meta["sub_queries"] = n_sub
+    search_t0 = time.perf_counter()
+    docs = []
+    try:
+        docs, route = retrieve(question, deadline=deadline)
+        docs, n_sub = retrieve_multi(question, docs, deadline=deadline)
+        meta["sub_queries"] = n_sub
+    except Exception as exc:
+        meta["events"].append({"stage": "search", "error": type(exc).__name__})
+        if not docs:
+            meta["action"] = "search_timeout" if isinstance(exc, TimeoutError) else "search_error"
+            meta["timings"]["search"] = time.perf_counter() - search_t0
+            return finish(FALLBACK, docs)
+    meta["timings"]["search"] = time.perf_counter() - search_t0
     kw = search_keywords(question)
     ctx = _context(docs)
-    try:  # 초안이 늦어지면 교정은 생략되므로 초안에는 전체 상한까지 시간을 준다
+    draft_t0 = time.perf_counter()
+    try:
         answer = _call_llm(DRAFT_PROMPT, f"[Evidence]\n{ctx}\n\n[Question]\n{question}",
-                           HARD_LIMIT - 0.5 - elapsed())
-    except Exception:
-        if elapsed() > REPAIR_START_LIMIT:
-            return finish(FALLBACK, docs)
-        try:  # 한 번만 재시도
-            answer = _call_llm(DRAFT_PROMPT, f"[Evidence]\n{ctx}\n\n[Question]\n{question}",
-                               HARD_LIMIT - elapsed())
-        except Exception:
-            return finish(FALLBACK, docs)
+                           deadline)
+    except Exception as exc:
+        meta["events"].append({"stage": "draft", "error": type(exc).__name__})
+        meta["action"] = "draft_timeout" if isinstance(exc, TimeoutError) else "draft_error"
+        meta["timings"]["draft"] = time.perf_counter() - draft_t0
+        return finish(FALLBACK, docs)
+    meta["timings"]["draft"] = time.perf_counter() - draft_t0
     g = ground_answer(answer, docs)
 
     # (3) 판단: 근거 부족 → 추가 검색 / 누락·불일치 → 같은 근거로 교정
     hints = []
     if g["not_found"]:
-        docs, n_new = retrieve_more(question, docs)
-        meta.update(action="research", extra_docs=n_new)
-        ctx = _context(docs)
+        meta["action"] = "research"
+        if may_refine():
+            extra_t0 = time.perf_counter()
+            try:
+                docs, n_new = retrieve_more(question, docs, deadline=deadline)
+                meta["extra_docs"] = n_new
+                ctx = _context(docs)
+            except Exception as exc:
+                meta["action"] = "research_timeout" if isinstance(exc, TimeoutError) else "research_error"
+                meta["events"].append({"stage": "research", "error": type(exc).__name__})
+            meta["timings"]["search"] += time.perf_counter() - extra_t0
+        else:
+            meta["action"] = "research_skipped"
     else:
         items = missing_list_items(question, answer, docs)
         conds = missing_conditions(answer, docs)
@@ -1365,23 +1547,32 @@ def ask(question: str, return_meta: bool = False):
             hints.append("[Conditions that must be reflected]\n" + "\n".join(conds))
         if neigh:
             hints.append("[Related details from the same evidence row/sentence]\n" + ", ".join(neigh))
-        if hints or g["score"] < 0.78:
+        if g.get("unsupported_pairs"):
+            hints.append("[Entity/value pairs to check within one evidence sentence or row]\n"
+                         + str(g["unsupported_pairs"]))
+        if hints or g["score"] < 0.78 or g["cite_ok"] < 1.0 or g.get("pair_ok", 1.0) < 1.0:
             meta["action"] = "repair"
 
-    if meta["action"] != "none":
-        if elapsed() < REPAIR_START_LIMIT:
+    if meta["action"] in ("research", "repair"):
+        if may_refine():
+            repair_t0 = time.perf_counter()
+            meta["events"].append({"stage": "repair", "trigger": meta["action"],
+                                   "unsupported_pairs": g.get("unsupported_pairs", [])})
             try:
-                answer = _call_llm(REPAIR_PROMPT,
+                repaired = _call_llm(REPAIR_PROMPT,
                                    f"[Evidence]\n{ctx}\n\n[Question]\n{question}\n\n[Draft]\n{answer}\n\n"
-                                   + "\n\n".join(hints), HARD_LIMIT - elapsed())
+                                   + "\n\n".join(hints), deadline)
+                answer = repaired
                 g = ground_answer(answer, docs)
-            except Exception:
-                meta["action"] += "_timeout"   # 초안 유지
+            except Exception as exc:
+                meta["action"] += "_timeout" if isinstance(exc, TimeoutError) else "_error"
+                meta["events"].append({"stage": "repair", "error": type(exc).__name__})
+            meta["timings"]["repair"] = time.perf_counter() - repair_t0
         else:
             meta["action"] += "_skipped"
 
-    conf, cov = make_confidence(route, kw, docs, g)
-    return finish(answer, docs, g, conf, cov)
+    heuristic_score, cov = make_heuristic_score(route, kw, docs, g)
+    return finish(answer, docs, g, heuristic_score, cov)
 
 
 # 연결 예열 (색인 구축 구간에 포함, 첫 질문의 연결 지연 제거)
@@ -1478,3 +1669,11 @@ notebook = {
 out = Path(__file__).with_name("202235052_박진성.ipynb")
 out.write_text(json.dumps(notebook, ensure_ascii=False, indent=1), encoding="utf-8")
 print("written:", out, f"({out.stat().st_size:,} bytes, {len(cells)} cells)")
+
+code_cells = [source for cell_type, source in CELLS if cell_type == "code"]
+pipeline = "# 자동 생성 — 직접 수정 금지. source: build_notebook.py\n\n"
+pipeline += "\n\n".join(source for source in code_cells[:-2]
+                         if not any(line.lstrip().startswith("%pip") for line in source.splitlines())) + "\n"
+pipeline_out = Path(__file__).with_name("pipeline_v23.py")
+pipeline_out.write_text(pipeline, encoding="utf-8")
+print("written:", pipeline_out, f"({pipeline_out.stat().st_size:,} bytes)")

@@ -1,0 +1,241 @@
+{
+  "overlap_count": 39,
+  "preexisting_count": 25,
+  "new_count": 14,
+  "overlaps": [
+    {
+      "set": "testset_drive20.json",
+      "index": "1",
+      "fragment": "대표 전화번호는",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "1",
+      "fragment": "표 전화번호는 ",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "2",
+      "fragment": " 증명사진은 최",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "2",
+      "fragment": "명사진은 최근 ",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "2",
+      "fragment": "이어야 하며, ",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "2",
+      "fragment": "증명사진은 최근",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "2",
+      "fragment": "할 수 없습니다",
+      "present_in_v22": false
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "7",
+      "fragment": " 2027학년도",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "7",
+      "fragment": "2027학년도 ",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "12",
+      "fragment": " 2027학년도",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "12",
+      "fragment": " 재외국민 전형",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "12",
+      "fragment": "2027학년도 ",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "15",
+      "fragment": "할 수 없습니다",
+      "present_in_v22": false
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "17",
+      "fragment": " 2027학년도",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "20",
+      "fragment": " 문서에서 확인",
+      "present_in_v22": false
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "20",
+      "fragment": " 확인할 수 없",
+      "present_in_v22": false
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "20",
+      "fragment": "공된 문서에서 ",
+      "present_in_v22": false
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "20",
+      "fragment": "된 문서에서 확",
+      "present_in_v22": false
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "20",
+      "fragment": "문서에서 확인할",
+      "present_in_v22": false
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "20",
+      "fragment": "서 확인할 수 ",
+      "present_in_v22": false
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "20",
+      "fragment": "서에서 확인할 ",
+      "present_in_v22": false
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "20",
+      "fragment": "에서 확인할 수",
+      "present_in_v22": false
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "20",
+      "fragment": "인할 수 없습니",
+      "present_in_v22": false
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "20",
+      "fragment": "제공된 문서에서",
+      "present_in_v22": false
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "20",
+      "fragment": "할 수 없습니다",
+      "present_in_v22": false
+    },
+    {
+      "set": "testset_drive20.json",
+      "index": "20",
+      "fragment": "확인할 수 없습",
+      "present_in_v22": false
+    },
+    {
+      "set": "testset_hard.json",
+      "index": "5",
+      "fragment": "까지 신청해야 ",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_hard.json",
+      "index": "7",
+      "fragment": " 지역의사선발전",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_hard.json",
+      "index": "7",
+      "fragment": "지역의사선발전형",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_hard.json",
+      "index": "10",
+      "fragment": "입학처 홈페이지",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_hard.json",
+      "index": "15",
+      "fragment": "내되어 있습니다",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_hard.json",
+      "index": "15",
+      "fragment": "되어 있습니다.",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_hard.json",
+      "index": "15",
+      "fragment": "안내되어 있습니",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_hard.json",
+      "index": "17",
+      "fragment": " 2027학년도",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_hard.json",
+      "index": "17",
+      "fragment": "027학년도 수",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_hard.json",
+      "index": "17",
+      "fragment": "2027학년도 ",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_hard.json",
+      "index": "17",
+      "fragment": "27학년도 수시",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_hard.json",
+      "index": "20",
+      "fragment": "되어 있습니다.",
+      "present_in_v22": true
+    },
+    {
+      "set": "testset_holdout.json",
+      "index": "5",
+      "fragment": "입학처 홈페이지",
+      "present_in_v22": true
+    }
+  ]
+}
