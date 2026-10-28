@@ -2,7 +2,7 @@
 
 **A local AI agent for evidence-based report review and decision support**
 
-〖English | [한국어](readme/README-korean.md)〗
+〖English | [한국어](readme/koream.md)〗
 
 〖[Overview](#overview) | [Why Report Agent?](#why-report-agent) | [Workflow](#workflow) | [Roadmap](#roadmap)〗
 
