@@ -78,3 +78,37 @@ uv run python scripts/compare_eval.py --v22 runs/20261028_122601_013520_v22 --v2
 `heuristic_score`는 규칙 기반 검사 점수입니다. 정답 가능성을 추정하는 값으로 해석하지 않습니다. 시간 점수는 정답 문항에만 적용하며 5초까지 0.4점, 이후 초당 0.08점 감점, 10초부터 0점입니다. 원 질문이 유실된 orig20은 평가하지 않습니다.
 
 `runs/`, `.venv/`, `.env`, `data/`는 Git에서 제외됩니다. 대표 v23 실행의 상세 결과는 `eval/runs_v23_results.jsonl`, 집계·비교는 `eval/results_v23.json`에 보존합니다. 사용 완료 계획서는 `prompts/legacy/v23_작업계획서.md`에 둡니다.
+
+## baseline-2 / v24
+
+v23 빌더와 제출 노트북은 동결 상태다. 새 `build_pipeline_v24.py`는 로컬 `pipeline_v24.py`만 생성한다.
+파서는 설치 패키지 `src/docparse/`를 사용한다.
+
+```powershell
+uv sync
+uv run python build_pipeline_v24.py
+uv run python -m docparse data/dataset --profile gachon_2027 --extract-table-ir --out runs/baseline2/ir
+uv run python -m scripts.diagnose_tables
+uv run python -m scripts.check_table_golden --strict
+uv run python -m scripts.diagnose_bm25
+```
+
+위 파싱·진단은 API를 호출하지 않는다. 엄격 골든 검사는 현재 실패를 그대로 반환하며, 테스트 통과와
+골든 정확도는 별개다. `uv run python -m scripts.verify_stage1`은 키를 제거하고 소켓을 차단한 별도
+프로세스에서 전체 재현을 실행한다.
+
+v24 평가도 기존 러너로 실행한다. 이 명령은 임베딩·답변·채점 API를 사용한다.
+
+```powershell
+$env:DOCPARSE_PROFILE = 'gachon_2027'
+$env:DOCPARSE_INDEX_RENDER = 'baseline1'
+$env:DOCPARSE_LLM_RENDER = 'baseline1'
+uv run python scripts/run_eval.py --version v24 --variant V0 --sets sample3,hard20,holdout10,drive20
+```
+
+색인은 `baseline1/header_records`, LLM 근거는 `baseline1/html_full/header_records` 중 고른다.
+`--variant`와 유효 설정은 run 이름·env.json·summary.json에 남는다. 임베딩 캐시는 `runs/cache/`에 있다.
+기존 페이지 색인은 LLM raw를 사용하므로 형식 변경이 페이지 검색에도 영향을 주는 한계가 있다.
+
+결과·구조 한계는 [STAGE1](reference/baseline2/STAGE1.md), [EVAL](reference/baseline2/EVAL.md),
+이식 지침은 [HANDOFF](reference/baseline2/HANDOFF.md)를 참고한다.

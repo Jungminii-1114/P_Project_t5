@@ -1,4 +1,5 @@
 import ast
+import builtins
 import hashlib
 import json
 import tempfile
@@ -20,6 +21,19 @@ def test_parser_helpers_used_by_page_index_and_grounding_remain_bound():
     for name in ("doc_title", "is_value"):
         symbol = symbols.lookup(name)
         assert symbol.is_assigned() or symbol.is_imported(), name
+
+
+def test_all_pipeline_global_references_are_bound_without_importing_services():
+    symbols = symtable.symtable(PIPELINE_PATH.read_text(encoding="utf-8"), str(PIPELINE_PATH), "exec")
+    bound = {s.get_name() for s in symbols.get_symbols()
+             if s.is_assigned() or s.is_imported() or s.is_namespace()}
+    required = set()
+    def walk(table):
+        required.update(s.get_name() for s in table.get_symbols() if s.is_referenced() and s.is_global())
+        for child in table.get_children():
+            walk(child)
+    walk(symbols)
+    assert not required - bound - set(dir(builtins)) - {"__name__", "__file__"}
 
 
 def _load_pipeline_function(name, namespace=None):

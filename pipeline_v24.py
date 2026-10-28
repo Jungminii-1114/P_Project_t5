@@ -162,6 +162,7 @@ from functools import partial
 from pathlib import Path
 
 import docparse
+import re
 from docparse.context import doc_title as _docparse_title
 from docparse.table import is_value as _docparse_is_value
 from langchain_core.documents import Document

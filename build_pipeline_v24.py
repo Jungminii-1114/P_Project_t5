@@ -1590,29 +1590,7 @@ md(r"""
 아래는 공식 `sample.json` 의 **질문** 3개입니다. (정답은 코드에 넣지 않았습니다.)
 """)
 
-code(r'''
-DEMO_QUESTIONS = [
-    "가천대학교 대표 전화번호는 무엇인가요?",
-    "정시 원서접수는 몇 월 며칠부터 시작하고, 마감일과 마감시각은 언제인가요?",
-    "2027학년도 재외국민 전형의 인터넷 원서접수에 사용할 증명사진은 최근 몇 개월 이내 사진이어야 하며, 어떤 파일 형식으로 준비해야 하나요?",
-]
 
-for question in DEMO_QUESTIONS:
-    r = ask(question, return_meta=True)
-    print("Q.", question)
-    print("A.", r["answer"])
-    print(f"   ⏱ {r['sec']:.2f}s · 경로 {r['route']} · 판단 {r['action']}")
-    print()
-''')
-
-code(r'''
-# 직접 질문하기
-query = "지역의사선발전형 학비 지원은 1학기와 2학기에 각각 언제까지 신청해야 하나요?"
-
-start = time.perf_counter()
-print(ask(query))
-print(f"⏱ {time.perf_counter() - start:.2f}s")
-''')
 
 md(r"""
 ---
@@ -1654,6 +1632,7 @@ from functools import partial
 from pathlib import Path
 
 import docparse
+import re
 from docparse.context import doc_title as _docparse_title
 from docparse.table import is_value as _docparse_is_value
 from langchain_core.documents import Document
@@ -1698,7 +1677,7 @@ print(f"색인용 청크 {len(chunks_ctx):,}개 | 표 전체 HTML {len(tables):,
 
 code_cells = [source for cell_type, source in CELLS if cell_type == "code"]
 pipeline_cells = []
-for source in code_cells[:-2]:
+for source in code_cells:
     if any(line.lstrip().startswith("%pip") for line in source.splitlines()):
         continue
     if "import pdfplumber" in source and "def parse_hwp(path: Path)" in source:

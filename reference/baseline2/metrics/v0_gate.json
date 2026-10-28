@@ -1,0 +1,34 @@
+{
+  "run": "runs\\20261028_171336_786587_v24_V0",
+  "sets": {
+    "sample3": {
+      "correct": 3,
+      "baseline_correct": 3,
+      "delta": 0,
+      "max_sec": 5.844326,
+      "passed": true
+    },
+    "hard20": {
+      "correct": 19,
+      "baseline_correct": 20,
+      "delta": -1,
+      "max_sec": 8.711624,
+      "passed": true
+    },
+    "holdout10": {
+      "correct": 7,
+      "baseline_correct": 8,
+      "delta": -1,
+      "max_sec": 9.211209,
+      "passed": true
+    },
+    "drive20": {
+      "correct": 11,
+      "baseline_correct": 9,
+      "delta": 2,
+      "max_sec": 15.26392,
+      "passed": true
+    }
+  },
+  "passed": true
+}

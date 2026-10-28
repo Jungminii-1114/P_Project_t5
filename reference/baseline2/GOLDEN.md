@@ -5,8 +5,8 @@
 
 | ID | 출처·위치 | 유형 | 통과 셀 | 표 통과 | PNG / 셀 JSON (scratch, Git 제외) |
 |---|---|---|---:|---|---|
-| hwp-roster-multi-stub | 01 / 2 | HWP merged headers and numeric roster | 0/5 | 실패 | runs/baseline2/golden/ (HWP cells JSON) |
-| hwp-schedule-notes | 01 / 3 | HWP schedule with vertically merged category and note columns | 0/5 | 실패 | runs/baseline2/golden/ (HWP cells JSON) |
+| hwp-roster-multi-stub | 01 / 2 | HWP merged headers and numeric roster | 0/5 | 실패 | runs/baseline2/golden/hwp_cells_reference.json |
+| hwp-schedule-notes | 01 / 3 | HWP schedule with vertically merged category and note columns | 0/5 | 실패 | runs/baseline2/golden/hwp_cells_reference.json |
 | 02-region-eligibility-symbols | 02 / 4 | eligibility matrix with check and cross symbols | 0/5 | 실패 | runs/baseline2/golden/source_pngs/02_p004.png |
 | 02-regional-allocation-panels | 02 / 6 | large regional allocation matrix with repeated panel headers | 0/5 | 실패 | runs/baseline2/golden/source_pngs/02_p006.png |
 | 03-admission-unit-count-matrix | 03 / 33 | unrelated multilevel admission-by-unit matrix | 0/5 | 실패 | runs/baseline2/golden/source_pngs/03_p033.png |

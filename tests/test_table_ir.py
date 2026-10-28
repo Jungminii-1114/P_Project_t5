@@ -64,6 +64,17 @@ def test_horizontal_row_label_is_not_a_header_band():
     assert table.stub_cols == 2
 
 
+def test_missing_pdf_geometry_uses_unmerged_fallback():
+    from docparse.extract_ir import pdf_table
+    table = pdf_table(None, None, [["Item", "Count"], ["Alpha", "10"]],
+                      "portable.pdf", 1, 0, ParserConfig())
+    assert table.origin == "pdf_fallback"
+    assert (table.n_rows, table.n_cols) == (2, 2)
+    assert all(c.rowspan == c.colspan == 1 for c in table.cells)
+    assert table.header_path(1) == ["Count"]
+    assert table.row_label(1) == ["Alpha"]
+
+
 def test_source_golden_comparison_reports_failures(merged_table):
     from scripts.check_table_golden import compare_table
     expected = {"id": "synthetic", "source": "unrelated.pdf", "page": 1, "type": "merged",

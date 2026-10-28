@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 
 from scripts.check_notebook import SECRET_PATTERNS
+from scripts.run_eval import _records, _sample_path
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,14 +21,17 @@ def audit():
     untracked = subprocess.check_output(["git", "ls-files", "--others", "--exclude-standard", "-z"], cwd=ROOT)
     names = sorted(set(s.decode("utf-8") for s in (tracked+untracked).split(b"\0") if s))
     corpus = []
-    for path in sorted((ROOT / "eval").glob("testset_*.json")):
+    dataset_paths = sorted((ROOT / "eval").glob("testset_*.json"))
+    try:
+        dataset_paths.append(_sample_path(None))
+    except FileNotFoundError:
+        pass
+    for path in dataset_paths:
         payload = json.loads(path.read_text(encoding="utf-8-sig"))
-        if not isinstance(payload, list):
-            continue
-        for index, item in enumerate(payload, 1):
-            for key in ("q", "question", "gold"):
+        for index, item in enumerate(_records(payload), 1):
+            for key in ("q", "question", "gold", "sample answer", "sample_answer", "answer"):
                 value = item.get(key)
-                if isinstance(value, str) and len(value) >= 30:
+                if isinstance(value, str) and value:
                     corpus.append((path.name, index, key, value))
     secrets, leaks, hashes = [], [], {}
     for name in names:
