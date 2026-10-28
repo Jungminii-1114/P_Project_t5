@@ -1,10 +1,10 @@
-# Report Agent
+# ReportAnchor
 
-**A local AI agent for evidence-based report review and decision support**
+**Local Reports. Traceable Evidence. Informed Decisions.**
 
 〖English | [한국어](readme/koream.md)〗
 
-〖[Overview](#overview) | [Why Report Agent?](#why-report-agent) | [Workflow](#workflow) | [Roadmap](#roadmap)〗
+〖[Overview](#overview) | [Why ReportAnchor?](#why-reportanchor) | [Workflow](#workflow) | [Roadmap](#roadmap)〗
 
 > Analyze PDF and HWP reports locally, check user-defined review criteria, and provide feedback supported by traceable source evidence.
 
@@ -12,35 +12,35 @@
 
 ## Overview
 
-Report Agent is a local AI agent for reviewing PDF and HWP reports against user-defined criteria. It connects document understanding, evidence retrieval, numerical checks, and source-backed feedback in a single workflow.
+**ReportAnchor** combines **report** and **anchor**: review findings should stay anchored to source evidence. The project is a local AI agent for reviewing PDF and HWP reports against user-defined criteria, connecting document understanding, evidence retrieval, numerical checks, and source-backed feedback in a single workflow.
 
 The goal is to help reviewers understand which conditions are met, which are not, and what remains unverified, while keeping the supporting evidence traceable to the original document.
 
-## Why Report Agent?
+## Why ReportAnchor?
 
 ### Reports that cannot be sent to external services
 
 Internal plans, performance reports, and review materials may contain information that cannot be uploaded to an external service. A workflow that depends on external processing can therefore be unsuitable for these documents.
 
-Report Agent is designed to perform document processing, retrieval, and model inference locally so that review can take place within the user's own environment.
+ReportAnchor is designed to perform document processing, retrieval, and model inference locally so that review can take place within the user's own environment.
 
 ### Figures that lose their meaning during extraction
 
 A figure in a report is defined by its row label, header hierarchy, data year, unit, and footnotes. When these relationships are lost during extraction or chunking, relevant-looking text can support an incorrect comparison.
 
-Report Agent aims to preserve these relationships and their source locations throughout processing and retrieval, including complex tables and document regions that require visual interpretation.
+ReportAnchor aims to preserve these relationships and their source locations throughout processing and retrieval, including complex tables and document regions that require visual interpretation.
 
 ### Review criteria that require more than a summary
 
 Reviewers often need to check whether a report satisfies explicit conditions, compare values across sections, or establish whether the available evidence is sufficient. A summary or a relevant search result alone does not complete these checks.
 
-Report Agent uses the user's criteria to guide evidence collection, numerical calculations, and review feedback. Its intended output explains both the finding and the evidence used to reach it.
+ReportAnchor uses the user's criteria to guide evidence collection, numerical calculations, and review feedback. Its intended output explains both the finding and the evidence used to reach it.
 
 ### Findings that must be checked against the source
 
 A fluent answer can still cite a passage that does not support its claim or overlook information needed for a conclusion. Reviewers need to inspect the source and understand the limits of the available evidence.
 
-Report Agent aims to connect claims to source passages and table regions, verify their consistency, and identify missing information. If the evidence remains insufficient, it will abstain and explain what additional material is needed.
+ReportAnchor aims to connect claims to source passages and table regions, verify their consistency, and identify missing information. If the evidence remains insufficient, it will abstain and explain what additional material is needed.
 
 ## Planned capabilities
 
