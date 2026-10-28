@@ -12,3 +12,4 @@ baseline-1은 v23(`64ac263`, tag `v23`)의 동작을 보존하는 참조점이�
 | B6 | 홈페이지 주소 원문 대조 | 저장된 홈페이지 smoke 결과와 원문·인용 위치를 직접 대조한다. 자동 검사 기록과 수동 확인을 구별한다. | 원문 확보 | [KNOWN_ISSUES](reference/baseline1/KNOWN_ISSUES.md) |
 | B7 | 범용판 RAG 평가 | 중립 설정의 청크를 실제 파이프라인에 넣어 평가하고 다른 문서군에서도 시험한다. API 사용이 필요한 후속 작업이다. | 범용판 및 API 실행 승인, 평가 문서군 준비 | [프로필 비교](reference/baseline1/docparse_generic/PROFILE_DIFF.md), [EVAL](reference/baseline1/EVAL.md) |
 | B8 | 파이프라인 특화 값 분리 | 검색·라우팅·프롬프트의 문서·도메인 특화 값을 설정으로 분리한다. | 현행 설정 목록 확인 | [CONFIG](reference/baseline1/CONFIG.md) |
+| B9 | 실험·실습 노트북 | py 레퍼런스 모듈을 import해 단계별(원문·파싱·청킹·문맥 청크·프로필)로 실행하고 확인하는 노트북을 만든다. 로직은 py에만 두고, git에는 출력을 지운 상태로 커밋한다. | baseline-1 레퍼런스 | [PARSER](reference/baseline1/PARSER.md), [범용판 README](reference/baseline1/docparse_generic/README.md) |
