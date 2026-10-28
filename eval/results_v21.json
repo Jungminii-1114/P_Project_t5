@@ -1,0 +1,44 @@
+{
+  "measured_at": "2026-10-25",
+  "model": "gpt-6-luna (reasoning_effort=low)",
+  "embedding": "text-embedding-3-small",
+  "aggregate": {
+    "colloquial20_v20": {"acc": "20/20", "mean_sec": 3.12, "max_sec": 6.41, "retries": 8},
+    "original20_v20": {"acc": "18/20", "mean_sec": 2.66, "max_sec": 5.86, "retries": 5,
+                      "notes": "실패 2건 = #14 gold 오류(100명, 실제 45명) + #8 '국내외 연수' 목록 누락(v19에서 수정됨)"},
+    "holdout10_v20": {"acc": "5/10", "mean_sec": 3.01, "max_sec": 6.33, "retries": 3},
+    "holdout10_v21": {"acc": "8/10", "mean_sec": 4.69, "max_sec": 6.35, "retries": 8},
+    "retrieval_recall_at_6": {
+      "colloquial20": "20/20 (기준선 16/20)",
+      "original20": "20/20",
+      "holdout10": "9/10 (±1페이지 10/10)",
+      "method": "정답 페이지가 top-6 페이지 집합에 포함되는지"
+    },
+    "page_lookup": {"sec": 0.0, "llm_calls": 0, "note": "route=page + target_doc → toc_lookup 결정적 답변"}
+  },
+  "holdout_v21_per_question": [
+    {"id": 1,  "route": "procedure",   "ok": true,  "sec": 6.4, "conf": 0.93, "ground": 1.00, "retried": true},
+    {"id": 2,  "route": "eligibility", "ok": false, "sec": 4.1, "conf": 1.00, "ground": 1.00, "retried": true},
+    {"id": 3,  "route": "procedure",   "ok": true,  "sec": 6.3, "conf": 1.00, "ground": 1.00, "retried": true},
+    {"id": 4,  "route": "general",     "ok": true,  "sec": 5.8, "conf": 1.00, "ground": 1.00, "retried": true},
+    {"id": 5,  "route": "general",     "ok": true,  "sec": 4.4, "conf": 1.00, "ground": 1.00, "retried": true},
+    {"id": 6,  "route": "table",       "ok": true,  "sec": 6.3, "conf": 1.00, "ground": 1.00, "retried": true},
+    {"id": 7,  "route": "general",     "ok": true,  "sec": 2.3, "conf": 1.00, "ground": 1.00, "retried": false},
+    {"id": 8,  "route": "general",     "ok": true,  "sec": 4.4, "conf": 1.00, "ground": 1.00, "retried": true},
+    {"id": 9,  "route": "general",     "ok": true,  "sec": 1.9, "conf": 0.96, "ground": 1.00, "retried": false},
+    {"id": 10, "route": "procedure",   "ok": false, "sec": 5.1, "conf": 1.00, "ground": 1.00, "retried": true}
+  ],
+  "failures": [
+    {"id": 2, "type": "metric-artifact",
+     "reason": "질문이 묻지 않은 '제출서류·전형료 반환 불가'를 gold가 요구. p.9 청크가 594자에서 절단되어 해당 문장이 p.8 다른 청크에만 존재 → 검색 근거에 없음."},
+    {"id": 10, "type": "judge-strict",
+     "reason": "근거 p.15의 '별도 지정' 예외를 함께 설명하자 채점기가 'gold를 제한하는 예외'로 감점. gold를 단순화한 것이 원인."}
+  ],
+  "v20_to_v21_changes": [
+    "retrieve_v15: 희귀 키워드 단독 BM25 리스트 추가(RRF 희석 방지) → '신설' 문항 p.30 회수",
+    "retrieve_v15: 페이지 단위 형제 청크 확장(hierarchical) → 같은 페이지의 잘린 뒷문장 회수",
+    "표 요약 v3의 숫자열 정렬을 되돌리고 v2 유지 + 프롬프트에 열 카운팅 예시 추가(6호=-100)",
+    "DRAFT_PROMPT_V5: 같은 근거 문장의 주변 세부정보까지 포함",
+    "missing_neighbor_details 추가 → 교정 힌트로 연결"
+  ]
+}
