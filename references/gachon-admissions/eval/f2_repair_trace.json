@@ -1,0 +1,52 @@
+{
+  "route": "general",
+  "action": "repair",
+  "extra_docs": 0,
+  "sub_queries": 0,
+  "timings": {
+    "search": 0.0,
+    "draft": 0.0,
+    "repair": 0.0
+  },
+  "events": [
+    {
+      "stage": "repair",
+      "trigger": "repair",
+      "unsupported_pairs": [
+        [
+          "경영학과",
+          "15"
+        ]
+      ]
+    }
+  ],
+  "answer": "경영학과 30명 (출처: 03_2027학년도_수시_모집요강.pdf p.104)",
+  "sec": 0.0,
+  "ground": {
+    "score": 1.0,
+    "num_ok": 1.0,
+    "date_ok": 1.0,
+    "ent_ok": 1.0,
+    "cite_ok": 1.0,
+    "pair_ok": 1.0,
+    "unsupported_pairs": [],
+    "not_found": false
+  },
+  "heuristic_score": 1.0,
+  "cov": 1.0,
+  "docs": [
+    [
+      "03_2027학년도_수시_모집요강.pdf",
+      104
+    ]
+  ],
+  "evidence": [
+    {
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 104,
+      "kind": "text",
+      "chunk": "경영학과 30명\n간호학과 15명"
+    }
+  ],
+  "test_mode": "fake LLM and retrieval, API-free; task-specified fictional reproduction"
+}

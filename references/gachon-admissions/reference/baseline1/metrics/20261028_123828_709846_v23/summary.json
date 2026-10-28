@@ -1,0 +1,50 @@
+{
+  "pipeline": "v23",
+  "repeat": 1,
+  "sets": {
+    "sample3": {
+      "correct": 3,
+      "total": 3,
+      "accuracy": 1.0,
+      "mean_sec": 4.415141,
+      "max_sec": 6.533297,
+      "over_5s": 1,
+      "over_10s": 0,
+      "over_19s": 0,
+      "time_score": 1.077336
+    },
+    "hard20": {
+      "correct": 20,
+      "total": 20,
+      "accuracy": 1.0,
+      "mean_sec": 5.16379,
+      "max_sec": 9.245699,
+      "over_5s": 13,
+      "over_10s": 0,
+      "over_19s": 0,
+      "time_score": 6.379008
+    },
+    "holdout10": {
+      "correct": 8,
+      "total": 10,
+      "accuracy": 0.8,
+      "mean_sec": 5.148699,
+      "max_sec": 9.170454,
+      "over_5s": 5,
+      "over_10s": 0,
+      "over_19s": 0,
+      "time_score": 2.635233
+    },
+    "drive20": {
+      "correct": 9,
+      "total": 20,
+      "accuracy": 0.45,
+      "mean_sec": 8.43279,
+      "max_sec": 13.099699,
+      "over_5s": 18,
+      "over_10s": 5,
+      "over_19s": 0,
+      "time_score": 2.267067
+    }
+  }
+}

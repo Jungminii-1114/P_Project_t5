@@ -1,0 +1,9 @@
+.venv/
+.env
+data/
+runs/
+__pycache__/
+*.pyc
+chroma*/
+.pytest_cache/
+reference/baseline1/snapshots/**/*.jsonl

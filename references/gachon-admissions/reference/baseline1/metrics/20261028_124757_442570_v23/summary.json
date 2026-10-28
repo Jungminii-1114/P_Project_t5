@@ -1,0 +1,17 @@
+{
+  "pipeline": "v23",
+  "repeat": 2,
+  "sets": {
+    "sample3": {
+      "correct": 3,
+      "total": 3,
+      "accuracy": 1.0,
+      "mean_sec": 3.893566,
+      "max_sec": 5.108223,
+      "over_5s": 1,
+      "over_10s": 0,
+      "over_19s": 0,
+      "time_score": 1.191342
+    }
+  }
+}

@@ -1,0 +1,253 @@
+{
+  "notebook": "C:\\dev\\middle_test\\202235052_박진성.ipynb",
+  "code_cell_count": 13,
+  "syntax_errors": [],
+  "cells_with_outputs_or_execution_counts": [],
+  "api_key_pattern_counts": {
+    "openai_sk": 0,
+    "voyage_pa": 0,
+    "voyage_token": 0,
+    "google_api": 0,
+    "anthropic": 0
+  },
+  "api_key_pattern_total": 0,
+  "eval_gold": {
+    "json_file_count": 14,
+    "read_error_count": 1,
+    "gold_item_count": 70,
+    "sets": [
+      {
+        "set": "clean_v23.json",
+        "gold_item_count": 0,
+        "distinct_window_count": 0,
+        "overlap_item_count": 0,
+        "overlap_window_count": 0
+      },
+      {
+        "set": "environment_v23.json",
+        "gold_item_count": 0,
+        "distinct_window_count": 0,
+        "overlap_item_count": 0,
+        "overlap_window_count": 0
+      },
+      {
+        "set": "f1_summary_diff.json",
+        "gold_item_count": 0,
+        "distinct_window_count": 0,
+        "overlap_item_count": 0,
+        "overlap_window_count": 0
+      },
+      {
+        "set": "f2_repair_trace.json",
+        "gold_item_count": 0,
+        "distinct_window_count": 0,
+        "overlap_item_count": 0,
+        "overlap_window_count": 0
+      },
+      {
+        "set": "homepage_smoke_v23.json",
+        "gold_item_count": 0,
+        "distinct_window_count": 0,
+        "overlap_item_count": 0,
+        "overlap_window_count": 0
+      },
+      {
+        "set": "notebook_check_v23.json",
+        "read_error": "JSONDecodeError"
+      },
+      {
+        "set": "notebook_overlap_audit.json",
+        "gold_item_count": 0,
+        "distinct_window_count": 0,
+        "overlap_item_count": 0,
+        "overlap_window_count": 0
+      },
+      {
+        "set": "results_v21.json",
+        "gold_item_count": 0,
+        "distinct_window_count": 0,
+        "overlap_item_count": 0,
+        "overlap_window_count": 0
+      },
+      {
+        "set": "results_v22.json",
+        "gold_item_count": 0,
+        "distinct_window_count": 0,
+        "overlap_item_count": 0,
+        "overlap_window_count": 0
+      },
+      {
+        "set": "results_v23.json",
+        "gold_item_count": 20,
+        "distinct_window_count": 5195,
+        "overlap_item_count": 7,
+        "overlap_window_count": 26
+      },
+      {
+        "set": "testset_drive20.json",
+        "gold_item_count": 20,
+        "distinct_window_count": 5195,
+        "overlap_item_count": 7,
+        "overlap_window_count": 26
+      },
+      {
+        "set": "testset_hard.json",
+        "gold_item_count": 20,
+        "distinct_window_count": 1210,
+        "overlap_item_count": 6,
+        "overlap_window_count": 12
+      },
+      {
+        "set": "testset_holdout.json",
+        "gold_item_count": 10,
+        "distinct_window_count": 658,
+        "overlap_item_count": 1,
+        "overlap_window_count": 1
+      },
+      {
+        "set": "v22_shim_audit.json",
+        "gold_item_count": 0,
+        "distinct_window_count": 0,
+        "overlap_item_count": 0,
+        "overlap_window_count": 0
+      }
+    ],
+    "overlap_items": [
+      {
+        "set": "results_v23.json",
+        "index": "1",
+        "window_count": 2,
+        "shared_window_count": 2
+      },
+      {
+        "set": "results_v23.json",
+        "index": "2",
+        "window_count": 5,
+        "shared_window_count": 5
+      },
+      {
+        "set": "results_v23.json",
+        "index": "7",
+        "window_count": 2,
+        "shared_window_count": 2
+      },
+      {
+        "set": "results_v23.json",
+        "index": "12",
+        "window_count": 3,
+        "shared_window_count": 3
+      },
+      {
+        "set": "results_v23.json",
+        "index": "15",
+        "window_count": 1,
+        "shared_window_count": 1
+      },
+      {
+        "set": "results_v23.json",
+        "index": "17",
+        "window_count": 1,
+        "shared_window_count": 1
+      },
+      {
+        "set": "results_v23.json",
+        "index": "20",
+        "window_count": 12,
+        "shared_window_count": 12
+      },
+      {
+        "set": "testset_drive20.json",
+        "index": "1",
+        "window_count": 2,
+        "shared_window_count": 2
+      },
+      {
+        "set": "testset_drive20.json",
+        "index": "2",
+        "window_count": 5,
+        "shared_window_count": 5
+      },
+      {
+        "set": "testset_drive20.json",
+        "index": "7",
+        "window_count": 2,
+        "shared_window_count": 2
+      },
+      {
+        "set": "testset_drive20.json",
+        "index": "12",
+        "window_count": 3,
+        "shared_window_count": 3
+      },
+      {
+        "set": "testset_drive20.json",
+        "index": "15",
+        "window_count": 1,
+        "shared_window_count": 1
+      },
+      {
+        "set": "testset_drive20.json",
+        "index": "17",
+        "window_count": 1,
+        "shared_window_count": 1
+      },
+      {
+        "set": "testset_drive20.json",
+        "index": "20",
+        "window_count": 12,
+        "shared_window_count": 12
+      },
+      {
+        "set": "testset_hard.json",
+        "index": "5",
+        "window_count": 1,
+        "shared_window_count": 0
+      },
+      {
+        "set": "testset_hard.json",
+        "index": "7",
+        "window_count": 2,
+        "shared_window_count": 0
+      },
+      {
+        "set": "testset_hard.json",
+        "index": "10",
+        "window_count": 1,
+        "shared_window_count": 1
+      },
+      {
+        "set": "testset_hard.json",
+        "index": "15",
+        "window_count": 3,
+        "shared_window_count": 1
+      },
+      {
+        "set": "testset_hard.json",
+        "index": "17",
+        "window_count": 4,
+        "shared_window_count": 2
+      },
+      {
+        "set": "testset_hard.json",
+        "index": "20",
+        "window_count": 1,
+        "shared_window_count": 1
+      },
+      {
+        "set": "testset_holdout.json",
+        "index": "5",
+        "window_count": 1,
+        "shared_window_count": 1
+      }
+    ],
+    "shared_overlap_window_count": 58
+  },
+  "official_sample_answers": {
+    "found": true,
+    "answer_item_count": 3,
+    "overlap_items": [],
+    "path": "C:\\Users\\jspar\\Downloads\\중간평가-20261025T052820Z-1-001\\중간평가\\sample.json"
+  },
+  "passed": false,
+  "report_note": "Only counts and indexes are reported. Repeated 8-character windows across multiple gold items are marked as shared overlap candidates; review those indexes for boilerplate without exposing gold text."
+}

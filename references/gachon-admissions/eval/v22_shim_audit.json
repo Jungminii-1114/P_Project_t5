@@ -1,0 +1,13 @@
+{
+  "original_code_cells": 13,
+  "local_code_cells": 13,
+  "changed_code_cells_1based": [
+    2,
+    3
+  ],
+  "changes": [
+    "environment/dotenv/Colab API-key loading",
+    "GACHON_DATA_DIR path shim only"
+  ],
+  "other_11_code_cells_identical": true
+}

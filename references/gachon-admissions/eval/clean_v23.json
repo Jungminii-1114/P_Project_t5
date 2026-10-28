@@ -1,0 +1,93 @@
+{
+  "notebook": "C:\\dev\\middle_test\\202235052_박진성.ipynb",
+  "started_at": "2026-10-28T12:36:56+09:00",
+  "finished_at": "2026-10-28T12:37:46+09:00",
+  "python_executable": "C:\\dev\\middle_test\\.venv\\Scripts\\python.exe",
+  "python_version": "3.13.5",
+  "process_id": 35912,
+  "code_cell_count": 13,
+  "failed_cell_count": 0,
+  "total_cell_wall_seconds": 50.851649,
+  "capture_stdout": false,
+  "cells": [
+    {
+      "cell": 3,
+      "status": "ok",
+      "wall_seconds": 0.000789,
+      "pip_lines_skipped": 1
+    },
+    {
+      "cell": 5,
+      "status": "ok",
+      "wall_seconds": 0.019416,
+      "pip_lines_skipped": 0
+    },
+    {
+      "cell": 7,
+      "status": "ok",
+      "wall_seconds": 0.024793,
+      "pip_lines_skipped": 0
+    },
+    {
+      "cell": 9,
+      "status": "ok",
+      "wall_seconds": 14.448725,
+      "pip_lines_skipped": 0
+    },
+    {
+      "cell": 11,
+      "status": "ok",
+      "wall_seconds": 0.01104,
+      "pip_lines_skipped": 0
+    },
+    {
+      "cell": 13,
+      "status": "ok",
+      "wall_seconds": 0.018094,
+      "pip_lines_skipped": 0
+    },
+    {
+      "cell": 15,
+      "status": "ok",
+      "wall_seconds": 15.351604,
+      "pip_lines_skipped": 0
+    },
+    {
+      "cell": 17,
+      "status": "ok",
+      "wall_seconds": 0.002816,
+      "pip_lines_skipped": 0
+    },
+    {
+      "cell": 19,
+      "status": "ok",
+      "wall_seconds": 1.324889,
+      "pip_lines_skipped": 0
+    },
+    {
+      "cell": 21,
+      "status": "ok",
+      "wall_seconds": 0.00345,
+      "pip_lines_skipped": 0
+    },
+    {
+      "cell": 23,
+      "status": "ok",
+      "wall_seconds": 1.953592,
+      "pip_lines_skipped": 0
+    },
+    {
+      "cell": 25,
+      "status": "ok",
+      "wall_seconds": 12.712872,
+      "pip_lines_skipped": 0
+    },
+    {
+      "cell": 26,
+      "status": "ok",
+      "wall_seconds": 4.979569,
+      "pip_lines_skipped": 0
+    }
+  ],
+  "note": "Timing/status copy of the full clean execution; captured output remains only under ignored runs/."
+}
