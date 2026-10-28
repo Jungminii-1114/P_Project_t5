@@ -1,0 +1,175 @@
+{
+  "configuration": {
+    "caption_max_chars": 30,
+    "caption_template": " | 표제: {caption}",
+    "chunk_overlap": 100,
+    "chunk_prefix_template": "[{source} p.{page}]\n",
+    "chunk_size": 800,
+    "context_header_template": "[문서] {title} | p.{page} | {kind_label}",
+    "date_dot_pattern": "(?<=\\d)\\s*\\.\\s*(?=\\d)",
+    "excluded_columns": [
+      "모집단위"
+    ],
+    "generic_columns": [
+      "비고",
+      "계열",
+      "연번",
+      "번호",
+      "구분"
+    ],
+    "header_keywords": [
+      "학과",
+      "학부",
+      "전공",
+      "의예과",
+      "지역"
+    ],
+    "hwp_distribution_backend": "pyhwp",
+    "hwp_marker_pattern": "\\[(?:rowspan=\\d+,\\s*colspan=\\d+|colspan=\\d+,\\s*rowspan=\\d+|merged:[^\\]]+)\\]",
+    "hwp_mode": "elements",
+    "image_marker": "[IMAGE]",
+    "kind_labels": {
+      "table": "표",
+      "text": "본문"
+    },
+    "merged_repeat_max_chars": 40,
+    "normalize_date_dots": true,
+    "note_prefix": "※",
+    "numeric_pattern": "^[\\d,./~%()~\\-–\\s]+$",
+    "pdf_table_min_chars": 60,
+    "raw_marker": "\n[원문]\n",
+    "required_files": [
+      "01_2027학년도_재외국민_모집요강.hwp",
+      "02_2027학년도_지역의사선발전형_안내.pdf",
+      "03_2027학년도_수시_모집요강.pdf",
+      "04_2027학년도_정시_모집요강.pdf",
+      "05_2027학년도_수시_면접고사_일정.pdf"
+    ],
+    "row_label_keywords": [
+      "학과",
+      "학부",
+      "전공",
+      "지역"
+    ],
+    "schedule_caption": "면접/전형 일정",
+    "schedule_pattern": "\\d+월|\\d+일|시간|일시|오전|오후",
+    "separators": [
+      "\n\n",
+      "\n",
+      ". ",
+      "다. ",
+      " ",
+      ""
+    ],
+    "summary_marker": "\n[표 행 요약]\n",
+    "summary_max_chars": 2600,
+    "summary_max_pairs": 6,
+    "summary_max_rows": 30,
+    "table_max_chars": 1400,
+    "title_cleanup_pattern": "^\\d+[\\s_-]*",
+    "title_fallback_source": true,
+    "title_map": {
+      "01": "2027학년도 재외국민 모집요강",
+      "02": "2027학년도 지역의사선발전형 안내",
+      "03": "2027학년도 수시 모집요강",
+      "04": "2027학년도 정시 모집요강",
+      "05": "2027학년도 수시 면접고사 일정"
+    },
+    "title_prefix_length": 2,
+    "value_symbols": [
+      "O",
+      "■",
+      "□",
+      "△",
+      "○",
+      "●",
+      "X",
+      "▲",
+      "★",
+      "◉"
+    ],
+    "whitespace_pattern": "[ \\t]+",
+    "wide_min_columns": 7
+  },
+  "counts": {
+    "by_document_and_kind": {
+      "01_2027학년도_재외국민_모집요강.hwp": {
+        "total": 37,
+        "본문": 1,
+        "표": 36
+      },
+      "02_2027학년도_지역의사선발전형_안내.pdf": {
+        "total": 68,
+        "본문": 40,
+        "표": 28
+      },
+      "03_2027학년도_수시_모집요강.pdf": {
+        "total": 276,
+        "본문": 173,
+        "표": 103
+      },
+      "04_2027학년도_정시_모집요강.pdf": {
+        "total": 124,
+        "본문": 60,
+        "표": 64
+      },
+      "05_2027학년도_수시_면접고사_일정.pdf": {
+        "total": 8,
+        "본문": 4,
+        "표": 4
+      }
+    },
+    "chunks": 513,
+    "contextual_chunks": 513,
+    "raw_documents": 382
+  },
+  "outputs": {
+    "chunks.jsonl": {
+      "records": 513,
+      "sha256": "b4656249beff901e9e230ca152781ab37f1f19728e70091dbd66ed637270a103"
+    },
+    "contextual_chunks.jsonl": {
+      "records": 513,
+      "sha256": "88b7d79b413add0ecdacf5995e4249f85e60d439fbe6734fe21bd11c0e31d960"
+    },
+    "raw_docs.jsonl": {
+      "records": 382,
+      "sha256": "e1ff20e5f6e69c1cbedac5fed7d90cf3438022453cacfc5198a8c6b07394a622"
+    }
+  },
+  "package_versions": {
+    "langchain-core": "1.7.0",
+    "langchain-hwp-hwpx-loader": "0.2.1",
+    "langchain-text-splitters": "1.1.3",
+    "pdfplumber": "0.11.10",
+    "pymupdf": "2.0"
+  },
+  "parser_version": "configurable-elements-v1",
+  "source_documents": {
+    "01_2027학년도_재외국민_모집요강.hwp": {
+      "parser_version": "hwp-elements-pyhwp-v1",
+      "sha256": "f59a6a7832e0050e1fe9239639317a75cc73ae34dc170f612567d37474da7b67",
+      "size_bytes": 541696
+    },
+    "02_2027학년도_지역의사선발전형_안내.pdf": {
+      "parser_version": "pymupdf-text-pdfplumber-v1",
+      "sha256": "76132ccb4bbc1f7cf5036ecc12046d5c31161d3404e234b9c702b3bbf72a76c2",
+      "size_bytes": 1686469
+    },
+    "03_2027학년도_수시_모집요강.pdf": {
+      "parser_version": "pymupdf-text-pdfplumber-v1",
+      "sha256": "ce151dfa692666424223b88253785f517b6b4baf7dd8730128efc25af329de17",
+      "size_bytes": 4089341
+    },
+    "04_2027학년도_정시_모집요강.pdf": {
+      "parser_version": "pymupdf-text-pdfplumber-v1",
+      "sha256": "942a32d7b3e352ff8ba1c2f10576eb3b370246e87d019bee582cbfdc54b67086",
+      "size_bytes": 767609
+    },
+    "05_2027학년도_수시_면접고사_일정.pdf": {
+      "parser_version": "pymupdf-text-pdfplumber-v1",
+      "sha256": "a284a3eebccafd90fb1a451f3d6d47967a76aa0cc863d99a0d70d65e7ad09b90",
+      "size_bytes": 136408
+    }
+  }
+}

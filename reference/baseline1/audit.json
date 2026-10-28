@@ -1,0 +1,8 @@
+{
+  "file_count": 55,
+  "sample3_checked": true,
+  "secret_matches": [],
+  "evaluation_sentence_matches": [],
+  "passed": true,
+  "scope": "Full q/question/gold values, with whitespace normalized; counts and IDs only."
+}
