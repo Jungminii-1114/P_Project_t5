@@ -77,19 +77,21 @@ uv run python scripts/compare_eval.py --v22 runs/20261028_122601_013520_v22 --v2
 
 `heuristic_score`는 규칙 기반 검사 점수입니다. 정답 가능성을 추정하는 값으로 해석하지 않습니다. 시간 점수는 정답 문항에만 적용하며 5초까지 0.4점, 이후 초당 0.08점 감점, 10초부터 0점입니다. 원 질문이 유실된 orig20은 평가하지 않습니다.
 
-`runs/`, `.venv/`, `.env`, `data/`는 Git에서 제외됩니다. 대표 v23 실행의 상세 결과는 `eval/runs_v23_results.jsonl`, 집계·비교는 `eval/results_v23.json`에 보존합니다. 사용 완료 계획서는 `prompts/legacy/v23_작업계획서.md`에 둡니다.
+`runs/`, `.venv/`, `.env`, `data/`는 Git에서 제외됩니다. 대표 v23 실행의 상세 결과는 `eval/runs_v23_results.jsonl`, 집계·비교는 `eval/results_v23.json`에 보존합니다. v24의 기본 비교·동률 재평가·선정 후 확인 16개 실행은 `eval/runs_v24/`에 보존하며 해시 대조표는 `MANIFEST.md`에 있습니다. 사용 완료 계획서는 `prompts/legacy/`에 둡니다.
 
 ## baseline-2 / v24
 
-최종 선정은 V3이며 v24의 렌더러 기본값은 `header_records/header_records`다.
-아래 명시적 `baseline1/baseline1` 명령은 V0 재현용이다. 파서 패키지 기본값도 baseline1을 유지한다.
+V3는 계획서 규칙에 따라 선정됐으나, 동일 설정 V0의 변동 폭과 재평가 우세 폭이 모두 3문항이므로
+렌더러 우열은 확인되지 않았다. v24와 파서 패키지의 최종 기본값은 `baseline1/baseline1`이다.
+아래 명령은 V0 재현용이며, V3는 두 렌더러 환경변수를 모두 `header_records`로 지정한다.
 
-v23 빌더와 제출 노트북은 동결 상태다. 새 `build_pipeline_v24.py`는 로컬 `pipeline_v24.py`만 생성한다.
-파서는 설치 패키지 `src/docparse/`를 사용한다.
+v23 빌더와 제출 노트북은 동결 상태다. 파서는 설치 패키지 `src/docparse/`를 사용한다.
+최종 실행에는 저장소의 `pipeline_v24.py`를 사용한다. 이번 기본값 복귀는 이 파일의 두 줄에만
+적용했으며, 기존 `build_pipeline_v24.py`는 선정 당시 V3 기본값을 생성하므로 다시 실행하면
+복귀한 기본값을 덮어쓴다. 아래 재현 절차에서는 파이프라인을 재생성하지 않는다.
 
 ```powershell
 uv sync
-uv run python build_pipeline_v24.py
 uv run python -m docparse data/dataset --profile gachon_2027 --extract-table-ir --out runs/baseline2/ir
 uv run python -m scripts.diagnose_tables
 uv run python -m scripts.check_table_golden --strict

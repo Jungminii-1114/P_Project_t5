@@ -168,8 +168,8 @@ from docparse.table import is_value as _docparse_is_value
 from langchain_core.documents import Document
 
 DOCPARSE_PROFILE = os.environ.get("DOCPARSE_PROFILE", "gachon_2027")
-DOCPARSE_INDEX_RENDER = os.environ.get("DOCPARSE_INDEX_RENDER", "header_records")
-DOCPARSE_LLM_RENDER = os.environ.get("DOCPARSE_LLM_RENDER", "header_records")
+DOCPARSE_INDEX_RENDER = os.environ.get("DOCPARSE_INDEX_RENDER", "baseline1")
+DOCPARSE_LLM_RENDER = os.environ.get("DOCPARSE_LLM_RENDER", "baseline1")
 if DOCPARSE_INDEX_RENDER not in {"baseline1", "header_records"}:
     raise ValueError("DOCPARSE_INDEX_RENDER must be baseline1 or header_records")
 if DOCPARSE_LLM_RENDER not in {"baseline1", "html_full", "header_records"}:

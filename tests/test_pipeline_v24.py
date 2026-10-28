@@ -2,6 +2,7 @@ import ast
 import builtins
 import hashlib
 import json
+import os
 import tempfile
 import symtable
 from pathlib import Path
@@ -14,6 +15,26 @@ from scripts.run_eval import _new_run_dir, build_run_summary, environment_record
 
 ROOT = Path(__file__).resolve().parents[1]
 PIPELINE_PATH = ROOT / "pipeline_v24.py"
+
+
+@pytest.mark.parametrize("override", [None, "header_records"])
+def test_renderer_defaults_and_explicit_environment_override(monkeypatch, override):
+    names = {"DOCPARSE_INDEX_RENDER", "DOCPARSE_LLM_RENDER"}
+    for name in names:
+        if override is None:
+            monkeypatch.delenv(name, raising=False)
+        else:
+            monkeypatch.setenv(name, override)
+    tree = ast.parse(PIPELINE_PATH.read_text(encoding="utf-8"))
+    assignments = [node for node in tree.body if isinstance(node, ast.Assign)
+                   and any(isinstance(target, ast.Name) and target.id in names
+                           for target in node.targets)]
+    assert len(assignments) == 2
+    scope = {"os": os}
+    exec(compile(ast.Module(body=assignments, type_ignores=[]), str(PIPELINE_PATH), "exec"), scope)
+    assert {name: scope[name] for name in names} == {
+        name: override or "baseline1" for name in names
+    }
 
 
 def test_parser_helpers_used_by_page_index_and_grounding_remain_bound():

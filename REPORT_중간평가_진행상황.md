@@ -676,3 +676,8 @@ holdout10 #6은 고정 gold와 원문이 충돌하며 점수를 수정하지 않
 제외하지 않았다. 페이지 색인의 LLM raw 결합은 사용자가 기존 범위 유지를 선택해 한계로 남겼다.
 상세 수치·문항 비교·검증 실패는 [EVAL](reference/baseline2/EVAL.md), [VALIDATION](reference/baseline2/VALIDATION.md),
 실무 이식과 VLM 어댑터 설계는 [HANDOFF](reference/baseline2/HANDOFF.md)에 있다. B1 실험을 완료 처리하고 B2는 실무로 이관했다.
+
+마무리에서 동일 설정 V0의 drive20 변동(11/20 → 8/20)이 V3의 재평가 우세 폭과 같음을 반영해
+실행 기본값을 baseline1/baseline1로 복귀했다. 렌더러 우열은 미확인이다. 새 API 실행 없이
+16개 실행 원본을 `eval/runs_v24/`에 보존하고, 팀 저장소 JS의 `references/gachon-admissions/`를
+갱신하는 게시 브랜치를 준비한다. push는 작업계획서에 따라 사용자 승인 후 수행한다.

@@ -6,10 +6,19 @@
 중립 ParserConfig로 시작하고 문서 순서·제목·용어는 새 프로필로 지정한다.
 
 v24의 검색·검증·답변 파이프라인과 현 문서군 프로필은 실험용으로 두고 간다.
-최종 실행 기본값은 V3(header_records/header_records)다. 초기 40/53 동률 뒤 drive20 재평가에서
-V3 11/20, V0 8/20으로 계획서 변동 기준을 넘어 선정했다. 패키지 ParserConfig 기본은 baseline1을 유지한다.
+최종 실행 기본값은 baseline1/baseline1이다. V3는 초기 40/53 동률 뒤 drive20 재평가에서
+V3 11/20, V0 8/20으로 계획서 규칙에 따라 선정됐지만, 같은 설정의 V0도 11/20 → 8/20으로
+3문항 변동했다. 재평가의 우세 폭과 변동 폭이 같으므로 렌더러 우열은 확인되지 않았다.
+V3는 DOCPARSE_INDEX_RENDER와 DOCPARSE_LLM_RENDER를 모두 header_records로 지정해 재현한다.
+패키지 ParserConfig 기본값도 baseline1/baseline1이다. 자세한 근거는 [EVAL](EVAL.md#최종-기본값)에 있다.
 BM25 스크립트의 문서 접두사/src 해석과 수동 확인 기록 역시 이 자료군의 진단 어댑터다.
 실무에서는 출처 식별 계약과 데이터 해시에 맞춰 교체한다.
+
+## 데이터 계약 교훈
+
+한 청크의 `raw`가 LLM 입력·페이지 색인·근거 검증에 함께 쓰여 V1·V2·V4에서는 색인과 LLM 렌더러가 분리되지 않았다.
+실무에서는 색인용·LLM용·검증용 텍스트 필드를 데이터 계약에서 나눈다.
+현재 구현은 보존했으며, 분리 제안은 [PAGE_INDEX_PROPOSAL.diff](PAGE_INDEX_PROPOSAL.diff)에 있다.
 
 ## VLM 연결 지점 (설계만 제공)
 

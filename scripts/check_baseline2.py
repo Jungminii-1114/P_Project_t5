@@ -36,13 +36,20 @@ def audit():
     secrets, leaks, inherited, hashes = [], [], [], {}
     for name in names:
         path = ROOT / name
-        if not path.is_file() or path.suffix not in {".py", ".md", ".json", ".yaml", ".toml", ".diff", ".lock"}:
+        if not path.is_file() or path.suffix not in {
+            ".py", ".md", ".json", ".jsonl", ".yaml", ".toml", ".diff", ".lock"
+        }:
             continue
         content = path.read_text(encoding="utf-8-sig")
         hashes[name] = hashlib.sha256(path.read_bytes()).hexdigest()
         for label, pattern in SECRET_PATTERNS.items():
             if pattern.search(content):
                 secrets.append({"file": name, "pattern": label})
+        # Saved run results are allowed to contain their source questions. Keep
+        # secret checks above active, and limit the question exception to this
+        # exact subtree so similarly named paths remain covered by leakage scans.
+        if name.startswith("eval/runs_v24/"):
+            continue
         baseline_content = None
         for dataset, index, key, value in corpus:
             if value in content:
