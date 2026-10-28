@@ -69,7 +69,7 @@
  
  
  def _all_present(directory: Path) -> bool:
-@@ -203,353 +156,47 @@
+@@ -203,353 +156,52 @@
  DATA_DIR = prepare_dataset()
  for _name in REQUIRED:
      print(f"  - {_name} ({(DATA_DIR / _name).stat().st_size:,} bytes)")
@@ -82,6 +82,7 @@
 -import re
 +
 +from dataclasses import replace
++from functools import partial
  from pathlib import Path
  
 -import pdfplumber
@@ -92,6 +93,8 @@
 -    import fitz as pymupdf
 -
 +import docparse
++from docparse.context import doc_title as _docparse_title
++from docparse.table import is_value as _docparse_is_value
  from langchain_core.documents import Document
 -from langchain_hwp_hwpx import HwpHwpxLoader
 -
@@ -208,6 +211,8 @@
 -
 -
 -raw_docs = parse_required_files(DATA_DIR, parse_hwp, parse_pdf)
++doc_title = partial(_docparse_title, config=docparse_config)
++is_value = partial(_docparse_is_value, config=docparse_config)
 +DOCPARSE_SETTINGS = {
 +    "profile": DOCPARSE_PROFILE,
 +    "index_render": DOCPARSE_INDEX_RENDER,
@@ -453,7 +458,7 @@
  
  import time
  from collections import defaultdict
-@@ -567,6 +214,84 @@
+@@ -567,6 +219,84 @@
      EMBED_MODEL = "text-embedding-3-small"
      embeddings = OpenAIEmbeddings(model=EMBED_MODEL)
  
@@ -538,7 +543,7 @@
  kiwi = Kiwi()
  ALLOWED_TAGS = {"NNG", "NNP", "NNB", "VV", "VA", "XR", "SL", "SN"}
  
-@@ -575,9 +300,15 @@
+@@ -575,9 +305,15 @@
      return [t.form for t in kiwi.tokenize(text) if t.tag in ALLOWED_TAGS]
  
  
@@ -555,7 +560,7 @@
      embedding=embeddings,
      collection_name=f"gachon_chunks_{int(time.time())}",
      collection_metadata={"hnsw:space": "cosine"},
-@@ -604,7 +335,7 @@
+@@ -604,7 +340,7 @@
                                metadata={"source": src, "page": page}))
  
  page_db = Chroma.from_documents(
@@ -564,7 +569,7 @@
      embedding=embeddings,
      collection_name=f"gachon_pages_{int(time.time())}",
      collection_metadata={"hnsw:space": "cosine"},
-@@ -1254,8 +985,27 @@
+@@ -1254,8 +990,27 @@
  
  
  def _context(docs) -> str:

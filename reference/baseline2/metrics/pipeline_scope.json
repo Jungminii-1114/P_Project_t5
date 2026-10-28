@@ -1,0 +1,9 @@
+{
+  "changed_common_functions": [
+    "_context"
+  ],
+  "added_functions": [
+    "_scalar_chroma_docs"
+  ],
+  "protected_settings_identical": true
+}

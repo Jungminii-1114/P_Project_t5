@@ -1650,9 +1650,12 @@ def _replace_between(source: str, start: str, end: str, replacement: str = "") -
 
 
 DOCPARSE_CELL = r'''from dataclasses import replace
+from functools import partial
 from pathlib import Path
 
 import docparse
+from docparse.context import doc_title as _docparse_title
+from docparse.table import is_value as _docparse_is_value
 from langchain_core.documents import Document
 
 DOCPARSE_PROFILE = os.environ.get("DOCPARSE_PROFILE", "gachon_2027")
@@ -1668,6 +1671,8 @@ docparse_config = replace(
     index_render=DOCPARSE_INDEX_RENDER,
     llm_render=DOCPARSE_LLM_RENDER,
 )
+doc_title = partial(_docparse_title, config=docparse_config)
+is_value = partial(_docparse_is_value, config=docparse_config)
 DOCPARSE_SETTINGS = {
     "profile": DOCPARSE_PROFILE,
     "index_render": DOCPARSE_INDEX_RENDER,

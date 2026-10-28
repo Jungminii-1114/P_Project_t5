@@ -2,6 +2,7 @@ import ast
 import hashlib
 import json
 import tempfile
+import symtable
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -12,6 +13,13 @@ from scripts.run_eval import _new_run_dir, build_run_summary, environment_record
 
 ROOT = Path(__file__).resolve().parents[1]
 PIPELINE_PATH = ROOT / "pipeline_v24.py"
+
+
+def test_parser_helpers_used_by_page_index_and_grounding_remain_bound():
+    symbols = symtable.symtable(PIPELINE_PATH.read_text(encoding="utf-8"), str(PIPELINE_PATH), "exec")
+    for name in ("doc_title", "is_value"):
+        symbol = symbols.lookup(name)
+        assert symbol.is_assigned() or symbol.is_imported(), name
 
 
 def _load_pipeline_function(name, namespace=None):
