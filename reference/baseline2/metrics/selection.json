@@ -1,0 +1,56 @@
+{
+  "selected": "V3",
+  "index_render": "header_records",
+  "llm_render": "header_records",
+  "primary_correct_tie": {
+    "V3": 40,
+    "V0": 40
+  },
+  "tie_retests": {
+    "V3": {
+      "sample_correct": [
+        3,
+        3,
+        3
+      ],
+      "drive_correct": 11,
+      "drive_time_score": 3.341203,
+      "max_sec": 12.508766,
+      "runs": [
+        "runs/20261028_181823_794465_v24_V3_tie_sample",
+        "runs/20261028_181909_524199_v24_V3_tie_sample",
+        "runs/20261028_181956_926587_v24_V3_tie_sample",
+        "runs/20261028_182058_796221_v24_V3_tie_drive"
+      ]
+    },
+    "V0": {
+      "sample_correct": [
+        3,
+        3,
+        3
+      ],
+      "drive_correct": 8,
+      "drive_time_score": 2.461542,
+      "max_sec": 13.837031,
+      "runs": [
+        "runs/20261028_182435_199358_v24_V0_tie_sample",
+        "runs/20261028_182513_745664_v24_V0_tie_sample",
+        "runs/20261028_182552_158144_v24_V0_tie_sample",
+        "runs/20261028_182634_390242_v24_V0_tie_drive"
+      ]
+    }
+  },
+  "noise_threshold_per_set": 2,
+  "reason": "Retest drive20 differs by three items, beyond the plan's two-item variation rule; sample repeats tie.",
+  "parser_config_defaults_retained": [
+    "baseline1",
+    "baseline1"
+  ],
+  "pipeline_default_sha256": "ca1be24c4ccf1fa7660c4fdf80bfe4b2d41594964b46eb983ce4c78c6fbac20e",
+  "selected_sample_runs": [
+    "runs/20261028_183145_103228_v24_V3_selected_sample",
+    "runs/20261028_183229_792758_v24_V3_selected_sample",
+    "runs/20261028_183312_984137_v24_V3_selected_sample"
+  ],
+  "selected_sample_passed": true
+}

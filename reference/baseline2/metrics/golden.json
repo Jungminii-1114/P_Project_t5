@@ -990,6 +990,136 @@
       "passed": false
     },
     {
+      "id": "03-regional-balance-career-grid",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 85,
+      "locator": null,
+      "type": "nested career-choice grade-interval lookup",
+      "found": false,
+      "structure_checks": {
+        "header_rows": false,
+        "stub_cols": false
+      },
+      "actual_structure": null,
+      "samples": [
+        {
+          "coordinate": null,
+          "expected": {
+            "row_label": [
+              "변환등급"
+            ],
+            "header_path": [
+              "70점 이상"
+            ],
+            "value": "A"
+          },
+          "actual": null,
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        },
+        {
+          "coordinate": null,
+          "expected": {
+            "row_label": [
+              "변환등급"
+            ],
+            "header_path": [
+              "70점 미만 ~ 50점 이상"
+            ],
+            "value": "B"
+          },
+          "actual": null,
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        },
+        {
+          "coordinate": null,
+          "expected": {
+            "row_label": [
+              "변환등급"
+            ],
+            "header_path": [
+              "50점 미만"
+            ],
+            "value": "E"
+          },
+          "actual": null,
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        },
+        {
+          "coordinate": null,
+          "expected": {
+            "row_label": [
+              "배점"
+            ],
+            "header_path": [
+              "70점 이상"
+            ],
+            "value": "100"
+          },
+          "actual": null,
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        },
+        {
+          "coordinate": null,
+          "expected": {
+            "row_label": [
+              "배점"
+            ],
+            "header_path": [
+              "70점 미만 ~ 50점 이상"
+            ],
+            "value": "99.5"
+          },
+          "actual": null,
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        },
+        {
+          "coordinate": null,
+          "expected": {
+            "row_label": [
+              "배점"
+            ],
+            "header_path": [
+              "50점 미만"
+            ],
+            "value": "70"
+          },
+          "actual": null,
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        }
+      ],
+      "passed": false
+    },
+    {
       "id": "04-school-violence-multilevel",
       "source": "04_2027학년도_정시_모집요강.pdf",
       "page": 35,
@@ -1826,9 +1956,9 @@
   ],
   "summary": {
     "tables_passed": 2,
-    "tables_total": 10,
+    "tables_total": 11,
     "cells_passed": 11,
-    "cells_total": 54,
+    "cells_total": 60,
     "value_only_passed": 37
   },
   "user_review_status": "pending",

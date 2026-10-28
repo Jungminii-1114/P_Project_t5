@@ -2,6 +2,7 @@
   "schema_version": 1,
   "coordinate_convention": {
     "pdf": "Rows and columns are zero-based within the PyMuPDF find_tables() table at table_ordinal; PDF table_ordinal is zero-based within that page.",
+    "manual_visual_region": "For fixtures marked not_separately_detected, visual_coordinate is zero-based within the source_region_bbox crop and is not a native find_tables() coordinate.",
     "hwp": "Rows and columns are zero-based in the HwpHwpxLoader cells JSON; locator.value is the element_index. HWP table_ordinal is zero-based among loader table elements.",
     "header_rows": "Logical header-row count, not a count of title, blank, or note rows preceding the table header. header_row_indices records the source-grid row positions.",
     "stub_cols": "Number of leftmost source-grid columns used as row labels. Merged repetitions are represented once in row_label.",
@@ -146,6 +147,34 @@
         ]
       },
       "structure_notes": "find_tables() reports only the enclosing 5×4 table; the grade lookup is printed inside outer source cell [1, 2]. Its visual row and column spans are genuine source information, but separate cell coordinates are not exposed by the outer table result."
+    },
+    {
+      "id": "03-regional-balance-career-grid",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 85,
+      "table_ordinal": null,
+      "ordinal_basis": "manual visual region; no separate pymupdf.Page.find_tables() result",
+      "extraction_status": "not_separately_detected",
+      "source_region_bbox": [290.0, 575.0, 540.0, 635.0],
+      "source_region_bbox_units": "PDF points",
+      "type": "nested career-choice grade-interval lookup",
+      "reason": "The lower regional-balance section prints a three-row score-conversion grid for career-choice scores.",
+      "source_dimensions": {"rows": 3, "cols": 4},
+      "dimension_basis": "visible ruled grid in the source-region crop",
+      "expected": {
+        "header_rows": 1,
+        "header_row_indices": [0],
+        "stub_cols": 1,
+        "samples": [
+          {"visual_coordinate": [1, 1], "row_label": ["변환등급"], "header_path": ["70점 이상"], "value": "A"},
+          {"visual_coordinate": [1, 2], "row_label": ["변환등급"], "header_path": ["70점 미만 ~ 50점 이상"], "value": "B"},
+          {"visual_coordinate": [1, 3], "row_label": ["변환등급"], "header_path": ["50점 미만"], "value": "E"},
+          {"visual_coordinate": [2, 1], "row_label": ["배점"], "header_path": ["70점 이상"], "value": "100"},
+          {"visual_coordinate": [2, 2], "row_label": ["배점"], "header_path": ["70점 미만 ~ 50점 이상"], "value": "99.5"},
+          {"visual_coordinate": [2, 3], "row_label": ["배점"], "header_path": ["50점 미만"], "value": "70"}
+        ]
+      },
+      "structure_notes": "The top-left cell labels the measure as 원점수; each of the other three columns is a score interval. This entry covers only the career-choice grid inside the lower regional-balance section; the neighboring general-choice grid is a separate visual region."
     },
     {
       "id": "04-school-violence-multilevel",

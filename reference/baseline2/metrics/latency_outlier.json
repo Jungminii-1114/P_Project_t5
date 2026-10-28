@@ -1,0 +1,99 @@
+{
+  "run": "runs/20261028_174535_624062_v24_V4",
+  "set": "drive20",
+  "id": 19,
+  "sec": 1411.353055,
+  "timings": {
+    "search": 0.173877,
+    "draft": 6.147312,
+    "repair": 1404.981412
+  },
+  "action": "repair_error",
+  "events": [
+    {
+      "stage": "repair",
+      "trigger": "repair",
+      "unsupported_pairs": [
+        [
+          "바이오로직스학과",
+          "11"
+        ],
+        [
+          "바이오로직스학과",
+          "7"
+        ],
+        [
+          "바이오로직스학과",
+          "11"
+        ],
+        [
+          "바이오로직스학과",
+          "8"
+        ],
+        [
+          "화공생명배터리공학부",
+          "10"
+        ],
+        [
+          "화공생명배터리공학부",
+          "31"
+        ],
+        [
+          "화공생명배터리공학부",
+          "11"
+        ],
+        [
+          "화공생명배터리공학부",
+          "1"
+        ],
+        [
+          "화공생명배터리공학부",
+          "11"
+        ],
+        [
+          "화공생명배터리공학부",
+          "7"
+        ],
+        [
+          "화공생명배터리공학부",
+          "10"
+        ],
+        [
+          "화공생명배터리공학부",
+          "3"
+        ],
+        [
+          "바이오로직스학과",
+          "10"
+        ],
+        [
+          "바이오로직스학과",
+          "4"
+        ],
+        [
+          "화공생명배터리공학부",
+          "10"
+        ],
+        [
+          "화공생명배터리공학부",
+          "3"
+        ],
+        [
+          "화공생명배터리공학부",
+          "10"
+        ],
+        [
+          "화공생명배터리공학부",
+          "3"
+        ]
+      ]
+    },
+    {
+      "stage": "repair",
+      "error": "OpenAIConnectionError"
+    }
+  ],
+  "ok": false,
+  "reason": "Judge error: OpenAIConnectionError",
+  "cause": "Not established. The saved repair stage lasted 1404.981412 seconds and ended with OpenAIConnectionError; judging also had OpenAIConnectionError. Host/network interruption versus timer behavior was not determined. Do not attribute this outlier to renderer computation."
+}

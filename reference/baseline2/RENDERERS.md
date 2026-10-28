@@ -1,7 +1,8 @@
 # 표 렌더러
 
 색인은 `baseline1 | header_records`, LLM 근거는 `baseline1 | html_full | header_records`로 따로 고른다.
-기본은 baseline1/baseline1이며 기존 JSONL 동일성을 유지한다. 문맥 헤더 형식도 유지한다.
+ParserConfig 기본은 baseline1/baseline1이며 기존 JSONL 동일성을 유지한다. 문맥 헤더 형식도 유지한다.
+RAG 재평가로 선정한 pipeline_v24의 실행 기본값은 header_records/header_records(V3)다.
 
 - baseline1: 기존 markdown·표 행 요약과 metadata.raw를 사용한다.
 - html_full: `<table><tr><th colspan="2">Window</th>…`처럼 병합 span을 보존한다.

@@ -1,0 +1,24 @@
+{
+  "pipeline": "v24",
+  "repeat": 3,
+  "sets": {
+    "sample3": {
+      "correct": 3,
+      "total": 3,
+      "accuracy": 1.0,
+      "mean_sec": 2.900755,
+      "max_sec": 3.813117,
+      "over_5s": 0,
+      "over_10s": 0,
+      "over_19s": 0,
+      "time_score": 1.2
+    }
+  },
+  "variant": "V3_selected_sample",
+  "docparse": {
+    "profile": "gachon_2027",
+    "index_render": "header_records",
+    "llm_render": "header_records",
+    "table_full_max_chars": 12000
+  }
+}

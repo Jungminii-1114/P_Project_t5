@@ -71,7 +71,7 @@ def _render_and_inventory(fixture: dict) -> dict:
     inventory: list[dict] = []
     hwp_refs: list[dict] = []
 
-    for table in fixture["tables"]:
+    for fixture_index, table in enumerate(fixture["tables"]):
         source = table["source"]
         if source.lower().endswith(".pdf"):
             page_number = int(table["page"])
@@ -80,6 +80,62 @@ def _render_and_inventory(fixture: dict) -> dict:
                 raise ValueError(f"PDF page outside file: {source} p.{page_number}")
             page = doc[page_number - 1]
             found = page.find_tables()
+            png_path = png_dir / f"{source[:2]}_p{page_number:03}.png"
+            page.get_pixmap(matrix=pymupdf.Matrix(1.6, 1.6), alpha=False).save(png_path)
+
+            extraction_status = table.get("extraction_status")
+            if extraction_status == "not_separately_detected":
+                if table.get("table_ordinal") is not None:
+                    raise ValueError(
+                        f"Visual-region fixtures must have a null table ordinal: {table.get('id')}"
+                    )
+                bbox = table.get("source_region_bbox")
+                if not isinstance(bbox, list) or len(bbox) != 4:
+                    raise ValueError(f"Visual-region fixture needs a four-value bbox: {table.get('id')}")
+                region = pymupdf.Rect(*map(float, bbox))
+                if region.is_empty or not page.rect.contains(region):
+                    raise ValueError(f"Visual-region bbox is outside PDF page: {table.get('id')}")
+                region_png = png_dir / (
+                    f"{source[:2]}_p{page_number:03}_region_{fixture_index:02}.png"
+                )
+                page.get_pixmap(matrix=pymupdf.Matrix(3, 3), clip=region, alpha=False).save(region_png)
+                samples = table.get("expected", {}).get("samples", [])
+                if any("visual_coordinate" not in sample for sample in samples):
+                    raise ValueError(
+                        f"Visual-region samples need visual_coordinate fields: {table.get('id')}"
+                    )
+                inventory.append({
+                    "id": table["id"],
+                    "source": source,
+                    "file_page": page_number,
+                    "page_count": len(doc),
+                    "table_ordinal": None,
+                    "table_count_on_page": len(found.tables),
+                    "extraction_status": extraction_status,
+                    "separate_extraction_missing": True,
+                    "native_grid_dimension_assertion": "skipped_visual_region",
+                    "source_dimensions_visual": table.get("source_dimensions"),
+                    "source_region_bbox": bbox,
+                    "source_region_bbox_units": table.get("source_region_bbox_units"),
+                    "visual_sample_count": len(samples),
+                    "visual_samples": [
+                        {
+                            "visual_coordinate": sample["visual_coordinate"],
+                            "row_label": sample["row_label"],
+                            "header_path": sample["header_path"],
+                            "value": sample["value"],
+                        }
+                        for sample in samples
+                    ],
+                    "page_text_prefix": _first_text_lines(page),
+                    "png": str(png_path.relative_to(ROOT)),
+                    "region_png": str(region_png.relative_to(ROOT)),
+                })
+                doc.close()
+                continue
+            if extraction_status is not None:
+                raise ValueError(f"Unknown PDF extraction_status: {extraction_status!r}")
+
             ordinal = int(table["table_ordinal"])
             if not 0 <= ordinal < len(found.tables):
                 raise ValueError(
@@ -104,8 +160,6 @@ def _render_and_inventory(fixture: dict) -> dict:
                     "fixture_value": sample["value"],
                     "source_extracted_text": rows[row][col],
                 })
-            png_path = png_dir / f"{source[:2]}_p{page_number:03}.png"
-            page.get_pixmap(matrix=pymupdf.Matrix(1.6, 1.6), alpha=False).save(png_path)
             inventory.append({
                 "id": table["id"],
                 "source": source,
@@ -188,7 +242,11 @@ def main() -> None:
     fixture = _read_fixture()
     rendered = _render_and_inventory(fixture)
     page_evidence = _validate_src_pages()
-    print(f"Rendered {sum(x['source'].endswith('.pdf') for x in rendered['inventory'])} selected PDF table pages.")
+    pdf_entries = [x for x in rendered["inventory"] if x["source"].lower().endswith(".pdf")]
+    manual_regions = [x for x in pdf_entries if x.get("extraction_status") == "not_separately_detected"]
+    print(f"Prepared {len(fixture['tables'])} source tables across five documents.")
+    print(f"Rendered {len(pdf_entries)} selected PDF fixture pages/entries.")
+    print(f"Recorded {len(manual_regions)} visual/manual region(s) with separate extraction missing.")
     print(f"Inventory: {rendered['inventory_path'].relative_to(ROOT)}")
     print(f"HWP source cells: {rendered['hwp_path'].relative_to(ROOT)}")
     print(f"Validated {len(page_evidence)} PDF evaluation src references.")

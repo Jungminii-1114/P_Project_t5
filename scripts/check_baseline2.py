@@ -33,21 +33,34 @@ def audit():
                 value = item.get(key)
                 if isinstance(value, str) and value:
                     corpus.append((path.name, index, key, value))
-    secrets, leaks, hashes = [], [], {}
+    secrets, leaks, inherited, hashes = [], [], [], {}
     for name in names:
         path = ROOT / name
-        if not path.is_file() or path.suffix not in {".py", ".md", ".json", ".yaml", ".toml"}:
+        if not path.is_file() or path.suffix not in {".py", ".md", ".json", ".yaml", ".toml", ".diff", ".lock"}:
             continue
         content = path.read_text(encoding="utf-8-sig")
         hashes[name] = hashlib.sha256(path.read_bytes()).hexdigest()
         for label, pattern in SECRET_PATTERNS.items():
             if pattern.search(content):
                 secrets.append({"file": name, "pattern": label})
+        baseline_content = None
         for dataset, index, key, value in corpus:
             if value in content:
-                leaks.append({"file": name, "dataset": dataset, "item": index, "field": key})
+                if baseline_content is None:
+                    baseline = subprocess.run(["git", "show", f"baseline-1:{name}"], cwd=ROOT,
+                                              capture_output=True)
+                    baseline_content = baseline.stdout.decode("utf-8-sig") if baseline.returncode == 0 else ""
+                current_count = content.count(value)
+                baseline_count = baseline_content.count(value)
+                match = {"file": name, "dataset": dataset, "item": index, "field": key,
+                         "current_count": current_count, "baseline_count": baseline_count}
+                if current_count > baseline_count:
+                    leaks.append(match)
+                else:
+                    inherited.append(match)
     return {"frozen_scope_unchanged": not diff, "secret_matches": secrets,
-            "full_sentence_leaks": leaks, "scanned_files": hashes,
+            "full_sentence_leaks": leaks, "inherited_full_sentence_matches": inherited,
+            "scanned_files": hashes,
             "passed": not diff and not secrets and not leaks,
             "note": "The literal reference/ diff includes the required new baseline2 documentation; frozen baseline1 is checked separately."}
 

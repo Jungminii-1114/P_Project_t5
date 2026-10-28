@@ -81,6 +81,9 @@ uv run python scripts/compare_eval.py --v22 runs/20261028_122601_013520_v22 --v2
 
 ## baseline-2 / v24
 
+최종 선정은 V3이며 v24의 렌더러 기본값은 `header_records/header_records`다.
+아래 명시적 `baseline1/baseline1` 명령은 V0 재현용이다. 파서 패키지 기본값도 baseline1을 유지한다.
+
 v23 빌더와 제출 노트북은 동결 상태다. 새 `build_pipeline_v24.py`는 로컬 `pipeline_v24.py`만 생성한다.
 파서는 설치 패키지 `src/docparse/`를 사용한다.
 

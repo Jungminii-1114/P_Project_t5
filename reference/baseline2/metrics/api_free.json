@@ -18,7 +18,7 @@
         "runs/baseline2/ir"
       ],
       "exit_code": 0,
-      "seconds": 23.799
+      "seconds": 23.488
     },
     {
       "command": [
@@ -26,7 +26,7 @@
         "scripts.diagnose_tables"
       ],
       "exit_code": 0,
-      "seconds": 2.728
+      "seconds": 2.942
     },
     {
       "command": [
@@ -35,7 +35,7 @@
         "--strict"
       ],
       "exit_code": 1,
-      "seconds": 2.542
+      "seconds": 2.536
     },
     {
       "command": [
@@ -43,7 +43,7 @@
         "scripts.diagnose_bm25"
       ],
       "exit_code": 0,
-      "seconds": 46.104
+      "seconds": 45.531
     },
     {
       "command": [
@@ -53,9 +53,20 @@
         "--junitxml=runs/baseline2/pytest.xml"
       ],
       "exit_code": 0,
-      "seconds": 78.551
+      "seconds": 78.848
     }
   ],
   "execution_passed": true,
-  "golden_acceptance_passed": false
+  "golden_acceptance_passed": false,
+  "post_selection_pytest": {
+    "result": {
+      "tests": 68,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 77.784
+    },
+    "network_disabled": true,
+    "evidence": "metrics/final_validation.json"
+  }
 }
