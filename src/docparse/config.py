@@ -8,6 +8,12 @@ from pathlib import Path
 
 @dataclass
 class ParserConfig:
+    index_render: str = "baseline1"
+    llm_render: str = "baseline1"
+    extract_table_ir: bool = False
+    table_full_max_chars: int = 12000
+    ir_coord_tolerance: float = 0.5
+    ir_max_header_rows: int = 8
     required_files: tuple[str, ...] = ()
     title_map: dict[str, str] = field(default_factory=dict)
     title_prefix_length: int | None = None
@@ -46,6 +52,18 @@ class ParserConfig:
     image_marker: str = "[IMAGE]"
     hwp_mode: str = "elements"
     hwp_distribution_backend: str = "pyhwp"
+
+    def __post_init__(self):
+        if self.index_render not in {"baseline1", "header_records"}:
+            raise ValueError("Invalid index_render")
+        if self.llm_render not in {"baseline1", "html_full", "header_records"}:
+            raise ValueError("Invalid llm_render")
+        if self.table_full_max_chars < 1 or self.ir_coord_tolerance <= 0:
+            raise ValueError("Table limits must be positive")
+
+    @property
+    def ir_enabled(self):
+        return self.extract_table_ir or self.index_render != "baseline1" or self.llm_render != "baseline1"
 
 
 def load_profile(name_or_path: str | Path | None = None) -> ParserConfig:

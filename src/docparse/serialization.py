@@ -23,6 +23,15 @@ def write_outputs(results, paths, out_dir, config: ParserConfig = None):
     out_dir.mkdir(parents=True, exist_ok=True)
     outputs = {}
     for stage, docs in results.items():
+        if stage in {"tables", "table_ir"}:
+            name = stage + ".jsonl"
+            records = ([{"table_id": key, "html": value} for key, value in docs.items()]
+                       if stage == "tables" else [value.to_dict() for value in docs.values()])
+            data = ("\n".join(json.dumps(value, ensure_ascii=False, sort_keys=True)
+                              for value in records) + "\n").encode("utf-8") if records else b""
+            (out_dir / name).write_bytes(data)
+            outputs[name] = {"records": len(records), "sha256": hashlib.sha256(data).hexdigest()}
+            continue
         data = jsonl_bytes(docs)
         name = stage + ".jsonl"
         (out_dir / name).write_bytes(data)

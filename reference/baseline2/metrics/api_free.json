@@ -1,0 +1,61 @@
+{
+  "credentials_removed": [
+    "OPENAI_API_KEY",
+    "VOYAGEAI_API_KEY",
+    "VOYAGE_API_KEY"
+  ],
+  "network_disabled": true,
+  "commands": [
+    {
+      "command": [
+        "-m",
+        "docparse",
+        "data/dataset",
+        "--profile",
+        "gachon_2027",
+        "--extract-table-ir",
+        "--out",
+        "runs/baseline2/ir"
+      ],
+      "exit_code": 0,
+      "seconds": 23.799
+    },
+    {
+      "command": [
+        "-m",
+        "scripts.diagnose_tables"
+      ],
+      "exit_code": 0,
+      "seconds": 2.728
+    },
+    {
+      "command": [
+        "-m",
+        "scripts.check_table_golden",
+        "--strict"
+      ],
+      "exit_code": 1,
+      "seconds": 2.542
+    },
+    {
+      "command": [
+        "-m",
+        "scripts.diagnose_bm25"
+      ],
+      "exit_code": 0,
+      "seconds": 46.104
+    },
+    {
+      "command": [
+        "-m",
+        "pytest",
+        "-q",
+        "--junitxml=runs/baseline2/pytest.xml"
+      ],
+      "exit_code": 0,
+      "seconds": 78.551
+    }
+  ],
+  "execution_passed": true,
+  "golden_acceptance_passed": false
+}

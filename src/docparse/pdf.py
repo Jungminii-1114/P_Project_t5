@@ -30,7 +30,7 @@ def rows_to_markdown(rows) -> str:
     return "| " + " | ".join(rows[0]) + " |\n|" + "---|" * len(keep) + "\n" + body
 
 
-def parse_pdf(path: Path, config: ParserConfig = None):
+def parse_pdf(path: Path, config: ParserConfig = None, *, tables=None):
     config = config or ParserConfig()
     docs = []
     with pymupdf.open(str(path)) as doc:
@@ -41,9 +41,17 @@ def parse_pdf(path: Path, config: ParserConfig = None):
                                      metadata={"source": path.name, "page": i, "kind": "text", "locator": {"type": "page", "value": i}}))
     with pdfplumber.open(str(path)) as pdf:
         for i, page in enumerate(pdf.pages, start=1):
-            for table in page.extract_tables():
+            found = page.find_tables() if tables is not None else None
+            for ordinal, table in enumerate(page.extract_tables()):
                 table_md = normalize(rows_to_markdown(table), config)
                 if len(table_md) > config.pdf_table_min_chars:
+                    metadata = {"source": path.name, "page": i, "kind": "table", "locator": {"type": "page", "value": i}}
+                    if tables is not None:
+                        from .extract_ir import pdf_table
+                        ir = pdf_table(page, found[ordinal] if ordinal < len(found) else None,
+                                       table, path.name, i, ordinal, config)
+                        tables[ir.table_id] = ir
+                        metadata["table_id"] = ir.table_id
                     docs.append(Document(page_content=table_md,
-                                         metadata={"source": path.name, "page": i, "kind": "table", "locator": {"type": "page", "value": i}}))
+                                         metadata=metadata))
     return docs

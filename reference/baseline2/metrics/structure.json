@@ -1,0 +1,1789 @@
+{
+  "tables": 209,
+  "origin_counts": {
+    "hwp_cells": 18,
+    "pdf_cells": 191
+  },
+  "origin_ratios": {
+    "hwp_cells": 0.0861244019138756,
+    "pdf_cells": 0.9138755980861244
+  },
+  "pdf_fallback_ratio": 0.0,
+  "uncertain_tables": 118,
+  "uncertain_ratio": 0.5645933014354066,
+  "multilevel_header_tables": 39,
+  "crop_comparison": {
+    "cells": 7481,
+    "different_cells": 372,
+    "tables_with_differences": 7
+  },
+  "table_full_max_chars": 12000,
+  "length_distribution": {
+    "html_full": {
+      "min": 110,
+      "p50": 409,
+      "p90": 2474,
+      "p95": 3866,
+      "max": 7903
+    },
+    "header_records": {
+      "min": 35,
+      "p50": 378,
+      "p90": 3145,
+      "p95": 6828,
+      "max": 151741
+    }
+  },
+  "confident_length_distribution": {
+    "html_full": {
+      "min": 151,
+      "p50": 432,
+      "p90": 3866,
+      "p95": 5606,
+      "max": 7903
+    },
+    "header_records": {
+      "min": 35,
+      "p50": 252,
+      "p90": 3310,
+      "p95": 13202,
+      "max": 21463
+    }
+  },
+  "over_limit": {
+    "html_full": [],
+    "header_records": [
+      {
+        "table_id": "table_a88668f5b97e918e94abae83",
+        "source": "01_2027학년도_재외국민_모집요강.hwp",
+        "page": 3,
+        "confidence": "confident",
+        "html_full": 4016,
+        "header_records": 13214
+      },
+      {
+        "table_id": "table_6f6b09a40c3d112db4f5c4e2",
+        "source": "01_2027학년도_재외국민_모집요강.hwp",
+        "page": 10,
+        "confidence": "uncertain",
+        "html_full": 4616,
+        "header_records": 151741
+      },
+      {
+        "table_id": "table_91e8025a1f20943d570ba22d",
+        "source": "01_2027학년도_재외국민_모집요강.hwp",
+        "page": 12,
+        "confidence": "uncertain",
+        "html_full": 2321,
+        "header_records": 23819
+      },
+      {
+        "table_id": "table_3b6da96391f249236b12da0d",
+        "source": "01_2027학년도_재외국민_모집요강.hwp",
+        "page": 17,
+        "confidence": "confident",
+        "html_full": 3866,
+        "header_records": 15474
+      },
+      {
+        "table_id": "table_882c0729a883828466a75255",
+        "source": "01_2027학년도_재외국민_모집요강.hwp",
+        "page": 18,
+        "confidence": "confident",
+        "html_full": 6308,
+        "header_records": 21463
+      },
+      {
+        "table_id": "table_6dd0a2b0d950bd269925fa7e",
+        "source": "01_2027학년도_재외국민_모집요강.hwp",
+        "page": 19,
+        "confidence": "confident",
+        "html_full": 1696,
+        "header_records": 13202
+      },
+      {
+        "table_id": "table_175c3edff3e65efa8fbd7836",
+        "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+        "page": 6,
+        "confidence": "confident",
+        "html_full": 7903,
+        "header_records": 14189
+      }
+    ]
+  },
+  "lengths": [
+    {
+      "table_id": "table_68b9eb089c3a3d705569a470",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "page": 2,
+      "confidence": "uncertain",
+      "html_full": 219,
+      "header_records": 128
+    },
+    {
+      "table_id": "table_a88668f5b97e918e94abae83",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "page": 3,
+      "confidence": "confident",
+      "html_full": 4016,
+      "header_records": 13214
+    },
+    {
+      "table_id": "table_3c8f7caeb300d874ed8d79ab",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "page": 4,
+      "confidence": "uncertain",
+      "html_full": 1905,
+      "header_records": 3145
+    },
+    {
+      "table_id": "table_cbf7b6c7b09f24d5122859ff",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "page": 5,
+      "confidence": "uncertain",
+      "html_full": 2436,
+      "header_records": 6617
+    },
+    {
+      "table_id": "table_510f2aa93fbe37f1cea7a4fc",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "page": 6,
+      "confidence": "uncertain",
+      "html_full": 818,
+      "header_records": 1394
+    },
+    {
+      "table_id": "table_e411f6e5a4ac6140a5c8a1bd",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "page": 7,
+      "confidence": "uncertain",
+      "html_full": 1527,
+      "header_records": 9651
+    },
+    {
+      "table_id": "table_6cf31e0f1fb6d8f7b10083f1",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "page": 8,
+      "confidence": "uncertain",
+      "html_full": 2209,
+      "header_records": 4238
+    },
+    {
+      "table_id": "table_097de46efde29633025eede0",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "page": 9,
+      "confidence": "uncertain",
+      "html_full": 1021,
+      "header_records": 1444
+    },
+    {
+      "table_id": "table_6f6b09a40c3d112db4f5c4e2",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "page": 10,
+      "confidence": "uncertain",
+      "html_full": 4616,
+      "header_records": 151741
+    },
+    {
+      "table_id": "table_9a720273b814caf58386a0f2",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "page": 11,
+      "confidence": "uncertain",
+      "html_full": 1640,
+      "header_records": 4326
+    },
+    {
+      "table_id": "table_91e8025a1f20943d570ba22d",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "page": 12,
+      "confidence": "uncertain",
+      "html_full": 2321,
+      "header_records": 23819
+    },
+    {
+      "table_id": "table_d3f3a21f639e30e058029a8f",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "page": 13,
+      "confidence": "uncertain",
+      "html_full": 2148,
+      "header_records": 3517
+    },
+    {
+      "table_id": "table_130d6141c150677ccddf463c",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "page": 14,
+      "confidence": "uncertain",
+      "html_full": 831,
+      "header_records": 1662
+    },
+    {
+      "table_id": "table_4b100c336422c526057a8df6",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "page": 15,
+      "confidence": "uncertain",
+      "html_full": 1334,
+      "header_records": 11722
+    },
+    {
+      "table_id": "table_ee5c6103b333a6851966886d",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "page": 16,
+      "confidence": "uncertain",
+      "html_full": 1011,
+      "header_records": 2265
+    },
+    {
+      "table_id": "table_3b6da96391f249236b12da0d",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "page": 17,
+      "confidence": "confident",
+      "html_full": 3866,
+      "header_records": 15474
+    },
+    {
+      "table_id": "table_882c0729a883828466a75255",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "page": 18,
+      "confidence": "confident",
+      "html_full": 6308,
+      "header_records": 21463
+    },
+    {
+      "table_id": "table_6dd0a2b0d950bd269925fa7e",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "page": 19,
+      "confidence": "confident",
+      "html_full": 1696,
+      "header_records": 13202
+    },
+    {
+      "table_id": "table_9af29efc2a6717f1a48dd49c",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 3,
+      "confidence": "uncertain",
+      "html_full": 292,
+      "header_records": 259
+    },
+    {
+      "table_id": "table_4f7127ba6448097c679cde62",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 4,
+      "confidence": "uncertain",
+      "html_full": 263,
+      "header_records": 246
+    },
+    {
+      "table_id": "table_caa8bc113a9dc2467726ba3a",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 4,
+      "confidence": "uncertain",
+      "html_full": 310,
+      "header_records": 331
+    },
+    {
+      "table_id": "table_cfc8fe02336a9be2ec755718",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 5,
+      "confidence": "uncertain",
+      "html_full": 3196,
+      "header_records": 4075
+    },
+    {
+      "table_id": "table_175c3edff3e65efa8fbd7836",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 6,
+      "confidence": "confident",
+      "html_full": 7903,
+      "header_records": 14189
+    },
+    {
+      "table_id": "table_0a66cabb45c4a4789f56442a",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 7,
+      "confidence": "confident",
+      "html_full": 2474,
+      "header_records": 3976
+    },
+    {
+      "table_id": "table_258646e783edf8328109302c",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 7,
+      "confidence": "uncertain",
+      "html_full": 592,
+      "header_records": 1045
+    },
+    {
+      "table_id": "table_a9d261b024b25014697bdc14",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 8,
+      "confidence": "uncertain",
+      "html_full": 237,
+      "header_records": 192
+    },
+    {
+      "table_id": "table_2f86054ad9eab643ca1a4b6a",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 8,
+      "confidence": "uncertain",
+      "html_full": 388,
+      "header_records": 406
+    },
+    {
+      "table_id": "table_e05fcb56e0f13e93d6bb3901",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 9,
+      "confidence": "uncertain",
+      "html_full": 492,
+      "header_records": 510
+    },
+    {
+      "table_id": "table_e65850322369336e5494a1dd",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 10,
+      "confidence": "uncertain",
+      "html_full": 130,
+      "header_records": 109
+    },
+    {
+      "table_id": "table_025bf09761a650275b6f3541",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 10,
+      "confidence": "uncertain",
+      "html_full": 230,
+      "header_records": 185
+    },
+    {
+      "table_id": "table_291ea49e898f430d8c6377e3",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 11,
+      "confidence": "uncertain",
+      "html_full": 192,
+      "header_records": 183
+    },
+    {
+      "table_id": "table_f0b5f784d8b725fb0d1d92b1",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 12,
+      "confidence": "uncertain",
+      "html_full": 813,
+      "header_records": 869
+    },
+    {
+      "table_id": "table_262b7cce441c66be9385b903",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 13,
+      "confidence": "uncertain",
+      "html_full": 288,
+      "header_records": 243
+    },
+    {
+      "table_id": "table_7ca87deb063adf2f73b1af45",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 13,
+      "confidence": "uncertain",
+      "html_full": 250,
+      "header_records": 241
+    },
+    {
+      "table_id": "table_bd2e737aa3b41ba5b9b87715",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 14,
+      "confidence": "uncertain",
+      "html_full": 402,
+      "header_records": 477
+    },
+    {
+      "table_id": "table_d431d78448c73c117c2d7ebf",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 15,
+      "confidence": "uncertain",
+      "html_full": 194,
+      "header_records": 157
+    },
+    {
+      "table_id": "table_f51b5216cc51a4505520143f",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 16,
+      "confidence": "uncertain",
+      "html_full": 167,
+      "header_records": 138
+    },
+    {
+      "table_id": "table_1584f917b2ac27992eb25986",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 16,
+      "confidence": "uncertain",
+      "html_full": 151,
+      "header_records": 122
+    },
+    {
+      "table_id": "table_7df14dfc037112e6362d675c",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 17,
+      "confidence": "uncertain",
+      "html_full": 788,
+      "header_records": 921
+    },
+    {
+      "table_id": "table_34f3fe7fa6b438d5f2e1c2c4",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 17,
+      "confidence": "uncertain",
+      "html_full": 305,
+      "header_records": 380
+    },
+    {
+      "table_id": "table_52f4653f98a3c2c01b66258e",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 18,
+      "confidence": "uncertain",
+      "html_full": 266,
+      "header_records": 213
+    },
+    {
+      "table_id": "table_e35e8cd939d346de6eea05aa",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 18,
+      "confidence": "uncertain",
+      "html_full": 131,
+      "header_records": 110
+    },
+    {
+      "table_id": "table_db3ff19f11ad6d4363219bbf",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 19,
+      "confidence": "confident",
+      "html_full": 1744,
+      "header_records": 1457
+    },
+    {
+      "table_id": "table_a881ee345527f19c02ed052b",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 29,
+      "confidence": "confident",
+      "html_full": 2399,
+      "header_records": 3310
+    },
+    {
+      "table_id": "table_43cf149e81acf1b25f9922f6",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 30,
+      "confidence": "uncertain",
+      "html_full": 1409,
+      "header_records": 1819
+    },
+    {
+      "table_id": "table_80c328f32109a23304142cd2",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 30,
+      "confidence": "uncertain",
+      "html_full": 140,
+      "header_records": 151
+    },
+    {
+      "table_id": "table_e3d8a5e1dad8dd4b37eab1b1",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 30,
+      "confidence": "uncertain",
+      "html_full": 140,
+      "header_records": 151
+    },
+    {
+      "table_id": "table_b1f94268e6f82f8108f8ccf1",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 30,
+      "confidence": "uncertain",
+      "html_full": 228,
+      "header_records": 378
+    },
+    {
+      "table_id": "table_5fa06e5d0c8858870121cd8d",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 30,
+      "confidence": "uncertain",
+      "html_full": 228,
+      "header_records": 378
+    },
+    {
+      "table_id": "table_449dbfb3556cb8df6750226c",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 31,
+      "confidence": "confident",
+      "html_full": 2809,
+      "header_records": 1164
+    },
+    {
+      "table_id": "table_ae7a5e5760e1efd2c8f6c37d",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 31,
+      "confidence": "confident",
+      "html_full": 2477,
+      "header_records": 894
+    },
+    {
+      "table_id": "table_6815462e8bfcc021cabb7a37",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 32,
+      "confidence": "confident",
+      "html_full": 6187,
+      "header_records": 6828
+    },
+    {
+      "table_id": "table_bbc34f0bd309d9fb1e06b80d",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 33,
+      "confidence": "confident",
+      "html_full": 6817,
+      "header_records": 4103
+    },
+    {
+      "table_id": "table_a71ac1ae015760511c67c162",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 34,
+      "confidence": "uncertain",
+      "html_full": 3743,
+      "header_records": 8767
+    },
+    {
+      "table_id": "table_f23cc7cd2241e206b06ed648",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 35,
+      "confidence": "uncertain",
+      "html_full": 142,
+      "header_records": 151
+    },
+    {
+      "table_id": "table_9ea8114b0f6ad94115917c8a",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 35,
+      "confidence": "uncertain",
+      "html_full": 323,
+      "header_records": 323
+    },
+    {
+      "table_id": "table_1c1337e637f5fb77d56db5df",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 37,
+      "confidence": "uncertain",
+      "html_full": 192,
+      "header_records": 214
+    },
+    {
+      "table_id": "table_b65585ea09aa469f916fe813",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 39,
+      "confidence": "confident",
+      "html_full": 406,
+      "header_records": 281
+    },
+    {
+      "table_id": "table_216238f188861db7a0433181",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 39,
+      "confidence": "confident",
+      "html_full": 230,
+      "header_records": 104
+    },
+    {
+      "table_id": "table_7ad6ec78da9b1cfe9951343e",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 39,
+      "confidence": "uncertain",
+      "html_full": 267,
+      "header_records": 279
+    },
+    {
+      "table_id": "table_0e8118f4363f8f0f6e16bcfc",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 39,
+      "confidence": "uncertain",
+      "html_full": 178,
+      "header_records": 187
+    },
+    {
+      "table_id": "table_ff0fad4b6894c3f7823addfe",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 40,
+      "confidence": "uncertain",
+      "html_full": 1522,
+      "header_records": 1549
+    },
+    {
+      "table_id": "table_a03220614c2f9715e4aeee77",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 40,
+      "confidence": "uncertain",
+      "html_full": 1553,
+      "header_records": 1516
+    },
+    {
+      "table_id": "table_34e5d6ed1f09391f04f99d44",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 40,
+      "confidence": "uncertain",
+      "html_full": 534,
+      "header_records": 555
+    },
+    {
+      "table_id": "table_9e9582a52bc9e7e23613ffcb",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 41,
+      "confidence": "uncertain",
+      "html_full": 381,
+      "header_records": 529
+    },
+    {
+      "table_id": "table_2150364ba43b284ac2845170",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 41,
+      "confidence": "uncertain",
+      "html_full": 324,
+      "header_records": 295
+    },
+    {
+      "table_id": "table_3ff189f3b3d28a3b292f1377",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 42,
+      "confidence": "uncertain",
+      "html_full": 1522,
+      "header_records": 1549
+    },
+    {
+      "table_id": "table_d2c6f3fc6f6e7e6c77e4cbd8",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 42,
+      "confidence": "uncertain",
+      "html_full": 1498,
+      "header_records": 1462
+    },
+    {
+      "table_id": "table_e66c77f1a16f2e7c07ff32e1",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 43,
+      "confidence": "uncertain",
+      "html_full": 537,
+      "header_records": 558
+    },
+    {
+      "table_id": "table_bf8a0ef51d40dd1e783c61d6",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 44,
+      "confidence": "confident",
+      "html_full": 364,
+      "header_records": 123
+    },
+    {
+      "table_id": "table_f0b0779d6e2b559a1c6aa31f",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 44,
+      "confidence": "uncertain",
+      "html_full": 204,
+      "header_records": 240
+    },
+    {
+      "table_id": "table_c84fc7fe3724b11147d1cbb7",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 46,
+      "confidence": "confident",
+      "html_full": 739,
+      "header_records": 611
+    },
+    {
+      "table_id": "table_38ebe15ca661448d1140d94c",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 46,
+      "confidence": "uncertain",
+      "html_full": 158,
+      "header_records": 167
+    },
+    {
+      "table_id": "table_744def262a2d30e7b954c778",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 48,
+      "confidence": "confident",
+      "html_full": 1343,
+      "header_records": 505
+    },
+    {
+      "table_id": "table_1c67b6e3dc6d5765eaeaa3eb",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 48,
+      "confidence": "confident",
+      "html_full": 1401,
+      "header_records": 434
+    },
+    {
+      "table_id": "table_7a03a811ca784805a60e3c1b",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 49,
+      "confidence": "uncertain",
+      "html_full": 268,
+      "header_records": 223
+    },
+    {
+      "table_id": "table_e80f49970486a9032fb86cfa",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 50,
+      "confidence": "confident",
+      "html_full": 782,
+      "header_records": 252
+    },
+    {
+      "table_id": "table_35ae928405dc83d7e23ec5ea",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 50,
+      "confidence": "confident",
+      "html_full": 800,
+      "header_records": 251
+    },
+    {
+      "table_id": "table_a7018e14a6b68b2f6cfaf571",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 51,
+      "confidence": "uncertain",
+      "html_full": 174,
+      "header_records": 146
+    },
+    {
+      "table_id": "table_15a2ba9d489f8633242720ea",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 54,
+      "confidence": "uncertain",
+      "html_full": 172,
+      "header_records": 179
+    },
+    {
+      "table_id": "table_2670dae2deca95d01cd11175",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 58,
+      "confidence": "uncertain",
+      "html_full": 1522,
+      "header_records": 1549
+    },
+    {
+      "table_id": "table_46b0c1dc7cad5854df346038",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 58,
+      "confidence": "uncertain",
+      "html_full": 1396,
+      "header_records": 1370
+    },
+    {
+      "table_id": "table_c71c50a1e2df7b12d72d312b",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 59,
+      "confidence": "uncertain",
+      "html_full": 799,
+      "header_records": 870
+    },
+    {
+      "table_id": "table_51cddca50556bb7831f2ead9",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 60,
+      "confidence": "confident",
+      "html_full": 186,
+      "header_records": 49
+    },
+    {
+      "table_id": "table_e2f824a05f83df0922d94c0d",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 60,
+      "confidence": "uncertain",
+      "html_full": 201,
+      "header_records": 173
+    },
+    {
+      "table_id": "table_16b4a58724bddb0a61ab2004",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 61,
+      "confidence": "uncertain",
+      "html_full": 325,
+      "header_records": 277
+    },
+    {
+      "table_id": "table_c1fec9b591a37afe86a15fb1",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 62,
+      "confidence": "uncertain",
+      "html_full": 1131,
+      "header_records": 1159
+    },
+    {
+      "table_id": "table_f9215764b496b98665398040",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 62,
+      "confidence": "confident",
+      "html_full": 1141,
+      "header_records": 355
+    },
+    {
+      "table_id": "table_318eed2f22bfdef42eb9ca66",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 63,
+      "confidence": "uncertain",
+      "html_full": 174,
+      "header_records": 146
+    },
+    {
+      "table_id": "table_5efe21ae615300796f6a7387",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 64,
+      "confidence": "confident",
+      "html_full": 1113,
+      "header_records": 427
+    },
+    {
+      "table_id": "table_e46e24ca83f5786fd53a2fde",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 64,
+      "confidence": "confident",
+      "html_full": 1186,
+      "header_records": 371
+    },
+    {
+      "table_id": "table_d8dddee75b3161bae99d0de6",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 65,
+      "confidence": "uncertain",
+      "html_full": 174,
+      "header_records": 146
+    },
+    {
+      "table_id": "table_5f4cfd5ca99d52cb57880788",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 66,
+      "confidence": "uncertain",
+      "html_full": 176,
+      "header_records": 185
+    },
+    {
+      "table_id": "table_9484e26dae2cf44a4d7b92e2",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 67,
+      "confidence": "uncertain",
+      "html_full": 239,
+      "header_records": 314
+    },
+    {
+      "table_id": "table_b462828af8087efc1bc50100",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 67,
+      "confidence": "uncertain",
+      "html_full": 633,
+      "header_records": 596
+    },
+    {
+      "table_id": "table_448213de1c37e3a01d1c17e6",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 68,
+      "confidence": "confident",
+      "html_full": 151,
+      "header_records": 35
+    },
+    {
+      "table_id": "table_26b8d0b3fc998976182509e1",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 70,
+      "confidence": "confident",
+      "html_full": 340,
+      "header_records": 125
+    },
+    {
+      "table_id": "table_75aab3f289e7da33cee6fe9c",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 70,
+      "confidence": "uncertain",
+      "html_full": 174,
+      "header_records": 146
+    },
+    {
+      "table_id": "table_3e6f2eee966376847c3129cf",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 72,
+      "confidence": "uncertain",
+      "html_full": 253,
+      "header_records": 271
+    },
+    {
+      "table_id": "table_ff5d4a37058dbca96491c543",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 72,
+      "confidence": "uncertain",
+      "html_full": 278,
+      "header_records": 289
+    },
+    {
+      "table_id": "table_89bd21ac2abe18bbe5b8a03b",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 73,
+      "confidence": "confident",
+      "html_full": 344,
+      "header_records": 224
+    },
+    {
+      "table_id": "table_047cef16b4287db4144571d0",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 74,
+      "confidence": "uncertain",
+      "html_full": 493,
+      "header_records": 332
+    },
+    {
+      "table_id": "table_38ab3189b198f902dd19bf50",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 74,
+      "confidence": "confident",
+      "html_full": 410,
+      "header_records": 142
+    },
+    {
+      "table_id": "table_ebd9f94b7958c415df408fd1",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 74,
+      "confidence": "uncertain",
+      "html_full": 413,
+      "header_records": 379
+    },
+    {
+      "table_id": "table_e99d999f54db21b59f50de1e",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 75,
+      "confidence": "uncertain",
+      "html_full": 782,
+      "header_records": 730
+    },
+    {
+      "table_id": "table_d7f5226777879c5e3f864e70",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 75,
+      "confidence": "uncertain",
+      "html_full": 527,
+      "header_records": 1019
+    },
+    {
+      "table_id": "table_e7f6746cd8d3e73699173805",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 76,
+      "confidence": "confident",
+      "html_full": 151,
+      "header_records": 52
+    },
+    {
+      "table_id": "table_52835a8d6ed86d6ea3cf2108",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 76,
+      "confidence": "uncertain",
+      "html_full": 369,
+      "header_records": 537
+    },
+    {
+      "table_id": "table_1bfaaa36ea6211374d10ced6",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 76,
+      "confidence": "uncertain",
+      "html_full": 302,
+      "header_records": 273
+    },
+    {
+      "table_id": "table_0fc2475cfe3281a51fe20d5b",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 77,
+      "confidence": "uncertain",
+      "html_full": 1519,
+      "header_records": 1500
+    },
+    {
+      "table_id": "table_56448641ad7728337c1c67f5",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 78,
+      "confidence": "confident",
+      "html_full": 840,
+      "header_records": 524
+    },
+    {
+      "table_id": "table_4894b3be72c2b9826757bd2c",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 78,
+      "confidence": "uncertain",
+      "html_full": 317,
+      "header_records": 332
+    },
+    {
+      "table_id": "table_600a1f14e5c9c5556224f1b9",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 79,
+      "confidence": "confident",
+      "html_full": 3595,
+      "header_records": 6540
+    },
+    {
+      "table_id": "table_5f85d6d2a9f4984363a95fff",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 80,
+      "confidence": "uncertain",
+      "html_full": 357,
+      "header_records": 349
+    },
+    {
+      "table_id": "table_db1e4114ba5fc12a6bc04178",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 81,
+      "confidence": "uncertain",
+      "html_full": 603,
+      "header_records": 623
+    },
+    {
+      "table_id": "table_caea775fe8bd5e22d8dbd201",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 84,
+      "confidence": "uncertain",
+      "html_full": 799,
+      "header_records": 1243
+    },
+    {
+      "table_id": "table_c1dda23461704491886468c7",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 84,
+      "confidence": "confident",
+      "html_full": 380,
+      "header_records": 138
+    },
+    {
+      "table_id": "table_bdfd5e29d50567575edd38d0",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 84,
+      "confidence": "confident",
+      "html_full": 270,
+      "header_records": 142
+    },
+    {
+      "table_id": "table_c5653efc40fa71b45129cd72",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 84,
+      "confidence": "confident",
+      "html_full": 270,
+      "header_records": 142
+    },
+    {
+      "table_id": "table_fd15f6a64f201430a0a24fa3",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 85,
+      "confidence": "uncertain",
+      "html_full": 650,
+      "header_records": 1095
+    },
+    {
+      "table_id": "table_60d72a6d5df8b4457f573eea",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 85,
+      "confidence": "confident",
+      "html_full": 380,
+      "header_records": 138
+    },
+    {
+      "table_id": "table_417ca78f0004921749c77228",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 85,
+      "confidence": "confident",
+      "html_full": 270,
+      "header_records": 142
+    },
+    {
+      "table_id": "table_7aca0728f3fde09699114dc2",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 85,
+      "confidence": "uncertain",
+      "html_full": 468,
+      "header_records": 499
+    },
+    {
+      "table_id": "table_0dd9cc218ba39d6d1c054b9d",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 85,
+      "confidence": "confident",
+      "html_full": 193,
+      "header_records": 55
+    },
+    {
+      "table_id": "table_ac6adedd0f411f3b56d6c5ed",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 85,
+      "confidence": "confident",
+      "html_full": 314,
+      "header_records": 141
+    },
+    {
+      "table_id": "table_3f83e679c7105407544a0ae7",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 87,
+      "confidence": "uncertain",
+      "html_full": 298,
+      "header_records": 442
+    },
+    {
+      "table_id": "table_3863eb17567f62b26bfd772b",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 91,
+      "confidence": "uncertain",
+      "html_full": 744,
+      "header_records": 502
+    },
+    {
+      "table_id": "table_7d3f07eba81e68f52105a3b7",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 92,
+      "confidence": "confident",
+      "html_full": 2127,
+      "header_records": 2410
+    },
+    {
+      "table_id": "table_975a096b75648929378951d9",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 93,
+      "confidence": "confident",
+      "html_full": 2387,
+      "header_records": 2493
+    },
+    {
+      "table_id": "table_e6871cd85faa8970934d0734",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 94,
+      "confidence": "uncertain",
+      "html_full": 176,
+      "header_records": 165
+    },
+    {
+      "table_id": "table_3eef458453b93eaf38656554",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 94,
+      "confidence": "uncertain",
+      "html_full": 468,
+      "header_records": 440
+    },
+    {
+      "table_id": "table_d230003b4e7bb5d6bf9da7af",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 97,
+      "confidence": "confident",
+      "html_full": 4041,
+      "header_records": 1394
+    },
+    {
+      "table_id": "table_3322859168078d690e24db81",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 97,
+      "confidence": "confident",
+      "html_full": 3574,
+      "header_records": 667
+    },
+    {
+      "table_id": "table_55a68224266a43291d2bcd22",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 98,
+      "confidence": "confident",
+      "html_full": 767,
+      "header_records": 722
+    },
+    {
+      "table_id": "table_0aefa8da506605aa4db58c64",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 98,
+      "confidence": "confident",
+      "html_full": 261,
+      "header_records": 135
+    },
+    {
+      "table_id": "table_ce121e5e8ce60be225fe6f3f",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 99,
+      "confidence": "uncertain",
+      "html_full": 539,
+      "header_records": 1205
+    },
+    {
+      "table_id": "table_267916fd6af7c79ed39058c8",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 99,
+      "confidence": "confident",
+      "html_full": 262,
+      "header_records": 136
+    },
+    {
+      "table_id": "table_b2bdc287260902499be9dbde",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 99,
+      "confidence": "confident",
+      "html_full": 261,
+      "header_records": 135
+    },
+    {
+      "table_id": "table_50bff61ba411e51b1f331f92",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 100,
+      "confidence": "confident",
+      "html_full": 187,
+      "header_records": 76
+    },
+    {
+      "table_id": "table_789b5d36df3ebc08decd443f",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 100,
+      "confidence": "confident",
+      "html_full": 233,
+      "header_records": 117
+    },
+    {
+      "table_id": "table_5e424f570d82d6e8e48381a3",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 100,
+      "confidence": "confident",
+      "html_full": 261,
+      "header_records": 135
+    },
+    {
+      "table_id": "table_181f8b398a9718656b1f0b99",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 101,
+      "confidence": "confident",
+      "html_full": 1532,
+      "header_records": 2630
+    },
+    {
+      "table_id": "table_75a57411fe13231e3c14b5d3",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 3,
+      "confidence": "confident",
+      "html_full": 530,
+      "header_records": 385
+    },
+    {
+      "table_id": "table_bd90b3dedfaeb5694628c9e2",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 3,
+      "confidence": "uncertain",
+      "html_full": 527,
+      "header_records": 539
+    },
+    {
+      "table_id": "table_01d58fdd4ad2833616f2e7f8",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 4,
+      "confidence": "uncertain",
+      "html_full": 1101,
+      "header_records": 1285
+    },
+    {
+      "table_id": "table_98f696d0bd51e2c59f5d4e23",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 5,
+      "confidence": "confident",
+      "html_full": 2809,
+      "header_records": 1164
+    },
+    {
+      "table_id": "table_a9ec46f763f7f761d4b2b576",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 5,
+      "confidence": "confident",
+      "html_full": 2477,
+      "header_records": 894
+    },
+    {
+      "table_id": "table_e542972b32efc6752e827b8f",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 6,
+      "confidence": "confident",
+      "html_full": 4036,
+      "header_records": 1364
+    },
+    {
+      "table_id": "table_bc5a9effdf19c90a27be4c1b",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 7,
+      "confidence": "confident",
+      "html_full": 3573,
+      "header_records": 667
+    },
+    {
+      "table_id": "table_cb6ee428fd092ec7c9f50610",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 8,
+      "confidence": "uncertain",
+      "html_full": 142,
+      "header_records": 151
+    },
+    {
+      "table_id": "table_288b72e3bf668745eddc57ea",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 8,
+      "confidence": "uncertain",
+      "html_full": 323,
+      "header_records": 323
+    },
+    {
+      "table_id": "table_086e349457c236159938d48c",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 10,
+      "confidence": "uncertain",
+      "html_full": 115,
+      "header_records": 122
+    },
+    {
+      "table_id": "table_d9f2863da3b7884955ddc23c",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 10,
+      "confidence": "uncertain",
+      "html_full": 328,
+      "header_records": 456
+    },
+    {
+      "table_id": "table_f446fa49ae133d38d34f63b1",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 12,
+      "confidence": "confident",
+      "html_full": 1249,
+      "header_records": 459
+    },
+    {
+      "table_id": "table_1dfc4077d358a4372ed0ef2a",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 13,
+      "confidence": "confident",
+      "html_full": 767,
+      "header_records": 722
+    },
+    {
+      "table_id": "table_f922dbafbf02b4d6e0290224",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 13,
+      "confidence": "confident",
+      "html_full": 261,
+      "header_records": 135
+    },
+    {
+      "table_id": "table_a9e006e6f2c03f9ebaf5d17b",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 13,
+      "confidence": "uncertain",
+      "html_full": 539,
+      "header_records": 1205
+    },
+    {
+      "table_id": "table_2c703d6ad851902f0e063f79",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 13,
+      "confidence": "confident",
+      "html_full": 262,
+      "header_records": 136
+    },
+    {
+      "table_id": "table_4c1656978f96bba32692b450",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 13,
+      "confidence": "confident",
+      "html_full": 261,
+      "header_records": 135
+    },
+    {
+      "table_id": "table_2610f93b24b4908bf673a1e4",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 14,
+      "confidence": "confident",
+      "html_full": 1277,
+      "header_records": 528
+    },
+    {
+      "table_id": "table_d61f07449b778aa0e46e9605",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 15,
+      "confidence": "uncertain",
+      "html_full": 539,
+      "header_records": 1205
+    },
+    {
+      "table_id": "table_97f7c6deaefc76b759ed1f1e",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 15,
+      "confidence": "confident",
+      "html_full": 261,
+      "header_records": 135
+    },
+    {
+      "table_id": "table_e5ebfd3294ad421f9bb02b00",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 15,
+      "confidence": "uncertain",
+      "html_full": 539,
+      "header_records": 1205
+    },
+    {
+      "table_id": "table_8faa66c793812279910024d7",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 15,
+      "confidence": "confident",
+      "html_full": 262,
+      "header_records": 136
+    },
+    {
+      "table_id": "table_e874977c78f36fea454b8196",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 15,
+      "confidence": "confident",
+      "html_full": 261,
+      "header_records": 135
+    },
+    {
+      "table_id": "table_fcc3557725a86cbf39fb41e0",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 16,
+      "confidence": "confident",
+      "html_full": 1164,
+      "header_records": 492
+    },
+    {
+      "table_id": "table_9ed36f177aeacb79120341d1",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 17,
+      "confidence": "uncertain",
+      "html_full": 539,
+      "header_records": 1205
+    },
+    {
+      "table_id": "table_ca8c2d4e4c068b40673bc207",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 17,
+      "confidence": "confident",
+      "html_full": 261,
+      "header_records": 135
+    },
+    {
+      "table_id": "table_f47d90d56bf17e66b478aa5a",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 17,
+      "confidence": "uncertain",
+      "html_full": 539,
+      "header_records": 1205
+    },
+    {
+      "table_id": "table_e86e6b82a1744fdefabf48c6",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 17,
+      "confidence": "confident",
+      "html_full": 262,
+      "header_records": 136
+    },
+    {
+      "table_id": "table_ed86ea7b0eababad318ffc12",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 17,
+      "confidence": "confident",
+      "html_full": 261,
+      "header_records": 135
+    },
+    {
+      "table_id": "table_8c4586f9805e2ac566e80caa",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 19,
+      "confidence": "confident",
+      "html_full": 767,
+      "header_records": 722
+    },
+    {
+      "table_id": "table_3412cf9ec4b076d27c817efc",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 19,
+      "confidence": "confident",
+      "html_full": 261,
+      "header_records": 135
+    },
+    {
+      "table_id": "table_b9720164fad962a7aa0bfb3b",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 19,
+      "confidence": "uncertain",
+      "html_full": 485,
+      "header_records": 864
+    },
+    {
+      "table_id": "table_5fcecd26ae1d1d55c507a0ed",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 20,
+      "confidence": "uncertain",
+      "html_full": 550,
+      "header_records": 1362
+    },
+    {
+      "table_id": "table_5896ed4807b65f1d313133ec",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 20,
+      "confidence": "confident",
+      "html_full": 261,
+      "header_records": 135
+    },
+    {
+      "table_id": "table_661ef15c237f8265cc8d7e7a",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 21,
+      "confidence": "confident",
+      "html_full": 409,
+      "header_records": 207
+    },
+    {
+      "table_id": "table_8094179e90133279e6a5cf75",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 21,
+      "confidence": "confident",
+      "html_full": 261,
+      "header_records": 135
+    },
+    {
+      "table_id": "table_97cfd108e271d30d5dc5a2cf",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 21,
+      "confidence": "uncertain",
+      "html_full": 303,
+      "header_records": 282
+    },
+    {
+      "table_id": "table_47e645bb1072548051b66cb0",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 22,
+      "confidence": "uncertain",
+      "html_full": 175,
+      "header_records": 209
+    },
+    {
+      "table_id": "table_eecb66c9d49fb8731d5ecdcd",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 23,
+      "confidence": "uncertain",
+      "html_full": 400,
+      "header_records": 379
+    },
+    {
+      "table_id": "table_a31abcf522c8ecf02bc17e9c",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 24,
+      "confidence": "uncertain",
+      "html_full": 317,
+      "header_records": 578
+    },
+    {
+      "table_id": "table_b53994594e3d15ddef9baa00",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 24,
+      "confidence": "uncertain",
+      "html_full": 165,
+      "header_records": 137
+    },
+    {
+      "table_id": "table_d071f4f364cb472f347b4a19",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 26,
+      "confidence": "confident",
+      "html_full": 233,
+      "header_records": 117
+    },
+    {
+      "table_id": "table_513b215ba0c93c9230a95b92",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 26,
+      "confidence": "confident",
+      "html_full": 261,
+      "header_records": 135
+    },
+    {
+      "table_id": "table_7372ecbc4644ed155888be4d",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 26,
+      "confidence": "uncertain",
+      "html_full": 195,
+      "header_records": 231
+    },
+    {
+      "table_id": "table_6ff5110f16e6d8cc9f4f4434",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 27,
+      "confidence": "confident",
+      "html_full": 432,
+      "header_records": 265
+    },
+    {
+      "table_id": "table_67d2cf19e80713b4a1c53480",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 27,
+      "confidence": "uncertain",
+      "html_full": 110,
+      "header_records": 97
+    },
+    {
+      "table_id": "table_efb00729603803f62d8f4d8b",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 28,
+      "confidence": "confident",
+      "html_full": 233,
+      "header_records": 117
+    },
+    {
+      "table_id": "table_e45693b49b8bd2b4047d537a",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 28,
+      "confidence": "confident",
+      "html_full": 261,
+      "header_records": 135
+    },
+    {
+      "table_id": "table_86deab54c13966dfab2ddba8",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 29,
+      "confidence": "uncertain",
+      "html_full": 826,
+      "header_records": 792
+    },
+    {
+      "table_id": "table_6e8bdaec053ae3b115d8624d",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 30,
+      "confidence": "confident",
+      "html_full": 233,
+      "header_records": 117
+    },
+    {
+      "table_id": "table_eaa1d4a75bd1781382b2b584",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 30,
+      "confidence": "confident",
+      "html_full": 261,
+      "header_records": 135
+    },
+    {
+      "table_id": "table_b6a6ad163c0294883bc2a477",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 30,
+      "confidence": "uncertain",
+      "html_full": 118,
+      "header_records": 107
+    },
+    {
+      "table_id": "table_41b3ea484986ffe3b5633aa2",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 33,
+      "confidence": "uncertain",
+      "html_full": 682,
+      "header_records": 727
+    },
+    {
+      "table_id": "table_8c2a89418bccdef514737c5c",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 34,
+      "confidence": "confident",
+      "html_full": 767,
+      "header_records": 722
+    },
+    {
+      "table_id": "table_3e246d1e19a33789ede63221",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 34,
+      "confidence": "confident",
+      "html_full": 261,
+      "header_records": 135
+    },
+    {
+      "table_id": "table_d24d2c62d280224409636c5c",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 34,
+      "confidence": "uncertain",
+      "html_full": 539,
+      "header_records": 1205
+    },
+    {
+      "table_id": "table_6a9b229edd301b1d8337a8b4",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 34,
+      "confidence": "confident",
+      "html_full": 262,
+      "header_records": 136
+    },
+    {
+      "table_id": "table_c3d597d7beac2bbf930a3e3d",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 34,
+      "confidence": "confident",
+      "html_full": 261,
+      "header_records": 135
+    },
+    {
+      "table_id": "table_a7c228243a69d69948229103",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 35,
+      "confidence": "confident",
+      "html_full": 1565,
+      "header_records": 2663
+    },
+    {
+      "table_id": "table_76391af1b5010b9f4ea3a127",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 38,
+      "confidence": "confident",
+      "html_full": 413,
+      "header_records": 202
+    },
+    {
+      "table_id": "table_2e342e719e6c6c8a96cff5e5",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 40,
+      "confidence": "confident",
+      "html_full": 2127,
+      "header_records": 2410
+    },
+    {
+      "table_id": "table_4a3a5bcf7b3bdc3607247edf",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 41,
+      "confidence": "confident",
+      "html_full": 2387,
+      "header_records": 2493
+    },
+    {
+      "table_id": "table_c3c7d34f0dd20aab0733a558",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 42,
+      "confidence": "uncertain",
+      "html_full": 176,
+      "header_records": 165
+    },
+    {
+      "table_id": "table_bdcae9d6b1082b64d17306c0",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 42,
+      "confidence": "uncertain",
+      "html_full": 468,
+      "header_records": 440
+    },
+    {
+      "table_id": "table_b84606fd9479e9f6b3e6e333",
+      "source": "05_2027학년도_수시_면접고사_일정.pdf",
+      "page": 2,
+      "confidence": "confident",
+      "html_full": 4648,
+      "header_records": 2704
+    },
+    {
+      "table_id": "table_1ea56e8e13d9fbf326454777",
+      "source": "05_2027학년도_수시_면접고사_일정.pdf",
+      "page": 3,
+      "confidence": "confident",
+      "html_full": 5606,
+      "header_records": 2997
+    },
+    {
+      "table_id": "table_d9b6df9032f4531d6dfc9d23",
+      "source": "05_2027학년도_수시_면접고사_일정.pdf",
+      "page": 4,
+      "confidence": "confident",
+      "html_full": 701,
+      "header_records": 333
+    }
+  ],
+  "scope_note": "Counts cover retained baseline tables. Undetected borderless tables are not counted as recovered PDF fallback tables."
+}

@@ -1,0 +1,1838 @@
+{
+  "tables": [
+    {
+      "id": "hwp-roster-multi-stub",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "page": null,
+      "locator": {
+        "type": "element_index",
+        "value": 2
+      },
+      "type": "HWP merged headers and numeric roster",
+      "found": true,
+      "structure_checks": {
+        "header_rows": false,
+        "stub_cols": true
+      },
+      "actual_structure": {
+        "header_rows": 5,
+        "stub_cols": 4,
+        "confidence": "confident"
+      },
+      "samples": [
+        {
+          "coordinate": [
+            5,
+            4
+          ],
+          "expected": {
+            "row_label": [
+              "인문",
+              "경영학과"
+            ],
+            "header_path": [
+              "최대모집 가능인원"
+            ],
+            "value": "15"
+          },
+          "actual": {
+            "row_label": [
+              "인문",
+              "경영학과"
+            ],
+            "header_path": [
+              "모집인원",
+              "※ 본 내용은 변동될 수 있으며 반드시 최종 확정되는 모집요강(본 대학 입학처 홈페이지 모집요강)을 확인하시기 바랍니다.",
+              "최대모집 가능인원"
+            ],
+            "value": "15"
+          },
+          "checks": {
+            "row_label": true,
+            "header_path": false,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            5,
+            5
+          ],
+          "expected": {
+            "row_label": [
+              "인문",
+              "경영학과"
+            ],
+            "header_path": [
+              "모집인원"
+            ],
+            "value": "16"
+          },
+          "actual": {
+            "row_label": [
+              "인문",
+              "경영학과"
+            ],
+            "header_path": [
+              "모집인원",
+              "※ 본 내용은 변동될 수 있으며 반드시 최종 확정되는 모집요강(본 대학 입학처 홈페이지 모집요강)을 확인하시기 바랍니다.",
+              "모집인원"
+            ],
+            "value": "16"
+          },
+          "checks": {
+            "row_label": true,
+            "header_path": false,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            6,
+            4
+          ],
+          "expected": {
+            "row_label": [
+              "인문",
+              "회계세무학과"
+            ],
+            "header_path": [
+              "최대모집 가능인원"
+            ],
+            "value": "5"
+          },
+          "actual": {
+            "row_label": [
+              "인문",
+              "회계세무학과"
+            ],
+            "header_path": [
+              "모집인원",
+              "※ 본 내용은 변동될 수 있으며 반드시 최종 확정되는 모집요강(본 대학 입학처 홈페이지 모집요강)을 확인하시기 바랍니다.",
+              "최대모집 가능인원"
+            ],
+            "value": "5"
+          },
+          "checks": {
+            "row_label": true,
+            "header_path": false,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            7,
+            4
+          ],
+          "expected": {
+            "row_label": [
+              "인문",
+              "관광경영학과"
+            ],
+            "header_path": [
+              "최대모집 가능인원"
+            ],
+            "value": "4"
+          },
+          "actual": {
+            "row_label": [
+              "인문",
+              "관광경영학과"
+            ],
+            "header_path": [
+              "모집인원",
+              "※ 본 내용은 변동될 수 있으며 반드시 최종 확정되는 모집요강(본 대학 입학처 홈페이지 모집요강)을 확인하시기 바랍니다.",
+              "최대모집 가능인원"
+            ],
+            "value": "4"
+          },
+          "checks": {
+            "row_label": true,
+            "header_path": false,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            8,
+            4
+          ],
+          "expected": {
+            "row_label": [
+              "인문",
+              "의료산업경영학과"
+            ],
+            "header_path": [
+              "최대모집 가능인원"
+            ],
+            "value": "4"
+          },
+          "actual": {
+            "row_label": [
+              "인문",
+              "의료산업경영학과"
+            ],
+            "header_path": [
+              "모집인원",
+              "※ 본 내용은 변동될 수 있으며 반드시 최종 확정되는 모집요강(본 대학 입학처 홈페이지 모집요강)을 확인하시기 바랍니다.",
+              "최대모집 가능인원"
+            ],
+            "value": "4"
+          },
+          "checks": {
+            "row_label": true,
+            "header_path": false,
+            "value": true
+          },
+          "passed": false
+        }
+      ],
+      "passed": false
+    },
+    {
+      "id": "hwp-schedule-notes",
+      "source": "01_2027학년도_재외국민_모집요강.hwp",
+      "page": null,
+      "locator": {
+        "type": "element_index",
+        "value": 3
+      },
+      "type": "HWP schedule with vertically merged category and note columns",
+      "found": true,
+      "structure_checks": {
+        "header_rows": false,
+        "stub_cols": false
+      },
+      "actual_structure": {
+        "header_rows": 0,
+        "stub_cols": 0,
+        "confidence": "uncertain"
+      },
+      "samples": [
+        {
+          "coordinate": [
+            4,
+            1
+          ],
+          "expected": {
+            "row_label": [
+              "원서접수 및 서류접수"
+            ],
+            "header_path": [
+              "일시"
+            ],
+            "value": "2026. 07. 06(월) 10:00 ~   ʔĀ             10(금) 16:00 까지"
+          },
+          "actual": {
+            "row_label": [],
+            "header_path": [],
+            "value": "2026. 07. 06(월) 10:00 ~ ʔĀ 10(금) 16:00 까지"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            4,
+            2
+          ],
+          "expected": {
+            "row_label": [
+              "원서접수 및 서류접수"
+            ],
+            "header_path": [
+              "장소"
+            ],
+            "value": "본 대학 입학처 홈페이지"
+          },
+          "actual": {
+            "row_label": [],
+            "header_path": [],
+            "value": "본 대학 입학처 홈페이지"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            4,
+            3
+          ],
+          "expected": {
+            "row_label": [
+              "원서접수 및 서류접수"
+            ],
+            "header_path": [
+              "비고"
+            ],
+            "value": "▶"
+          },
+          "actual": {
+            "row_label": [],
+            "header_path": [],
+            "value": "▶"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            5,
+            3
+          ],
+          "expected": {
+            "row_label": [
+              "원서접수 및 서류접수"
+            ],
+            "header_path": [
+              "비고"
+            ],
+            "value": "▶"
+          },
+          "actual": {
+            "row_label": [],
+            "header_path": [],
+            "value": "▶"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            6,
+            3
+          ],
+          "expected": {
+            "row_label": [
+              "원서접수 및 서류접수"
+            ],
+            "header_path": [
+              "비고"
+            ],
+            "value": "▶"
+          },
+          "actual": {
+            "row_label": [],
+            "header_path": [],
+            "value": "▶"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": true
+          },
+          "passed": false
+        }
+      ],
+      "passed": false
+    },
+    {
+      "id": "02-region-eligibility-symbols",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 4,
+      "locator": null,
+      "type": "eligibility matrix with check and cross symbols",
+      "found": true,
+      "structure_checks": {
+        "header_rows": false,
+        "stub_cols": false
+      },
+      "actual_structure": {
+        "header_rows": 0,
+        "stub_cols": 0,
+        "confidence": "uncertain"
+      },
+      "samples": [
+        {
+          "coordinate": [
+            1,
+            1
+          ],
+          "expected": {
+            "row_label": [
+              "동일 진료권 내 이수"
+            ],
+            "header_path": [
+              "진료권 선발 지원"
+            ],
+            "value": "가능 ✓"
+          },
+          "actual": null,
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            1,
+            2
+          ],
+          "expected": {
+            "row_label": [
+              "동일 진료권 내 이수"
+            ],
+            "header_path": [
+              "광역권 선발 지원"
+            ],
+            "value": "가능 ✓"
+          },
+          "actual": null,
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            3,
+            1
+          ],
+          "expected": {
+            "row_label": [
+              "동일 도(道) 내 다른 진료권으로 전학"
+            ],
+            "header_path": [
+              "진료권 선발 지원"
+            ],
+            "value": "불가능 ✕"
+          },
+          "actual": null,
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            4,
+            2
+          ],
+          "expected": {
+            "row_label": [
+              "동일 광역권 내 다른 시·도(市道)로 전학"
+            ],
+            "header_path": [
+              "광역권 선발 지원"
+            ],
+            "value": "가능 ✓"
+          },
+          "actual": null,
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            5,
+            2
+          ],
+          "expected": {
+            "row_label": [
+              "다른 광역권으로 전학"
+            ],
+            "header_path": [
+              "광역권 선발 지원"
+            ],
+            "value": "불가능 ✕"
+          },
+          "actual": null,
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        }
+      ],
+      "passed": false
+    },
+    {
+      "id": "02-regional-allocation-panels",
+      "source": "02_2027학년도_지역의사선발전형_안내.pdf",
+      "page": 6,
+      "locator": null,
+      "type": "large regional allocation matrix with repeated panel headers",
+      "found": true,
+      "structure_checks": {
+        "header_rows": false,
+        "stub_cols": true
+      },
+      "actual_structure": {
+        "header_rows": 4,
+        "stub_cols": 3,
+        "confidence": "confident"
+      },
+      "samples": [
+        {
+          "coordinate": [
+            4,
+            3
+          ],
+          "expected": {
+            "row_label": [
+              "❶ 대전, 충남",
+              "대전·세종·충남·충북",
+              "천안권"
+            ],
+            "header_path": [
+              "대학별 지역의사선발전형 정원 배분",
+              "건양대"
+            ],
+            "value": "1"
+          },
+          "actual": {
+            "row_label": [
+              "대전·세종· 충남·충북",
+              "천안권",
+              "천정안원권"
+            ],
+            "header_path": [
+              "대학별 지역의사선발전형 정원 배분",
+              "건양대",
+              "건양대 6"
+            ],
+            "value": "61"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            4,
+            4
+          ],
+          "expected": {
+            "row_label": [
+              "❶ 대전, 충남",
+              "대전·세종·충남·충북",
+              "천안권"
+            ],
+            "header_path": [
+              "대학별 지역의사선발전형 정원 배분",
+              "단국대"
+            ],
+            "value": "3"
+          },
+          "actual": {
+            "row_label": [
+              "대전·세종· 충남·충북",
+              "천안권",
+              "천정안원권"
+            ],
+            "header_path": [
+              "대학별 지역의사선발전형 정원 배분",
+              "단국대",
+              "단국대 15"
+            ],
+            "value": "135"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            4,
+            9
+          ],
+          "expected": {
+            "row_label": [
+              "❶ 대전, 충남",
+              "대전·세종·충남·충북",
+              "천안권"
+            ],
+            "header_path": [
+              "학생수",
+              "전체"
+            ],
+            "value": "15"
+          },
+          "actual": null,
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            5,
+            6
+          ],
+          "expected": {
+            "row_label": [
+              "❶ 대전, 충남",
+              "대전·세종·충남·충북",
+              "공주권"
+            ],
+            "header_path": [
+              "대학별 지역의사선발전형 정원 배분",
+              "을지대"
+            ],
+            "value": "1"
+          },
+          "actual": {
+            "row_label": [
+              "대전·세종· 충남·충북",
+              "천공안주권권"
+            ],
+            "header_path": [
+              "대학별 지역의사선발전형 정원 배분",
+              "을지대",
+              "을지대 6"
+            ],
+            "value": "11"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            8,
+            9
+          ],
+          "expected": {
+            "row_label": [
+              "❶ 대전, 충남",
+              "대전·세종·충남·충북",
+              "홍성권"
+            ],
+            "header_path": [
+              "학생수",
+              "전체"
+            ],
+            "value": "9"
+          },
+          "actual": null,
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        }
+      ],
+      "passed": false
+    },
+    {
+      "id": "03-admission-unit-count-matrix",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 33,
+      "locator": null,
+      "type": "unrelated multilevel admission-by-unit matrix",
+      "found": true,
+      "structure_checks": {
+        "header_rows": true,
+        "stub_cols": false
+      },
+      "actual_structure": {
+        "header_rows": 2,
+        "stub_cols": 3,
+        "confidence": "confident"
+      },
+      "samples": [
+        {
+          "coordinate": [
+            2,
+            3
+          ],
+          "expected": {
+            "row_label": [
+              "자연",
+              "전자공학과"
+            ],
+            "header_path": [
+              "논술 위주",
+              "논술"
+            ],
+            "value": "73"
+          },
+          "actual": {
+            "row_label": [
+              "전자공학과",
+              "반도체대학"
+            ],
+            "header_path": [
+              "논술 위주",
+              "논술"
+            ],
+            "value": "73"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": true,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            2,
+            4
+          ],
+          "expected": {
+            "row_label": [
+              "자연",
+              "전자공학과"
+            ],
+            "header_path": [
+              "학생부위주(교과)",
+              "학생부우수자"
+            ],
+            "value": "22"
+          },
+          "actual": {
+            "row_label": [
+              "전자공학과",
+              "반도체대학"
+            ],
+            "header_path": [
+              "학생부위주(교과)",
+              "학생부 우수자"
+            ],
+            "value": "22"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": true,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            12,
+            5
+          ],
+          "expected": {
+            "row_label": [
+              "자연",
+              "간호학과"
+            ],
+            "header_path": [
+              "학생부위주(교과)",
+              "지역균형"
+            ],
+            "value": "13"
+          },
+          "actual": {
+            "row_label": [
+              "간호학과"
+            ],
+            "header_path": [
+              "학생부위주(교과)",
+              "지역 균형"
+            ],
+            "value": "13"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": true,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            18,
+            9
+          ],
+          "expected": {
+            "row_label": [
+              "자연",
+              "의예과"
+            ],
+            "header_path": [
+              "학생부위주(종합)",
+              "가천의약학"
+            ],
+            "value": "16"
+          },
+          "actual": {
+            "row_label": [
+              "의예과"
+            ],
+            "header_path": [
+              "학생부위주(종합)",
+              "가천 의약학"
+            ],
+            "value": "16"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": true,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            27,
+            16
+          ],
+          "expected": {
+            "row_label": [
+              "예·체능",
+              "회화전공"
+            ],
+            "header_path": [
+              "실기 위주",
+              "실기우수자"
+            ],
+            "value": "30"
+          },
+          "actual": {
+            "row_label": [
+              "회화전공"
+            ],
+            "header_path": [
+              "실기 위주",
+              "실기 우수자"
+            ],
+            "value": "30"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": true,
+            "value": true
+          },
+          "passed": false
+        }
+      ],
+      "passed": false
+    },
+    {
+      "id": "03-grade-conversion-inset",
+      "source": "03_2027학년도_수시_모집요강.pdf",
+      "page": 85,
+      "locator": null,
+      "type": "grade-interval lookup embedded inside a larger table cell",
+      "found": true,
+      "structure_checks": {
+        "header_rows": false,
+        "stub_cols": false
+      },
+      "actual_structure": {
+        "header_rows": 0,
+        "stub_cols": 0,
+        "confidence": "uncertain"
+      },
+      "samples": [
+        {
+          "coordinate": null,
+          "expected": {
+            "row_label": [
+              "인문계열",
+              "변환등급"
+            ],
+            "header_path": [
+              "석차등급",
+              "1등급"
+            ],
+            "value": "A"
+          },
+          "actual": null,
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        },
+        {
+          "coordinate": null,
+          "expected": {
+            "row_label": [
+              "인문계열",
+              "변환등급"
+            ],
+            "header_path": [
+              "석차등급",
+              "3등급"
+            ],
+            "value": "B"
+          },
+          "actual": null,
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        },
+        {
+          "coordinate": null,
+          "expected": {
+            "row_label": [
+              "인문계열",
+              "변환등급"
+            ],
+            "header_path": [
+              "석차등급",
+              "5등급"
+            ],
+            "value": "C"
+          },
+          "actual": null,
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        },
+        {
+          "coordinate": null,
+          "expected": {
+            "row_label": [
+              "인문계열",
+              "변환등급"
+            ],
+            "header_path": [
+              "석차등급",
+              "8등급"
+            ],
+            "value": "E"
+          },
+          "actual": null,
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        },
+        {
+          "coordinate": null,
+          "expected": {
+            "row_label": [
+              "인문계열",
+              "배점"
+            ],
+            "header_path": [
+              "석차등급",
+              "3등급"
+            ],
+            "value": "99.5"
+          },
+          "actual": null,
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        },
+        {
+          "coordinate": null,
+          "expected": {
+            "row_label": [
+              "인문계열",
+              "배점"
+            ],
+            "header_path": [
+              "석차등급",
+              "8등급"
+            ],
+            "value": "70"
+          },
+          "actual": null,
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        }
+      ],
+      "passed": false
+    },
+    {
+      "id": "04-school-violence-multilevel",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 35,
+      "locator": null,
+      "type": "multilevel headers with stage-specific merged assessment cells",
+      "found": true,
+      "structure_checks": {
+        "header_rows": true,
+        "stub_cols": true
+      },
+      "actual_structure": {
+        "header_rows": 2,
+        "stub_cols": 3,
+        "confidence": "confident"
+      },
+      "samples": [
+        {
+          "coordinate": [
+            2,
+            8
+          ],
+          "expected": {
+            "row_label": [
+              "논술위주(논술)"
+            ],
+            "header_path": [
+              "학교폭력조치사항",
+              "6호"
+            ],
+            "value": "–20"
+          },
+          "actual": {
+            "row_label": [],
+            "header_path": [
+              "학교폭력조치사항",
+              "6호"
+            ],
+            "value": "–20"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": true,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            4,
+            6
+          ],
+          "expected": {
+            "row_label": [
+              "학생부교과(지역균형, 특성화고교)",
+              "1단계"
+            ],
+            "header_path": [
+              "학교폭력조치사항",
+              "4호"
+            ],
+            "value": "–10"
+          },
+          "actual": {
+            "row_label": [
+              "1단계"
+            ],
+            "header_path": [
+              "학교폭력조치사항",
+              "4호"
+            ],
+            "value": "–10"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": true,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            5,
+            3
+          ],
+          "expected": {
+            "row_label": [
+              "학생부교과(지역균형, 특성화고교)",
+              "2단계"
+            ],
+            "header_path": [
+              "학교폭력조치사항"
+            ],
+            "value": "정성평가"
+          },
+          "actual": {
+            "row_label": [
+              "2단계"
+            ],
+            "header_path": [
+              "학교폭력조치사항",
+              "1호"
+            ],
+            "value": "정성평가"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            7,
+            3
+          ],
+          "expected": {
+            "row_label": [
+              "학생부종합(특성화고졸재직자)"
+            ],
+            "header_path": [
+              "학교폭력조치사항"
+            ],
+            "value": "정성평가"
+          },
+          "actual": {
+            "row_label": [],
+            "header_path": [
+              "학교폭력조치사항",
+              "1호"
+            ],
+            "value": "정성평가"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            10,
+            3
+          ],
+          "expected": {
+            "row_label": [
+              "실기위주",
+              "단계전형",
+              "2단계"
+            ],
+            "header_path": [
+              "학교폭력조치사항"
+            ],
+            "value": "정성평가"
+          },
+          "actual": {
+            "row_label": [
+              "단계전형",
+              "2단계"
+            ],
+            "header_path": [
+              "학교폭력조치사항",
+              "1호"
+            ],
+            "value": "정성평가"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            11,
+            10
+          ],
+          "expected": {
+            "row_label": [
+              "수능위주"
+            ],
+            "header_path": [
+              "학교폭력조치사항",
+              "8호"
+            ],
+            "value": "–100"
+          },
+          "actual": {
+            "row_label": [],
+            "header_path": [
+              "학교폭력조치사항",
+              "8호"
+            ],
+            "value": "–100"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": true,
+            "value": true
+          },
+          "passed": false
+        }
+      ],
+      "passed": false
+    },
+    {
+      "id": "04-scholarship-merged-rows",
+      "source": "04_2027학년도_정시_모집요강.pdf",
+      "page": 40,
+      "locator": null,
+      "type": "unrelated scholarship table with hierarchical header and vertical row merges",
+      "found": true,
+      "structure_checks": {
+        "header_rows": false,
+        "stub_cols": false
+      },
+      "actual_structure": {
+        "header_rows": 5,
+        "stub_cols": 3,
+        "confidence": "confident"
+      },
+      "samples": [
+        {
+          "coordinate": [
+            2,
+            2
+          ],
+          "expected": {
+            "row_label": [
+              "가천장학금"
+            ],
+            "header_path": [
+              "지급내역"
+            ],
+            "value": "수업연한 동안 등록금 전액 및 월 30만 원 지원"
+          },
+          "actual": {
+            "row_label": [
+              "전체 수석입학자",
+              "수업연한 동안 등록금 전액 및 월 30만 원 지원"
+            ],
+            "header_path": [
+              "지급내역",
+              "수업연한 동안 등록금 전액 및 월 30만 원 지원",
+              "수업연한 동안 등록금 전액",
+              "1년간 등록금 전액"
+            ],
+            "value": "수업연한 동안 등록금 전액 및 월 30만 원 지원"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            2,
+            3
+          ],
+          "expected": {
+            "row_label": [
+              "가천장학금"
+            ],
+            "header_path": [
+              "입학 후 학점사항",
+              "취득"
+            ],
+            "value": "12학점 이상"
+          },
+          "actual": {
+            "row_label": [
+              "전체 수석입학자",
+              "수업연한 동안 등록금 전액 및 월 30만 원 지원"
+            ],
+            "header_path": [
+              "입학 후 학점사항",
+              "취득",
+              "12학점 이상"
+            ],
+            "value": "12학점 이상"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            2,
+            4
+          ],
+          "expected": {
+            "row_label": [
+              "가천장학금"
+            ],
+            "header_path": [
+              "입학 후 학점사항",
+              "성적"
+            ],
+            "value": "3.5 이상"
+          },
+          "actual": {
+            "row_label": [
+              "전체 수석입학자",
+              "수업연한 동안 등록금 전액 및 월 30만 원 지원"
+            ],
+            "header_path": [
+              "입학 후 학점사항",
+              "성적",
+              "3.5 이상"
+            ],
+            "value": "3.5 이상"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            5,
+            3
+          ],
+          "expected": {
+            "row_label": [
+              "학과수석장학금"
+            ],
+            "header_path": [
+              "입학 후 학점사항",
+              "취득"
+            ],
+            "value": "–"
+          },
+          "actual": {
+            "row_label": [
+              "최초 합격자 중 학과 수석입학자",
+              "입학학기 1회(등록금 전액)"
+            ],
+            "header_path": [
+              "입학 후 학점사항",
+              "취득",
+              "12학점 이상"
+            ],
+            "value": "-"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": false
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            8,
+            2
+          ],
+          "expected": {
+            "row_label": [
+              "한의과대학 장학금"
+            ],
+            "header_path": [
+              "지급내역"
+            ],
+            "value": "수업연한 동안 등록금 전액"
+          },
+          "actual": {
+            "row_label": [
+              "최초 합격순위가 3위 이내인 자",
+              "수업연한 동안 등록금 전액"
+            ],
+            "header_path": [
+              "지급내역",
+              "수업연한 동안 등록금 전액 및 월 30만 원 지원",
+              "수업연한 동안 등록금 전액",
+              "1년간 등록금 전액"
+            ],
+            "value": "수업연한 동안 등록금 전액"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": true
+          },
+          "passed": false
+        },
+        {
+          "coordinate": [
+            9,
+            2
+          ],
+          "expected": {
+            "row_label": [
+              "한의과대학 장학금"
+            ],
+            "header_path": [
+              "지급내역"
+            ],
+            "value": "2년간 등록금 전액"
+          },
+          "actual": {
+            "row_label": [
+              "최초 합격순위가 6위 이내인 자",
+              "2년간 등록금 전액"
+            ],
+            "header_path": [
+              "지급내역",
+              "수업연한 동안 등록금 전액 및 월 30만 원 지원",
+              "수업연한 동안 등록금 전액",
+              "1년간 등록금 전액"
+            ],
+            "value": "2년간 등록금 전액"
+          },
+          "checks": {
+            "row_label": false,
+            "header_path": false,
+            "value": true
+          },
+          "passed": false
+        }
+      ],
+      "passed": false
+    },
+    {
+      "id": "05-interview-date-session",
+      "source": "05_2027학년도_수시_면접고사_일정.pdf",
+      "page": 2,
+      "locator": null,
+      "type": "interview schedule with dates split into morning and afternoon",
+      "found": true,
+      "structure_checks": {
+        "header_rows": true,
+        "stub_cols": true
+      },
+      "actual_structure": {
+        "header_rows": 2,
+        "stub_cols": 1,
+        "confidence": "confident"
+      },
+      "samples": [
+        {
+          "coordinate": [
+            2,
+            1
+          ],
+          "expected": {
+            "row_label": [
+              "경영학과"
+            ],
+            "header_path": [
+              "10월 31일(토)",
+              "오전"
+            ],
+            "value": "★"
+          },
+          "actual": {
+            "row_label": [
+              "경영학과"
+            ],
+            "header_path": [
+              "10월 31일(토)",
+              "오전"
+            ],
+            "value": "★"
+          },
+          "checks": {
+            "row_label": true,
+            "header_path": true,
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "coordinate": [
+            2,
+            2
+          ],
+          "expected": {
+            "row_label": [
+              "경영학과"
+            ],
+            "header_path": [
+              "10월 31일(토)",
+              "오후"
+            ],
+            "value": "★"
+          },
+          "actual": {
+            "row_label": [
+              "경영학과"
+            ],
+            "header_path": [
+              "10월 31일(토)",
+              "오후"
+            ],
+            "value": "★"
+          },
+          "checks": {
+            "row_label": true,
+            "header_path": true,
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "coordinate": [
+            3,
+            5
+          ],
+          "expected": {
+            "row_label": [
+              "회계세무학과"
+            ],
+            "header_path": [
+              "11월 07일(토)",
+              "오전"
+            ],
+            "value": "★"
+          },
+          "actual": {
+            "row_label": [
+              "회계세무학과"
+            ],
+            "header_path": [
+              "11월 07일(토)",
+              "오전"
+            ],
+            "value": "★"
+          },
+          "checks": {
+            "row_label": true,
+            "header_path": true,
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "coordinate": [
+            7,
+            6
+          ],
+          "expected": {
+            "row_label": [
+              "미디어커뮤니케이션학과"
+            ],
+            "header_path": [
+              "11월 07일(토)",
+              "오후"
+            ],
+            "value": "★"
+          },
+          "actual": {
+            "row_label": [
+              "미디어커뮤니케이션학과"
+            ],
+            "header_path": [
+              "11월 07일(토)",
+              "오후"
+            ],
+            "value": "★"
+          },
+          "checks": {
+            "row_label": true,
+            "header_path": true,
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "coordinate": [
+            8,
+            7
+          ],
+          "expected": {
+            "row_label": [
+              "경제학과"
+            ],
+            "header_path": [
+              "11월 08일(일)",
+              "오전"
+            ],
+            "value": "★"
+          },
+          "actual": {
+            "row_label": [
+              "경제학과"
+            ],
+            "header_path": [
+              "11월 08일(일)",
+              "오전"
+            ],
+            "value": "★"
+          },
+          "checks": {
+            "row_label": true,
+            "header_path": true,
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "coordinate": [
+            9,
+            3
+          ],
+          "expected": {
+            "row_label": [
+              "응용통계학과"
+            ],
+            "header_path": [
+              "11월 01일(일)",
+              "오전"
+            ],
+            "value": "★"
+          },
+          "actual": {
+            "row_label": [
+              "응용통계학과"
+            ],
+            "header_path": [
+              "11월 01일(일)",
+              "오전"
+            ],
+            "value": "★"
+          },
+          "checks": {
+            "row_label": true,
+            "header_path": true,
+            "value": true
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "05-interview-category-date-session",
+      "source": "05_2027학년도_수시_면접고사_일정.pdf",
+      "page": 3,
+      "locator": null,
+      "type": "nested interview category, date, and session headers",
+      "found": true,
+      "structure_checks": {
+        "header_rows": true,
+        "stub_cols": true
+      },
+      "actual_structure": {
+        "header_rows": 3,
+        "stub_cols": 1,
+        "confidence": "confident"
+      },
+      "samples": [
+        {
+          "coordinate": [
+            3,
+            1
+          ],
+          "expected": {
+            "row_label": [
+              "경영학과"
+            ],
+            "header_path": [
+              "기회균형",
+              "10/03(토)",
+              "오전"
+            ],
+            "value": "★"
+          },
+          "actual": {
+            "row_label": [
+              "경영학과"
+            ],
+            "header_path": [
+              "기회균형",
+              "10/03(토)",
+              "오전"
+            ],
+            "value": "★"
+          },
+          "checks": {
+            "row_label": true,
+            "header_path": true,
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "coordinate": [
+            3,
+            6
+          ],
+          "expected": {
+            "row_label": [
+              "경영학과"
+            ],
+            "header_path": [
+              "농어촌(종합)",
+              "10/03(토)",
+              "오후"
+            ],
+            "value": "★"
+          },
+          "actual": {
+            "row_label": [
+              "경영학과"
+            ],
+            "header_path": [
+              "농어촌(종합)",
+              "10/03(토)",
+              "오후"
+            ],
+            "value": "★"
+          },
+          "checks": {
+            "row_label": true,
+            "header_path": true,
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "coordinate": [
+            4,
+            2
+          ],
+          "expected": {
+            "row_label": [
+              "회계세무학과"
+            ],
+            "header_path": [
+              "기회균형",
+              "10/03(토)",
+              "오후"
+            ],
+            "value": "★"
+          },
+          "actual": {
+            "row_label": [
+              "회계세무학과"
+            ],
+            "header_path": [
+              "기회균형",
+              "10/03(토)",
+              "오후"
+            ],
+            "value": "★"
+          },
+          "checks": {
+            "row_label": true,
+            "header_path": true,
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "coordinate": [
+            6,
+            11
+          ],
+          "expected": {
+            "row_label": [
+              "의료산업경영학과"
+            ],
+            "header_path": [
+              "특성화고교",
+              "10/04(일)",
+              "오전"
+            ],
+            "value": "★"
+          },
+          "actual": {
+            "row_label": [
+              "의료산업경영학과"
+            ],
+            "header_path": [
+              "특성화고교",
+              "10/04(일)",
+              "오전"
+            ],
+            "value": "★"
+          },
+          "checks": {
+            "row_label": true,
+            "header_path": true,
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "coordinate": [
+            18,
+            11
+          ],
+          "expected": {
+            "row_label": [
+              "건축학부"
+            ],
+            "header_path": [
+              "특성화고교",
+              "10/04(일)",
+              "오전"
+            ],
+            "value": "★"
+          },
+          "actual": {
+            "row_label": [
+              "건축학부"
+            ],
+            "header_path": [
+              "특성화고교",
+              "10/04(일)",
+              "오전"
+            ],
+            "value": "★"
+          },
+          "checks": {
+            "row_label": true,
+            "header_path": true,
+            "value": true
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "summary": {
+    "tables_passed": 2,
+    "tables_total": 10,
+    "cells_passed": 11,
+    "cells_total": 54,
+    "value_only_passed": 37
+  },
+  "user_review_status": "pending",
+  "normalization": "Whitespace only; no aliases or document-specific correction.",
+  "limitations": "Source-grid coordinates may differ between extraction libraries. Nested visual tables require real IR cells. Logical headers following title/spacer rows are compared strictly to the current top-contiguous IR header count.",
+  "all_passed": false
+}
