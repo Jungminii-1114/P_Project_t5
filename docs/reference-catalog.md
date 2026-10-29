@@ -118,3 +118,57 @@ Docling 공식 지원 형식 목록에서 HWP/HWPX 직접 지원은 확인하지
 - [OSI 오픈소스 정의](https://opensource.org/osd) · [OSI FAQ](https://opensource.org/faq)
 
 > **라이선스 주의:** 이 문서는 공식 공개 자료에 기반한 기술 검토 메모이며 법률 자문이 아니다. 실제 배포 전에 **선택한 정확한 릴리스와 모델 가중치, 배포 방식**을 기준으로 제3자 라이선스를 다시 검토해야 한다.
+
+
+---
+
+## 2. 하이브리드 검색 및 리랭커
+
+> 상태: 기술 비교 레퍼런스 및 **실험 아이디어**. 제품용 Reranker 모델 미선정. 상세 흐름은 [문서 처리 파이프라인](document-pipeline.md) 참고.
+
+### 2.1 기본 구조와 용어
+
+| 단계 | 기술/역할 | 도입 방향 |
+|---|---|---|
+| 1차 검색 | Dense 임베딩 기반 검색 + BM25 어휘 검색 | 공통 ChunkSet의 동일 원문 참조 사용 |
+| 후보 통합 | **RRF (Reciprocal Rank Fusion)** | 각 검색기의 순위를 기계적으로 통합. **기본값** |
+| 선택적 재정렬 | 규칙 기반 / 로컬 Cross-Encoder / 그 외 로컬 모델 | RRF 후보에만 적용하는 **교체형 모듈** |
+| 결과 전달 | 공통 EvidenceBundle | 기본·확장 양쪽이 동일한 근거·원문 참조 계약 사용 |
+
+**RRF와 PRF는 다른 방법**이다. RRF는 순위 결합이고, PRF(Pseudo-Relevance Feedback)는 초기 상위 문서를 이용해 질문을 확장·수정하고 재검색하는 방법이다. PRF는 기본 검색 경로에 넣지 않으며 추후 독립 연구 후보로만 고려한다.
+
+**RRF는 원본 점수 자체를 가중합하는 모델이 아니다.** 각 결과 목록에서의 rank를 사용한다. 가중 RRF나 점수 정규화 기반 결합은 추후 대안 연구 대상이며 기본 구조에 포함한 것은 아니다.
+
+### 2.2 선택형 Reranker의 기술 후보
+
+| 후보 | 용도 | 주의 사항 / 상태 |
+|---|---|---|
+| 규칙 기반 | 명시적으로 지정된 문서 범위·필드·메타데이터 우선순위 등 적용 | 특정 기관·평가셋 문구에 맞춘 특화 규칙 금지. 선택형 후보 |
+| 로컬 Cross-Encoder | 질문과 후보 청크의 관련성을 함께 추론 | 로컬 모델 가중치의 상업적 사용/재배포 라이선스, 한글 품질, CPU/GPU 자원 검토 필요. 선택형 후보 |
+| 다른 로컬 리랭킹 방식 | 향후 경량 모델 또는 구조 인지형 방법 적용 | 공통 입출력 계약 유지. 구현 미정 |
+| [Voyage Reranker API](https://docs.voyageai.com/docs/reranker) | **외부 API 비교 기준선**, 로컬 모델의 성능 지향점 탐색 | 제품 기본 설치에는 **포함하지 않음**. 외부 문서 전송·요금·약관 확인 필수 |
+
+Reranker는 RRF에서 후보에 없던 문서를 스스로 찾아내지 않는다. 고품질 리랭커를 붙여도 **초기 검색 Recall 한계**를 넘을 수 없고, 관련성 점수는 원문 사실 검증을 대체하지 못한다.
+
+### 2.3 Voyage 비교 기준선 — 실험 아이디어
+
+- **목표:** 같은 RRF 후보를 기준으로 **리랭킹 없음 / Voyage API / 로컬 리랭커**를 비교하여 품질·지연·비용 간의 기준선을 만든다. Voyage의 점수를 정답 데이터로 사용하거나 모델을 모방 학습한다는 의미가 아니다.
+- **모델 확인:** 공식 문서에 다양한 `rerank-2.5` 계열 및 후속 모델 정보가 표시되므로, 실제 실험 시점에 **사용 가능한 특정 모델 이름과 제공 버전**을 기록한다. 현재 고정 모델 없음.
+- **동일 조건:** 질문·입력 후보의 텍스트 표현과 목록·개수·원문 버전·최종 Top-k를 통제하고, RRF 기준 후보를 공통 입력으로 재사용한다.
+- **품질·운영 지표:** 독립적으로 원문 확인한 관련성 평가 기준이 있을 때 nDCG@k, MRR@k, Recall@k 등을 기록. 지연시간·토큰·API 요금·오류율·로컬 메모리도 별도 수집한다.
+- **기록:** query_id, candidate_set_hash, RRF 원순위, reranker_id/version, 리랭커 점수·순위, 출력 Top-k, 호출 시간·비용·데이터셋 버전.
+- **데이터 보안:** API에 질의·후보 문서 텍스트가 전송되므로 **공개·합성·허가된 데이터만** 활용한다. 기밀·민감·개인정보가 포함된 실제 기업 문서는 외부 전송하지 않는다.
+- **약관:** [Voyage 서비스 약관](https://www.voyageai.com/tos)의 데이터 사용 및 **opt-out** 조항을 확인해야 한다. opt-out은 전송 이후 데이터에 적용되며, 별도 설정과 결제 수단이 필요할 수 있고 무료 토큰 조건에 영향을 줄 수 있다. 현재 계정 정책은 미확인.
+- **배포 조건:** 외부 API 연동은 **비필수·실험 전용**이어야 한다. 기업이 로컬·오프라인 설치만으로 기본 검색 및 선택 가능한 로컬 Reranker를 이용하는 구조를 유지한다. API 서비스 계약과 코드/가중치의 오픈소스 라이선스는 구별한다.
+
+### 2.4 참고 자료 및 검토 필요 항목
+
+- [Elasticsearch RRF 설명 및 공식 계산식](https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion)
+- [Qdrant Hybrid / Multi-stage query](https://qdrant.tech/documentation/search/hybrid-queries/)
+- [Voyage Reranker 가이드](https://docs.voyageai.com/docs/reranker)
+- [Voyage Reranker REST API](https://docs.voyageai.com/reference/reranker-api)
+- [Voyage 사용량 기반 요금표](https://docs.voyageai.com/docs/pricing)
+- [Voyage 서비스 약관](https://www.voyageai.com/tos)
+- [Pseudo Relevance Feedback 관련 연구](https://doi.org/10.1145/3570724)
+
+**추가 확인 필요:** 실제 채택할 로컬 모델의 정확한 라이선스·모델 가중치, Voyage API 계정의 데이터 정책/비용, 한국어 및 표 문맥 기반 검색 품질, 최종 Top-k와 후보 풀 크기에 따른 지연·정확도 절충. **어느 후보도 최종 채택 또는 성능 검증된 상태가 아니다.**
