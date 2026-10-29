@@ -1,66 +1,85 @@
-# 독립 문서 파싱 단계 (JS 브랜치)
+# 독립 문서 파싱 단계 — 구조 설계안
 
-> 상태: 초기 코드와 계약 작성. 실제 PDF/HWP 실행 검증 전.  
-> 범위: **문서 원본 → 텍스트/표 요소 + 원문 위치 + 구조 아티팩트**.  
-> 비범위: 청킹, 임베딩, RAG 검색, LLM/VLM 호출, 최종 표 의미 검증, LangGraph 오케스트레이션.
+> 상태: 아이디어·인터페이스 설계 / **구현 미확정**
+> 원칙: **문서군·데이터셋·기관·도메인에 독립적**이어야 함
+> 범위: 원본 문서에서 텍스트·표·레이아웃 요소와 출처 위치를 추출해 공통 자료구조로 반환
+> 비범위: 청킹, 임베딩, RAG, 질의 라우팅, LLM 답변 생성, 업무 규칙 적용, 문서 내용의 사실 검증
 
-## 1. 설계 경계
+## 1. 핵심 설계 원칙
 
-- 구현: `src/reportanchor_harness/parsing.py` — 모델 비의존 `ParserBackend` 프로토콜, `ParsingStage`, `load_parsing_artifact`.
-- 어댑터: `src/reportanchor_harness/adapters/gachon_docparse.py` — 기존 `references/gachon-admissions/src/docparse`의 **parse_files만 사용**. `run_all`에 포함된 청킹/문맥 청크 생성은 호출하지 않음.
-- 테스트: `tests/test_parsing_stage.py` — 외부 API 없는 더미 백엔드로 저장, 읽기, 실패 및 체크섬 검증을 정의.
-- 기존 레퍼런스 RAG: 수정하지 않음. 추후 입력 계약을 합의해 검색·검증에 연결.
-- 현재 어댑터는 docparse에서 제공하는 텍스트·표 및 선택적 Table IR을 전달함. 이는 **추출된 잠정 구조**이며 헤더·셀 의미가 올바르다고 검증된 자료는 아님.
+1. **파싱과 하네스 실행 책임 분리**: 파서는 구조화된 결과를 생성하고, 하네스는 실행 상태·아티팩트·버전·이벤트를 저장·관리한다. 파서에서 특정 저장 엔진이나 실행 프레임워크를 직접 호출하지 않는다.
+2. **데이터와 구현 분리**: 문서 제목, 기관명, 파일명 접두사, 입력 파일 개수·순서, 특정 연도·분야의 용어, 정답셋 내용으로 동작을 분기하지 않는다.
+3. **형식 기반 확장**: 파일 형식(PDF, HWP 등)은 추출기 선택의 근거가 될 수 있지만, 특정 데이터셋 전용 추출기를 기본값으로 채택하지 않는다. 향후 형식 추가를 고려한다.
+4. **원문 위치 보존**: 문단·표·셀은 가능한 범위의 원문 위치를 함께 반환한다. PDF 파일 페이지, 문서 내부 요소 인덱스, 영역 좌표를 서로 다른 위치 타입으로 취급한다. 얻을 수 없는 위치는 미확인 상태로 둔다.
+5. **추출과 의미 검증 분리**: 텍스트 추출 성공은 표 헤더·행 라벨·수치 의미의 정확성을 보증하지 않는다. VLM 보완과 근거 검증은 후속 독립 단계로 둔다.
+6. **안정적인 비교 가능성**: 원본 바이트 해시, 파서 식별자·버전, 설정, 출력 스키마 버전을 남긴다. 동일 원문에서 파서만 바뀐 결과를 비교할 수 있어야 한다.
 
-## 2. 저장 계약 v1
+## 2. 책임 경계
 
-출력은 실행별 새 디렉터리 `output_root/parse_<uuid>/`에 저장됨.
+| 개념 모듈 | 수행 범위 | 수행하지 않는 작업 |
+|---|---|---|
+| Document Registry | 원본 식별, 콘텐츠 해시·버전·형식 메타데이터 정의 | 특정 문서 제목·순서 강제 |
+| Parser Adapter | 선택된 파일 형식에서 텍스트·표·위치·레이아웃 정보 추출 | 벡터 검색, 특정 분야 판단 |
+| Structure Normalizer | 추출기별 반환 형태를 공통 IR로 변환 | 정답 문장 보정, 누락된 수치 임의 생성 |
+| Contract Validator | 스키마·좌표·참조 관계·필드 무결성 검사 | 추출 내용의 사실 여부 판정 |
+| Artifact Store (하네스 공통) | 중간 결과와 해시·계보·상태·버전 저장 | 파서 로직·도메인별 규칙 소유 |
+| Trace / Checkpoint (하네스 공통) | 호출·오류·시간 기록 및 작업 재개 관리 | 원문·이미지의 중복 저장 |
 
-| 파일 | 용도 |
-|---|---|
-| `blocks.jsonl` | 각 텍스트/표 블록의 순서, 내용, 내용 해시, 문서 ID, locator, 연결된 table_id, 검증 상태 |
-| `tables.jsonl` | 가능한 경우 Table IR. 모든 레코드의 검증 상태는 초기 `unverified` |
-| `manifest.json` | 스키마 버전, 문서 해시/크기, 어댑터 버전, 설정 해시, 출력 해시/건수 |
-| `state.json` | `running / completed / failed`, run_id와 오류 타입 |
+**파싱 모듈은 결과를 반환할 뿐, 특정 벡터 DB·LLM 공급자·기존 레퍼런스 패키지에 의존하지 않음.**
 
-`locator`는 `{"type":"page","value":1}` 또는 `{"type":"element_index","value":0}`처럼 의미를 분리. HWP `element_index`는 출력 페이지 번호가 아니며, PDF일 때만 `pdf_page`에 실제 PDF 파일 페이지 번호가 들어감(인쇄 쪽 번호와 별개).
+## 3. 추출 결과 계약 후보
 
-## 3. 실행 예시
+**DocumentVersion**
+- document_id: 문서를 추적하는 논리 식별자
+- source_hash: 원문 콘텐츠의 해시
+- format: 파일 형식 및 확인 방식
+- source_ref: 원문을 찾는 불투명 참조(개인 파일 경로 자체를 외부 기록에 노출하지 않음)
 
-레퍼런스 파서를 설치하고(레퍼런스의 `pyproject.toml` 참조), 새 프로젝트 패키지를 import 가능한 환경에서 실행:
+**ParsedDocument**
+- schema_version, document_id, parser_id, parser_version, parser_config_hash
+- blocks: 문단·표·기타 추출 요소의 목록 또는 외부 아티팩트 참조
+- extraction_status: 성공/부분 성공/실패 등 처리 결과
 
-```python
-from reportanchor_harness.parsing import ParsingStage, load_parsing_artifact
-from reportanchor_harness.adapters.gachon_docparse import LegacyDocparseAdapter
+**ExtractedBlock**
+- block_id, kind, raw_content, order
+- source_locator: 출처 위치(페이지·요소 인덱스·좌표 등 지원 가능한 타입)
+- structure_refs: 선택적 표/영역 ID 연결
+- extraction_status, verification_status(초기에는 별도 미검증 상태)
 
-stage = ParsingStage(LegacyDocparseAdapter())
-result = stage.run("data/raw/example.pdf", "outputs/parsing")
-manifest, blocks, tables = load_parsing_artifact(result.directory)
-print(manifest["status"], len(blocks), len(tables))
-```
+**TableIR (선택적, 잠정 추출 결과)**
+- table_id, cells(row/col/span/text), 위치, 원본 출처, 추출 방식
+- header/stub 판단은 확정 사실이 아니라 선택적 추정 결과와 근거로 표현
+- 날짜·연도·단위·조직명 등 도메인 관련 정보는 특정 자료의 필수 필드로 강제하지 않음
 
-로컬 개발에선 저장소 루트의 `src`와 `references/gachon-admissions/src`를 Python import 경로에 두거나 두 패키지를 개발용 editable install해야 함. 의존성·패키징은 아직 통합하지 않았음.
+위 명칭은 **개념적 인터페이스 후보**이며 아직 구현 스키마로 확정하지 않았음. 이미지·도형처럼 지원되지 않는 요소는 누락 사실과 출처를 표현할 수 있도록 확장 여지를 남긴다.
 
-## 4. 다음 모듈과의 인터페이스
+## 4. 단계 종료 후 상태 저장과 재사용
 
-- **입력**: 단일 로컬 PDF/HWP 파일 및 파서 설정.
-- **출력**: `manifest`와 파일 참조, `blocks`(텍스트, 표, locator), 선택적 `tables`(Table IR).
-- **후속 VLM/구조 보완**: `block_id`, `table_id`, locator를 유지하면서 기존 IR과 새로운 해석을 비교·버전화.
-- **후속 청킹**: 저장된 파싱 아티팩트를 읽어 chunk 집합을 생성하고, 각각에 원본 `block_id` 및 원문 위치를 연결. 파서를 다시 실행할 필요가 없어야 함.
+입력 원본 → 파싱 모듈 → 출력 계약 검사 → ParsedDocument 아티팩트 → 이후 VLM/청킹 단계
 
-현재 단계는 **독립 결과 저장**까지 구현하며, 입력 기반 캐시 적중·증분 재실행, 구조 검증, 병렬 실행 및 체크포인트 복구는 후속 하네스 모듈 책임.
+- **Artifact**: 입력 콘텐츠 및 파서·설정·스키마 버전과 연결된 구조화 결과. 하네스가 보관.
+- **Execution Trace**: 처리 단계, 소요 시간, 사용한 파서, 오류 유형·부분 실패 정보. 하네스가 기록.
+- **Checkpoint**: 작업 재개를 위한 실행 상태. Graph 실행 계층에서 별도 관리.
+- **재사용 조건**: 원본 콘텐츠, 관련 파서/설정/출력 계약 버전이 동일한지 확인. 파일명만 같거나 동일 폴더에 있다는 이유로 결과 재사용 금지.
+- **변경 전파**: 파서 출력이 바뀌면 해당 결과를 소비한 VLM 보완·청킹·색인만 다시 처리. 독립 단계의 중간 결과는 보존.
+- **보안**: 원문이나 추출된 민감 텍스트를 이벤트 로그에 그대로 복사하지 않고, 내용 저장소에는 로컬 접근권한·보존 정책을 별도로 적용.
 
-## 5. 확인 및 제한 사항
+## 5. 자료 의존 방지 규칙
 
-- 코드 작성과 브랜치 커밋은 완료되었지만 이 대화에서는 실제 Python 테스트/파서 실행을 수행하지 않았음.
-- 레퍼런스 파서는 기존 로직을 재사용하므로 PDF의 선 없는 표, HWP 실제 쪽 번호, 병합 헤더 등 기존 알려진 한계가 남아 있음.
-- 표 파싱은 청킹과 분리하더라도 표 구조 정확도까지 보장하지 않음. v24 골든 평가에서 표 2/11 통과 기록을 유지함.
-- 원본 파일 내용 자체는 출력에 복사하지 않으나 텍스트/표 추출 결과는 민감 내용을 포함할 수 있음. 출력 경로의 접근권한과 Git 제외 처리가 필요.
-- 아티팩트 출력 SHA-256은 손상 검출용. 원본 해시 및 백엔드/설정 해시와 함께 보관하지만 암호학적 서명이나 접근통제는 아님.
+- 경로·기관명·문서명·특정 시험 질문·특정 평가셋에 조건문을 두지 않음.
+- 파일명 접두사나 특정 페이지 숫자를 의미 식별자로 사용하지 않음.
+- 목차 추정, 헤더 구조 추론 등 휴리스틱은 범용 기본 동작과 문서별 선택적 설정을 분리하고, 설정이 범용 성능을 왜곡하는지 검증 대상으로 남김.
+- 문서군 전용 프로필은 핵심 엔진과 격리된 선택적 확장으로만 취급. 어떤 프로필도 기본 구현의 숨은 필수 조건이 될 수 없음.
+- 평가와 테스트는 합성·다양한 형식·독립 문서군에서 계약, 위치·표 구조, 부분 실패 처리를 확인하도록 설계. 기존 개발 데이터만의 정답률로 범용성을 주장하지 않음.
+- 외부 API 기반 기존 RAG 베이스라인은 **비교 대상으로만 보존**. 신규 파싱 엔진의 내부 의존성이나 기본 어댑터가 되지 않음.
 
-## 레퍼런스
+## 6. 미결정 사항
 
-- [기존 docparse](../references/gachon-admissions/src/docparse/)
-- [기존 파서 데이터 계약](../references/gachon-admissions/reference/baseline1/INTERFACE.md)
-- [기존 Table IR](../references/gachon-admissions/reference/baseline2/IR.md)
-- [기존 파서 이식 지침](../references/gachon-admissions/reference/baseline2/HANDOFF.md)
+1. 공통 IR에 레이아웃 좌표와 도형 정보를 어디까지 포함할지
+2. HWP에서 실제 페이지 정보를 얻지 못할 때 변환 문서 위치와 원문 위치를 어떻게 연결할지
+3. 구조 추출 결과와 VLM 보완 결과의 계보/충돌을 어떻게 표현할지
+4. 단일 문서와 여러 문서 배치를 같은 실행 계약으로 다룰지
+5. 아티팩트 보존 범위, 암호화/로컬 접근 정책, 재사용 및 무효화 규칙
+6. 특정 파서 라이브러리를 선택할 평가 기준: 형식 지원, 구조 정확도, 원문 위치 충실도, 속도, 의존성
+
+**현재 결정:** 모듈 경계만 설계하며 새로운 코드·테스트 또는 특정 문서군 어댑터를 작성하지 않음.
