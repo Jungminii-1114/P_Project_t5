@@ -1,5 +1,9 @@
 # Implementation references
 
+## DeepSeek Harness (DSH) — 설계 참고
+
+[DSH 분석 노트](deepseek-harness/README.md): Agent 루프 상태 머신, 도구 실행 파이프라인, 세션 이벤트 로그, 플러그인 구조와 LangGraph 대응. 2026-10-30 공식 문서 기준이며, 하네스는 DSH를 실행하지 않고 설계만 참고한다.
+
 ## Gachon admissions — baseline-1
 
 [Browse the reference index](gachon-admissions/reference/README.md).
