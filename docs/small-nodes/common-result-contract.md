@@ -13,7 +13,7 @@
 | 필드 | 타입(개념) | 반환 키 | 역할 |
 |---|---|---|---|
 | `status` | `"success" \| "partial" \| "error"` | **필수** | 노드의 전체 **실행** 상태 |
-| `data` | `T \| null` | **필수** (값은 `null` 허용) | 확보한 유효한 업무 결과. 부분 실패 시에도 안전한 결과 보존 |
+| `data` | `T \| null` | **필수** (값은 `null` 허용) | 확보한 유효한 업무 결과. 부분 실패 시에도 안전한 결과(빈 목록 가능) 보존 |
 | `diagnostics` | `dict[str, StepDiagnostic]` | **필수** (`{}` 허용) | 내부 단계별 실행·실패·생략 정보와 사유 |
 | `outcome` | `str \| null` | **필수** (값은 `null` 허용) | 실행 성공/실패와 별개인 **업무상 판단·결과** |
 
@@ -26,12 +26,12 @@
 | 실행 상태 | 의미 | `data` 취급 |
 |---|---|---|
 | `success` | 필수·활성 처리 단계 정상 완료 | 정상 데이터(0건 가능) 반환 |
-| `partial` | 일부 내부 단계가 실패했으나 **유효하고 안전한 데이터 확보** | 정상적으로 얻은 `data`는 보존. 어디서 실패했는지 기록 |
+| `partial` | 일부 내부 단계는 실패했으나 **정상 완료된 단계의 결과를 안전하게 반환 가능** | 유효한 `data` 보존. 검색 후보 같은 결과 목록은 **0개여도 가능**하며 실패 위치를 기록 |
 | `error` | 필수 단계 전부 실패, 입력/권한/버전 검증 실패 등으로 **안전한 결과 제공 불가** | 원칙적으로 `data: null`. 실패 원인 반환 |
 
-**중요:** 검색을 정상 수행했는데 결과가 없으면 `error`가 아니라 `status: success` + `outcome: no_candidates` + `data.candidates: []`이다. 반대로 검색기 일부가 실패한 상태에서 후보가 0개라면 **전체 검색에서 후보가 없다고 단정하지 않는다**(`status: partial`).
+**N-01 확정 규칙:** Dense·BM25가 **모두 정상 완료**하고 후보가 0개면 `status=success`, `outcome=no_candidates`, `data.candidates=[]`이다. **한 검색기가 실패하고 다른 검색기가 정상 완료했으나 후보가 0개인 경우에도** `status=partial`, `outcome=null`, `data.candidates=[]`로 반환한다. 완료된 검색의 **빈 목록도 유효한 부분 결과**이며, 실패한 검색기를 실행하지 못했으므로 `no_candidates`로 단정하지 않는다. 두 검색기가 모두 실패하면 `status=error`와 원칙적으로 `data=null`이다. MVP에서는 정상적인 빈 검색 범위를 별도 `empty_scope` 코드로 구분하지 않는다. **후보 0개는 원문 내용 부재의 증명이 아니다.**
 
-의도적으로 꺼 둔 선택 기능이 `skipped`였다는 사실만으로 전체 상태를 `partial`로 만들지는 않는다.
+의도적으로 꺼 둔 선택 기능이 `skipped`였다는 사실만으로 전체 상태를 `partial`로 만들지는 않는다. 이 규칙은 **N-01의 검색 후보 유무**와 **모든 Small Node의 실행 상태**를 혼동하지 않도록 적용한다.
 
 ## 2. 반환 블록 시각화
 
@@ -161,6 +161,34 @@ NodeResult[RetrievalCandidates]
 
 `no_candidates`는 **색인과 허용 검색 범위에서 찾지 못했다는 뜻**이지 원문 문서에 해당 정보가 없다는 증명은 아니다.
 
+### 부분 실패 + 후보 0개 (N-01 확정 예시)
+
+Dense 검색에 실패했고 BM25 검색은 정상 완료됐지만 후보가 없을 때에도 `data`는 `null`이 아닌 **유효한 빈 후보 목록**을 포함한다.
+
+```json
+{
+  "status": "partial",
+  "data": {
+    "request_ref": "req_001",
+    "candidates": [],
+    "index_refs": {
+      "dense": "dense-index-v3",
+      "bm25": "bm25-index-v2"
+    },
+    "strategy_version": "hybrid-rrf-v1"
+  },
+  "diagnostics": {
+    "dense_search": {"status": "failed", "error_code": "TIMEOUT"},
+    "bm25_search": {"status": "success", "count": 0},
+    "rrf_fusion": {"status": "skipped", "reason": "DENSE_FAILED"},
+    "reranker": {"status": "skipped", "reason": "PARTIAL_SEARCH"}
+  },
+  "outcome": null
+}
+```
+
+**`empty_scope`는 MVP 결과 코드에 포함하지 않는다.** 정상 검색 범위가 실제로 비어 있는 경우와 정상 검색 후 후보를 못 찾은 경우 모두 `success/no_candidates`가 가능하다. 반면 인덱스 누락·권한 위반·버전 불일치는 검색 오류이므로 `no_candidates`로 처리하지 않는다.
+
 ## 6. N-01~N-11 적용 원칙
 
 | Small Node | `data`의 업무 타입(예시) | 실행/업무 결과 구분 |
@@ -179,10 +207,10 @@ NodeResult[RetrievalCandidates]
 ## 7. 공통 테스트 체크리스트
 
 1. 정상 실행 + 선택적 단계 `skipped`: `status=success` 허용
-2. 정상 실행 + 빈 결과: `status=success`, 해당 `outcome`, 비어 있는 `data`
-3. 일부 단계 실패 + 안전한 후보/근거 있음: `partial`, `data` 보존, 실패 단계/원인 명시
+2. 모든 필수 검색 단계 정상 완료 + 빈 결과: `status=success`, `outcome=no_candidates`, `data.candidates=[]` (N-01 예시)
+3. 일부 단계 실패 + 안전한 부분 결과: `partial`, `data` 보존(검색 후보 `[]` 가능), 실패 단계/원인 명시
 4. 모든 필수 단계 실패 또는 권한/버전 오류: `error`, 위험한 `data` 반환 금지
 5. 업무상 결과인 '미충족·근거 부족·비교 불가능'을 실행 `error`와 혼동하지 않기
 6. 직렬화 시 **`status` / `data` / `diagnostics` / `outcome` 네 키 모두 포함**(`data/outcome=null`, `diagnostics={}` 허용)
 
-**결정 경계:** 공통 반환 외피와 상태 의미는 **확정**했으며, 각 Small Node의 `T` 스키마·업무 결과 코드·실제 타입 구현과 시험 결과는 **아직 확정되지 않았다**.
+**결정 경계:** 공통 반환 외피와 상태 의미, N-01의 후보 0건·부분 실패 분류는 **확정**했다. 각 Small Node의 세부 `T` 스키마·업무별 결과 코드·실제 타입 구현과 테스트 결과는 **아직 확정되지 않았다**.
