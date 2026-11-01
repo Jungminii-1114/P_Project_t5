@@ -17,7 +17,7 @@
 
 | ID | Small Node | 역할 | 최소 입력 → 출력 | 사용 Tool |
 |---|---|---|---|---|
-| **N-01** | `retrieve_evidence` | 허용된 문서·색인 범위에서 질문 또는 명시적 항목에 관련된 검색 후보를 찾음 | 질문/검색 조건·문서 범위 → `RetrievalCandidates` | T-01 · T-02 · T-03 |
+| **[N-01](small-nodes/N-01.md)** | `retrieve_evidence` | 허용된 문서·색인 범위에서 질문 또는 명시적 항목에 관련된 검색 후보를 찾음 | 질문/검색 조건·문서 범위 → `RetrievalCandidates` | T-01 · T-02 · T-03 |
 | **N-02** | `get_source_context` | 후보를 원문 문단·표·헤더·각주·위치 및 추출 상태와 연결 | 후보 참조·문서 버전 → 원문 근거 묶음(`EvidenceBundle`) | T-01 · T-02 · T-03 |
 | **N-03** | `verify_grounding` | 답변·판정·비교 결과의 주장과 인용이 실제 원문 근거로 뒷받침되는지 검사 | 업무별 결과 초안·원문 근거 → `VerificationReport` | T-01 · T-02 · T-03 |
 
