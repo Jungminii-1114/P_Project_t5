@@ -1,5 +1,9 @@
 # Implementation references
 
+## AutoRAG — RAG/Agent 설계 및 자동 평가 참고 (2026-11-01)
+
+[AutoRAG 분석 노트](autorag/README.md): 공식 [AutoRAG v2.13.4](https://github.com/Marker-Inc-Korea/AutoRAG/releases/tag/v2.13.4) 기준 **Agent 2.0**(로컬 문서 검색·근거 인용·라우팅)과 **Legacy**(RAG 파이프라인 자동 평가·최적화)를 구분해 정리했다. ReportAnchor의 N-01/N-02/N-03, T-01, RRF 실험과의 관계, 실행·외부 API·라이선스 한계를 포함한다. **설계 참고 전용이며 코드/레거시 의존성은 복사·반입하지 않았다.**
+
 ## DeepSeek Harness (DSH) — 설계 참고
 
 [DSH 분석 노트](deepseek-harness/README.md): Agent 루프 상태 머신, 도구 실행 파이프라인, 세션 이벤트 로그, 플러그인 구조와 LangGraph 대응. 2026-10-30 공식 문서 기준이며, 하네스는 DSH를 실행하지 않고 설계만 참고한다.
