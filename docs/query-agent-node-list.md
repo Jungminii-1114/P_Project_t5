@@ -1,6 +1,6 @@
 # Query Agent MVP — Small Node 설계 LIST
 
-> 상태: **Small → Big → Small 최상위 구조 확정(2026-10-31), Small Node 11종 등록 / 구현 미착수**. 이 문서는 Small Node의 이름·책임·최소 입출력을 나열하는 **LIST**다. 업무별 실행 순서·분기는 [Big Node 상세 문서](big-nodes/README.md), 용어는 [명칭 통일 문서](naming-conventions.md)를 기준으로 한다.
+> 상태: **Small → Big → Small 최상위 구조 확정(2026-10-31), Small Node 11종 등록 / 구현 미착수**. 이 문서는 Small Node의 이름·책임·최소 입출력을 나열하는 **LIST**다. **N-01~N-11 공통 반환**은 [NodeResult[T] 계약](small-nodes/common-result-contract.md)으로 고정하고, 아래 표의 출력은 `data`의 업무 산출물(또는 업무상 `outcome`)을 가리킨다. 업무별 실행 순서·분기는 [Big Node 상세 문서](big-nodes/README.md), 용어는 [명칭 통일 문서](naming-conventions.md)를 기준으로 한다.
 >
 > 범위: 최상위 공통 Small Node N-10·N-11, Big Node 내부 Small Node N-01~N-09. MVP Big Node 3종(T-01~T-03)에 우선 적용하며 T-04·T-05는 후속 계획으로 유지한다.
 
