@@ -37,11 +37,11 @@ ReportAnchor Query Agent — MVP 확정 실행 경로
 
 | ID | 표준 명칭 | 한국어 명칭 | 현재 범위 |
 |---|---|---|---|
-| **T-01** | **Document QA** | 문서 근거 질의응답 | MVP 상세 워크플로 설계 |
-| **T-02** | **Criteria Review** | 기준 충족 검토 | MVP 상세 워크플로 설계 |
-| **T-03** | **Comparative Analysis** | 문서·기간·지표 비교 분석 | MVP 상세 워크플로 설계 |
-| **T-04** | **Claim Verification** | 개별 주장 검증 | 계획 유지, 상세 설계 보류 |
-| **T-05** | **Document Summary** | 문서 전체 요약 | 계획 유지, 상세 설계 보류 |
+| **[T-01](big-nodes/T-01.md)** | **Document QA** | 문서 근거 질의응답 | MVP 상세 워크플로 설계 |
+| **[T-02](big-nodes/T-02.md)** | **Criteria Review** | 기준 충족 검토 | MVP 상세 워크플로 설계 |
+| **[T-03](big-nodes/T-03.md)** | **Comparative Analysis** | 문서·기간·지표 비교 분석 | MVP 상세 워크플로 설계 |
+| **[T-04](big-nodes/T-04.md)** | **Claim Verification** | 개별 주장 검증 | 계획 유지, 상세 설계 보류 |
+| **[T-05](big-nodes/T-05.md)** | **Document Summary** | 문서 전체 요약 | 계획 유지, 상세 설계 보류 |
 
 **범위 구분:** T-01은 특정 질문에 답하고, T-02는 사용자 지정 기준을 판정하고, T-03은 비교 가능한 값을 대조한다. T-04와 T-05는 이름만 등록한 후속 후보로, 지금 구현이 확정됐다는 의미가 아니다.
 
@@ -49,31 +49,23 @@ ReportAnchor Query Agent — MVP 확정 실행 경로
 
 | ID | 표준 식별자 | 한국어 역할 | 구분 |
 |---|---|---|---|
-| **N-01** | `retrieve_evidence` | 근거 후보 검색 | 공통 |
-| **N-02** | `get_source_context` | 원문·표·각주·위치 문맥 조회 | 공통 |
-| **N-03** | `verify_grounding` | 주장과 근거·인용 정합성 검사 | 공통 |
-| **N-04** | `draft_answer` | 질문의 답변 초안 작성 | T-01 전용 |
-| **N-05** | `structure_criteria` | 검토 기준 항목 구조화 | T-02 전용 |
-| **N-06** | `evaluate_criterion` | 기준별 충족 여부 판정 | T-02 전용 |
-| **N-07** | `define_comparison` | 비교 대상·축 정의 | T-03 전용 |
-| **N-08** | `check_comparability` | 비교 가능성 검사 | T-03 전용 |
-| **N-09** | `build_comparison` | 정량·정성 비교 결과 구성 | T-03 전용 |
-| **N-10** | `route_query` | 요청 확인·검증, Big Node 선택 또는 실행 전 종료 | 최상위 공통·입구 |
-| **N-11** | `deliver_result` | 워크플로 결과·출처·검증 상태를 사용자에게 전달 | 최상위 공통·출구 |
+| **[N-01](small-nodes/N-01.md)** | `retrieve_evidence` | 근거 후보 검색 | 공통 |
+| **[N-02](small-nodes/N-02.md)** | `get_source_context` | 원문·표·각주·위치 문맥 조회 | 공통 |
+| **[N-03](small-nodes/N-03.md)** | `verify_grounding` | 주장과 근거·인용 정합성 검사 | 공통 |
+| **[N-04](small-nodes/N-04.md)** | `draft_answer` | 질문의 답변 초안 작성 | T-01 전용 |
+| **[N-05](small-nodes/N-05.md)** | `structure_criteria` | 검토 기준 항목 구조화 | T-02 전용 |
+| **[N-06](small-nodes/N-06.md)** | `evaluate_criterion` | 기준별 충족 여부 판정 | T-02 전용 |
+| **[N-07](small-nodes/N-07.md)** | `define_comparison` | 비교 대상·축 정의 | T-03 전용 |
+| **[N-08](small-nodes/N-08.md)** | `check_comparability` | 비교 가능성 검사 | T-03 전용 |
+| **[N-09](small-nodes/N-09.md)** | `build_comparison` | 정량·정성 비교 결과 구성 | T-03 전용 |
+| **[N-10](small-nodes/N-10.md)** | `route_query` | 요청 확인·검증, Big Node 선택 또는 실행 전 종료 | 최상위 공통·입구 |
+| **[N-11](small-nodes/N-11.md)** | `deliver_result` | 워크플로 결과·출처·검증 상태를 사용자에게 전달 | 최상위 공통·출구 |
 
 **정의·입출력의 기준 문서:** [Small Node 설계 LIST](query-agent-node-list.md). N-01~N-09는 Big Node 내부의 Small Node, N-10·N-11은 Big Node 바깥의 최상위 공통 Small Node다.
 
 ## 4. Big Node와 Small Node의 연결
 
-| Big Node | 사용하는 Small Node | 비고 |
-|---|---|---|
-| **T-01 Document QA** | N-01, N-02, N-04, N-03 | 질문 답변 생성 |
-| **T-02 Criteria Review** | N-05, N-01, N-02, N-06, N-03 | 기준 항목별 반복·판정 |
-| **T-03 Comparative Analysis** | N-07, N-01, N-02, N-08, N-09, N-03 | 대상별 조회·비교 가능성 확인 |
-| **T-04 Claim Verification** | 미정 | 후속 설계 |
-| **T-05 Document Summary** | 미정 | 후속 설계 |
-
-**최상위 공통 경로:** `N-10 → T-xx → N-11` (실행 전 종료 시 `N-10 → N-11`). 표의 Small Node는 각 Big Node **내부**의 조합만 보여 준다. Big Node 내부의 실행 순서·조건부 분기·예외 처리는 [MVP 워크플로 설계](query-agent-mvp.md)에서 관리한다.
+**업무별 사용 관계와 조건부 엣지는 [Big Node 상세 문서 목록](big-nodes/README.md)에서 관리한다.** 이 명칭 문서에서 실행 매핑 표는 중복하지 않는다. Small Node 단일 책임·입출력은 [Small Node 문서 목록](small-nodes/README.md)을 확인한다.
 
 ## 5. 상위 실행 단계 및 공통 용어
 
@@ -126,7 +118,7 @@ ReportAnchor Query Agent — MVP 확정 실행 경로
 
 ## 8. 관련 문서
 
-- [Big Node 워크플로 상세 설계 — Query Agent MVP](query-agent-mvp.md)
-- [Small Node 설계 LIST — 최소 단위 노드](query-agent-node-list.md)
+- [Big Node별 워크플로 문서](big-nodes/README.md) · [Query Agent 전체 흐름](query-agent-mvp.md)
+- [Small Node 문서 목록](small-nodes/README.md) · [Small Node LIST](query-agent-node-list.md)
 - [문서 처리·하이브리드 검색 파이프라인](document-pipeline.md)
 - [하네스 아이디어 백로그·결정 사항](idea-backlog.md)
