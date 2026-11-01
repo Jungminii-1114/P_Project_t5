@@ -2,7 +2,7 @@
 
 > 문서 목적: ReportAnchor의 기술 후보와 공식 근거, 한계, 라이선스 검토 상태를 한곳에 축적하는 공통 레퍼런스 문서
 >
-> 마지막 조사: 2026-10-29 · 현재 단계: **기술 후보 조사 / 최종 채택 및 법률 검토 전**
+> 마지막 자료 추가: **2026-11-01 (AutoRAG)** · 기존 항목 조사 시점은 각 항목 내용 기준 · 현재 단계: **기술 후보 조사 / 최종 채택 및 법률 검토 전**
 >
 > **프로젝트 요구:** 로컬·오프라인 구동이 가능하고, 기업의 상업적 사용·내부 배포·오픈소스 재배포를 지원할 수 있어야 함. 문서 종류나 특정 데이터셋에 종속된 구성은 지양함.
 
@@ -172,3 +172,22 @@ Reranker는 RRF에서 후보에 없던 문서를 스스로 찾아내지 않는�
 - [Pseudo Relevance Feedback 관련 연구](https://doi.org/10.1145/3570724)
 
 **추가 확인 필요:** 실제 채택할 로컬 모델의 정확한 라이선스·모델 가중치, Voyage API 계정의 데이터 정책/비용, 한국어 및 표 문맥 기반 검색 품질, 최종 Top-k와 후보 풀 크기에 따른 지연·정확도 절충. **어느 후보도 최종 채택 또는 성능 검증된 상태가 아니다.**
+
+---
+
+## 3. AutoRAG — 문서 검색 Agent / RAG AutoML 참고
+
+> 조사일: **2026-11-01** · 비교 기준: [공식 v2.13.4 (2026-10-31)](https://github.com/Marker-Inc-Korea/AutoRAG/releases/tag/v2.13.4) · **도입/성능 검증 전**
+
+**상세 분석:** [AutoRAG 공식 소스 기반 설계 레퍼런스](../references/autorag/README.md)
+
+| 구분 | 확인된 기능·역할 | ReportAnchor에서의 참고 |
+|---|---|---|
+| **AutoRAG 2.0 (Agent)** | 로컬 파일·데이터소스 검색, 인용 근거 추적, 선택형 Reranker, Agent 라우팅 | T-01 Document QA, N-01 검색, N-02 근거 원문·출처, N-03 인용 검증, N-10 라우팅 |
+| **AutoRAG Legacy (Python AutoML)** | QA/Corpus 평가 데이터와 YAML 구성으로 RAG 검색·생성 모듈의 조합 평가 | RRF 단독 vs 로컬 Reranker 등 **검색 구성의 통제된 비교 실험** |
+
+**중요한 차이:** AutoRAG 2.0은 검색 결과 통합에 점수 정규화·중복 제거·교차 근거 보너스를 사용하며, ReportAnchor의 **Dense + BM25 → RRF**와 동일한 통합 알고리즘이 아니다. AutoRAG 2.0의 일부 의사결정 및 Reranker는 원격 모델을 사용할 수 있으므로 **로컬 색인만으로 완전 오프라인이라고 볼 수 없다**. 공식 엔진과 Legacy는 Apache-2.0이지만 별도 데스크톱 앱에는 다른 라이선스가 적용된다.
+
+**판정:** 높은 관련성의 **참고 자료**다. T-01의 문서 근거 QA는 기능이 크게 겹친다. T-02의 명시적 기준별 판정·T-03의 기간/단위 비교 가능성 검증이 진정한 차별점인지 후속 실증 검토가 필요하다. **코드 복사·의존성 도입·Small/Big Node 목록 변경은 진행하지 않았다.**
+
+**주요 공식 링크:** [Agent 2.0 README](https://github.com/Marker-Inc-Korea/AutoRAG/blob/v2.13.4/README.md) · [Legacy README](https://github.com/Marker-Inc-Korea/AutoRAG/blob/v2.13.4/legacy/README.md) · [RetrievalEngine](https://github.com/Marker-Inc-Korea/AutoRAG/blob/v2.13.4/src/retrieval/engine.ts) · [EvidenceLedger](https://github.com/Marker-Inc-Korea/AutoRAG/blob/v2.13.4/src/agent/evidence-ledger.ts) · [Rerank 문서](https://github.com/Marker-Inc-Korea/AutoRAG/blob/v2.13.4/docs/rerank.md)
