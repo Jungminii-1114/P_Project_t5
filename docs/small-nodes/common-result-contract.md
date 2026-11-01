@@ -19,6 +19,8 @@
 
 `NodeResult[T]`는 **프로젝트 자체 계약**이며 LangGraph의 내장 노드나 별도 Tiny Node가 아니다. 각 Small Node의 LangGraph 함수는 이 결과를 해당 State 필드에 저장할 수 있다.
 
+**반환과 영속 저장은 별개**다. MVP에서 [H-02 아티팩트 캡처](../artifact-capture.md)를 구현 대상으로 두어 필요한 실행에서 반환 블록을 하네스가 기록한다. Checkpointer는 미정이며 도입하지 않더라도 공통 4필드 계약은 바뀌지 않는다.
+
 ### `status`의 의미
 
 | 실행 상태 | 의미 | `data` 취급 |

@@ -72,7 +72,7 @@ ReportAnchor Query Agent — MVP 확정 실행 경로
 | 표준 명칭 | 뜻 | Big/Small Node와의 관계 |
 |---|---|---|
 | **ReportAnchor** | 프로젝트명 | 다른 프로젝트명·이전 이름 사용하지 않음 |
-| **Harness** | 실행 관리 계층 | Big/Small Node의 실행 상태·예산·오류·체크포인트·기록 관리 |
+| **Harness** | 실행 관리 계층 | Big/Small Node 실행 상태·예산·오류·아티팩트 기록(MVP)을 관리. 체크포인트·재개는 미정 |
 | **Query Agent** | 사용자 요청의 전체 처리 구조 | 아래 3단계의 상위 흐름 |
 | **Query Intake & Routing** | 원본 질문·대상 범위·권한 확인, Big Node 선택 | 최상위 Small Node **N-10** |
 | **Fixed Workflow** | 사전에 정의된 순서·분기를 따르는 실행 흐름 | 각 Big Node의 내부 실행 방식 |
